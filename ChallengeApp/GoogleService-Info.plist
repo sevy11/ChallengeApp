@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>153794971046-g91uc0fterd7ncsuestl50b7f5t32ea6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.153794971046-g91uc0fterd7ncsuestl50b7f5t32ea6</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBROeqas6yJP8EMikWAOC3mPAbv0NuUEFo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>153794971046</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.MichaelSevy.ChallengeApp</string>
+	<key>PROJECT_ID</key>
+	<string>ctscan-5baec</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ctscan-5baec.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:153794971046:ios:b330eb5cc02a10a2a23b67</string>
+	<key>DATABASE_URL</key>
+	<string>https://ctscan-5baec.firebaseio.com</string>
+</dict>
+</plist>
