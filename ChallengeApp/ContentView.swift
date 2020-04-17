@@ -13,7 +13,9 @@ struct ContentView: View {
     var weeks = [2...16]
     let managers = ["Sevy", "Caruso", "Drimalla", "BJ", "Shamir", "Nash"]
     var managersTeams = [[String]]()
+    @State private var determinedCurrentWeek = false
     
+
     
     var body: some View {
         TabView {
@@ -22,53 +24,12 @@ struct ContentView: View {
                     Image(systemName: "house")
                     Text("Scores")
                 })
-            WeeksScoresTabView(challengers: Challenger.generateChallengers())
+            WeeksScoresTabView(challengers: Challenger.generateTestChallengers())
                 .tabItem({
                     Image(systemName: "calendar")
                     Text("Weeks")
                 })
-        }
-//        NavigationView {
-//            VStack {
-//                Button.init(action: self.fetchWeek) {
-//                    HStack {
-//                        Image(systemName: "checkmark")
-//                            .resizable()
-//                            .frame(width: 16, height: 16, alignment: .center)
-//                            .foregroundColor(.red)
-//                        Text("Fetch Week")
-//                            .foregroundColor(.black)
-//                            .font(.body)
-//                            .bold()
-//                    }
-//                }
-//                Button.init(action: self.fetchData) {
-//                    HStack {
-//                        Text("Fetch Scores")
-//                            .font(.body)
-//                            .bold()
-//                            .foregroundColor(.black)
-//                        Image(systemName: "play")
-//                            .resizable()
-//                            .frame(width: 16, height: 16, alignment: .center)
-//                            .foregroundColor(.red)
-//                    }
-//                }
-//            }
-//        }
-    }
-}
-
-extension ContentView {
-    func fetchData() {
-        WebScrapManager().scrapChallengeScores(week: 1) { (namesAndScores) in
-            print("names: \(namesAndScores.0)")
-        }
-    }
-    
-    func fetchWeek() {
-        WebScrapManager().currentWeek() { currentWeek in
-            print("week: \(currentWeek)")
+        
         }
     }
 }

@@ -7,71 +7,57 @@
 //
 
 import SwiftUI
-//struct ContentView : View {
-//    // 1.
-//    @State private var selection = 0
-//    let colors = ["Red","Yellow","Green","Blue"]
-//
-//    var body: some View {
-//        // 2.
-//        Picker(selection: $selection, label:
-//        Text("Picker Name")) {
-//            ForEach(0 ..< colors.count) { index in
-//                Text(self.colors[index]).tag(index)
-//            }
-//        }
-//    }
-//}
+import Combine
+
 struct WeeksScoresTabView: View {
-    var challengers = Challenger.generateChallengers()
-    @State var selection = 2
-    let weeks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
+    var challengers = Challenger.generateTestChallengers()
+    @State var weekSelection = 0
+    let weeks = ["0","1","2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
+    
+    @ObservedObject var observed = ChallengeScores()
     
     var body: some View {
         VStack {
-            Picker(selection: $selection, label: Text("Week:")) {
-                ForEach(0 ..< self.weeks.count) {
-                    Text(self.weeks[$0])
-                }
-            }.padding()
-                .pickerStyle(WheelPickerStyle())
-                .frame(height: 100)
-            Spacer()
-//            Picker(selection: $selection, label:
-//            Text("Week")) {
-//                List(0 ..< weeks.count) { n in
-//                    Text(self.weeks[n]).tag(n)
-//                }
-//            }
-          //  Text("Week 1 ")
-//            HStack {
-//                List(1..<17) { n in
-//                    Text("Week \(n)")
-//                }
-//            }
-            List(challengers) { ch in
+            Section {
+                Picker(selection: $weekSelection.onChange(fetchData), label: Text("Week").padding()) {
+                    ForEach(1 ..< self.weeks.count) {
+                        Text(self.weeks[$0])
+                    }
+                }.id(weekSelection)
+                    .pickerStyle(DefaultPickerStyle())
+            }
+            List(observed.challengers) { ch in
                 ChallengerRow(challenger: ch, isPresented: true)
             }
         }
-//            List(challengers) { ch in
-//                ScrollView {
-//                    VStack {
-//                        Spacer()
-//                        Text("\(ch.name.uppercased())")
-//                            .bold()
-//                            .foregroundColor(.red)
-//                        Section {
-//                            ChallengerRow(challengers: ch)
-//                        }
-//                    }
-//                }.id(UUID().uuidString)
-//            }
-//        }
+        .onAppear(perform: initialFetch)
+    }
+}
+
+extension Binding {
+    func onChange(_ handler: @escaping (Value) -> Void) -> Binding<Value> {
+        return Binding(
+            get: { self.wrappedValue },
+            set: { selection in
+                self.wrappedValue = selection
+                handler(selection)
+        })
+    }
+}
+
+extension WeeksScoresTabView {
+    func fetchData(_ tag: Int) {
+        observed.challengers = [Challenger]()
+        observed.getScoresFor(week: weekSelection + 1)
+    }
+    
+    func initialFetch() {
+        observed.getScoresFor(week: weekSelection + 1)
     }
 }
 
 struct WeeksScoresTabView_Previews: PreviewProvider {
     static var previews: some View {
-        WeeksScoresTabView(challengers: Challenger.generateChallengers())
+        WeeksScoresTabView(challengers: Challenger.generateTestChallengers(), weekSelection: 1)
     }
 }

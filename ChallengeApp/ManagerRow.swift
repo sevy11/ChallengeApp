@@ -25,18 +25,21 @@ struct ManagerRow: View {
                             .frame(width: 35, height: 35, alignment: .leading)
                             .cornerRadius(35/2)
                 Text(challenger.name)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.black)
                     .bold()
                     .font(.subheadline)
                 Spacer()
                 Text("Total: 161").font(.footnote)
-                    .frame(width: 150, alignment: .topTrailing)
+                    .foregroundColor(.black)
+                    .frame(width: 100, alignment: .topTrailing)
                     }
                 }.frame(height: 190)
             .disabled(true)
-                Text("Total: 285")
+                Text("Total: \(manager.score)")
                     .font(.system(size: 20))
-                    .foregroundColor(.black).bold()
+                    .bold()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
             }
         }
     }
