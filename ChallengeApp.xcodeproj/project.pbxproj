@@ -24,6 +24,7 @@
 		1A5DACE92443A39800C2AD19 /* ManagerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACE82443A39800C2AD19 /* ManagerRow.swift */; };
 		1A5DACEF2443AA9700C2AD19 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACEE2443AA9700C2AD19 /* FirebaseManager.swift */; };
 		1A5DACF12445098600C2AD19 /* ChallengerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACF02445098600C2AD19 /* ChallengerRow.swift */; };
+		1A5DACF3244A0DEA00C2AD19 /* ChallengeScores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACF2244A0DEA00C2AD19 /* ChallengeScores.swift */; };
 		4B9C553A6048716871BE177A /* Pods_ChallengeApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEDF69EFA27BBD255E2D4774 /* Pods_ChallengeApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,7 @@
 		1A5DACE82443A39800C2AD19 /* ManagerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerRow.swift; sourceTree = "<group>"; };
 		1A5DACEE2443AA9700C2AD19 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		1A5DACF02445098600C2AD19 /* ChallengerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengerRow.swift; sourceTree = "<group>"; };
+		1A5DACF2244A0DEA00C2AD19 /* ChallengeScores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeScores.swift; sourceTree = "<group>"; };
 		58AC706AAA98C34199C93B7E /* Pods-ChallengeApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChallengeApp.debug.xcconfig"; path = "Target Support Files/Pods-ChallengeApp/Pods-ChallengeApp.debug.xcconfig"; sourceTree = "<group>"; };
 		792E22E492687476029BA130 /* Pods-ChallengeApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChallengeApp.release.xcconfig"; path = "Target Support Files/Pods-ChallengeApp/Pods-ChallengeApp.release.xcconfig"; sourceTree = "<group>"; };
 		BEDF69EFA27BBD255E2D4774 /* Pods_ChallengeApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChallengeApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				1A5DACD22438E1DA00C2AD19 /* WebScrapManager.swift */,
+				1A5DACF2244A0DEA00C2AD19 /* ChallengeScores.swift */,
 				1A5DACEE2443AA9700C2AD19 /* FirebaseManager.swift */,
 			);
 			path = Networking;
@@ -279,6 +282,7 @@
 				1A5DACF12445098600C2AD19 /* ChallengerRow.swift in Sources */,
 				1A5DACDA243D2A7600C2AD19 /* ManagerTabView.swift in Sources */,
 				1A5DACD32438E1DA00C2AD19 /* WebScrapManager.swift in Sources */,
+				1A5DACF3244A0DEA00C2AD19 /* ChallengeScores.swift in Sources */,
 				1A5DACE92443A39800C2AD19 /* ManagerRow.swift in Sources */,
 				1A5DACE1243E608900C2AD19 /* Challenger.swift in Sources */,
 			);

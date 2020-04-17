@@ -8,27 +8,14 @@
 
 import Foundation
 import SwiftUI
-
-enum Teams {
-    case sevy
-    case caruso
-    case drimalla
-    case bj
-    case shamir
-    case nash
-}
+import Combine
  
 struct Manager {
     public var id: Int
     public var name: String
     public var image: String
+    public var score: Int
     
-//    public var team: [[String]:[Int]] {
-//        let teamNames = Constants
-//    }
-    
-//    public var weeksScores: [Int]
-    //public var team: [String]
     // @TODO fetch this from firebase db in future, set up with a post now
     func challengersFor(manager: String) -> [Challenger] {
         if manager == "sevy" {
@@ -47,55 +34,22 @@ struct Manager {
         return [createChallenger(named: "empty")]
     }
     
-    static func fetchChicagoLeagueManagers() -> [Manager] {
-        let names = ["sevy", "shamir", "nash", "caruso", "drimalla", "bj"]
-        // @TODO pull from Firebase
-        var managers = [Manager]()
-
-        var i = 1
-        while i < 50 {
-            switch i {
-            case 1:
-                let manager = Manager(id: i, name: "sevy", image: "")
-                managers.append(manager)
-            case 2:
-                let manager = Manager(id: i, name: "caruso", image: "")
-                managers.append(manager)
-            case 3:
-                let manager = Manager(id: i, name: "drimalla", image: "")
-                managers.append(manager)
-            case 4:
-                let manager = Manager(id: i, name: "bj", image: "")
-                managers.append(manager)
-            case 5:
-                let manager = Manager(id: i, name: "shamir", image: "")
-                managers.append(manager)
-            case 6:
-                let manager = Manager(id: i, name: "nash", image: "")
-                managers.append(manager)
-            default:
-                let name = names.randomElement()!
-                let manager = Manager(id: i, name: name, image: "")
-                managers.append(manager)
-            }
-            i = i + 1
-        }
-        return managers
-    }
-    
     static func chicagoManagers() -> [Manager] {
-        return [Manager(id: 0, name: "sevy", image: ""), Manager(id: 1, name: "caruso", image: ""), Manager(id: 2, name: "shamir", image: ""), Manager(id: 3, name: "bj", image: ""), Manager(id: 4, name: "nash", image: ""), Manager(id: 5, name: "drimalla", image: "")]
+        let managers = [Manager(id: 0, name: "sevy", image: "", score: 3), Manager(id: 1, name: "caruso", image: "", score: 15), Manager(id: 2, name: "shamir", image: "", score: 8), Manager(id: 3, name: "bj", image: "", score: 2), Manager(id: 4, name: "nash", image: "", score: 10), Manager(id: 5, name: "drimalla", image: "", score: 7)]
+
+        let sortedArray = managers.sorted { $0.score > $1.score }
+        return sortedArray
     }
     
     private func createChallenger(named: String) -> Challenger {
-        Challenger(id: indexFor(challenger: named), name: named)
+        Challenger(id: indexFor(challenger: named), name: named, scoresForWeek: [1,2,13,15,12])
     }
     private func indexFor(challenger: String) -> Int {
          return Constants().contestants.firstIndex(of: challenger)!
     }
     
     static func generateRandomManager() -> Manager {
-        return Manager.fetchChicagoLeagueManagers().randomElement()!
+        return Manager.chicagoManagers().randomElement()!
     }
 }
 

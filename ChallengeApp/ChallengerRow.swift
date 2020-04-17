@@ -16,26 +16,30 @@ struct ChallengerRow: View {
         Button(action: {
             self.isPresented.toggle()
         }) {
-//            ScrollView() {
-//                List(challengers) { ch in
-                    HStack {
-                    
-                        Image(challenger.name)
-                            .renderingMode(Image.TemplateRenderingMode.original)
-                            .resizable()
-                            .frame(width: 35, height: 35, alignment: .leading)
-                            .cornerRadius(35/2)
-                            .padding()
-                        Text(challenger.name).foregroundColor(.gray)
-                            .bold()
-                        Spacer()
-                        Text("Score: 161")
-                            .foregroundColor(.gray)
-                            .font(.system(size: 15))
-                            .frame(width: 100, alignment: .topTrailing)
-                        .padding()
+            HStack {
+                Image(challenger.name)
+                    .renderingMode(Image.TemplateRenderingMode.original)
+                    .resizable()
+                    .frame(width: 35, height: 35, alignment: .leading)
+                    .cornerRadius(35/2)
+                    .padding()
+                Text(challenger.name).foregroundColor(.black)
+                    .bold()
+                Spacer()
+                Text("\(scoreFor(ch: challenger))")
+                    .foregroundColor(.black)
+                    .font(.system(size: 18))
+                    .frame(alignment: .topTrailing)
+                    .padding()
             }
         }
+    }
+    
+    func scoreFor(ch: Challenger) -> String {
+        if let score = ch.scoresForWeek.first {
+            return String(score)
+        }
+        return "no score"
     }
 }
 

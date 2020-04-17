@@ -10,13 +10,17 @@ import SwiftUI
 
 struct ManagerTabView: View {
     var managers = Manager.chicagoManagers()
+    @ObservedObject var observed = WebScrapManager()
     
     var body: some View {
         VStack {
             Spacer()
             Text("Chicago Challenge League").bold()
-                .foregroundColor(.red)
-                .font(.title)
+                .foregroundColor(.orange)
+                .font(Font.system(size: 25))
+            Text("Totals thru week: \(observed.currentAvailableWeek)")
+                .foregroundColor(.orange)
+                .font(Font.system(size: 18))
             List(managers) { manager in
                 ScrollView {
                     VStack {
@@ -29,23 +33,13 @@ struct ManagerTabView: View {
                     }
                 }.id(UUID().uuidString)
             }
-        }
+        }.onAppear(perform: getCurrentWeek)
+    }
+    
+    func getCurrentWeek() {
+        observed.getCurrentWeek()
     }
 }
-
-//struct FlightBoard: View {
-//    var boardName: String
-//    var flightData: [FlightInformation]
-//
-//    var body: some View {
-//        VStack {
-//            Text(boardName).font(.title)
-//            ForEach(flightData, id: \.id) { fl in
-//                Text("\(fl.airline) \(fl.number)")
-//            }
-//        }
-//    }
-//}
 
 struct ManagerTabView_Previews: PreviewProvider {
     static var previews: some View {
