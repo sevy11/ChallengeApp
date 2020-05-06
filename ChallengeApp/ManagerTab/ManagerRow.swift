@@ -29,7 +29,7 @@ struct ManagerRow: View {
                     .bold()
                     .font(.subheadline)
                 Spacer()
-                Text("Total: 161").font(.footnote)
+                        Text("Total: \(challenger.score)").font(.footnote)
                     .foregroundColor(.black)
                     .frame(width: 100, alignment: .topTrailing)
                     }

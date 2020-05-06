@@ -14,7 +14,12 @@ struct Manager {
     public var id: Int
     public var name: String
     public var image: String
-    public var score: Int
+//    public var challengers: [Challenger]
+    public var score: Int {
+        for ch in self.challengers {
+            
+        }
+    }
     
     // @TODO fetch this from firebase db in future, set up with a post now
     func challengersFor(manager: String) -> [Challenger] {
@@ -42,7 +47,7 @@ struct Manager {
     }
     
     private func createChallenger(named: String) -> Challenger {
-        Challenger(id: indexFor(challenger: named), name: named, scoresForWeek: [1,2,13,15,12])
+        Challenger(forTest: indexFor(challenger: named), name: named, score: 11)
     }
     private func indexFor(challenger: String) -> Int {
          return Constants().contestants.firstIndex(of: challenger)!
