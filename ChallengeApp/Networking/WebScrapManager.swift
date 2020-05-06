@@ -26,11 +26,33 @@ class WebScrapManager: ObservableObject {
         }
     }
     
+    private func parseForCurrentWeek(html: String) {
+        if let doc = try? HTML(html: html, encoding: .utf8) {
+            for header in doc.css("a, h4") {
+                if let headerValue = header.text {
+                    if headerValue.contains("Episode ") && headerValue.contains("Scores") {
+                        // get the number out and convert to Int
+                        let result = headerValue.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789.").inverted)
+                      //  print("result: \(result)")
+                        self.weeksAvailable.append(result)
+                    }
+                }
+            }
+        }
+        let sorted = self.weeksAvailable.sorted { $0 > $1 }
+       // print("weeks array: \(sorted)")
+        if let first = sorted.first {
+            self.currentAvailableWeek = first
+        } else {
+            self.currentAvailableWeek = ""
+        }
+    }
+    
     func scrapChallengeScores(week: Int) {
         AF.request("https://www.realtvfantasy.com/shows/scores/mtv-the-challenge-total-madness/\(week)").responseString { [weak self] response in
             guard let self = self else { return }
             
-            var challenger = Challenger(id: 0, name: "", scoresForWeek: [Int]())
+            var challenger = Challenger(forTest: 0, name: "", score: 0)
             var counter = 1
             
             if let doc = try? HTML(html: response.description, encoding: .utf8) {
@@ -46,37 +68,13 @@ class WebScrapManager: ObservableObject {
                             if headerValue.contains("Total:") {
                                 // get the number out and convert to Int
                                 if let scoreInt = Int(headerValue.replacingOccurrences(of: "Total: ", with: "")) {
-                                    //                                scores.append(scoreValue)
-                                    challenger.scoresForWeek.append(scoreInt)
-                                    // clear the challenger for next addition
+                                    challenger.score = scoreInt
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-    }
-
-    private func parseForCurrentWeek(html: String) {
-        if let doc = try? HTML(html: html, encoding: .utf8) {
-            for header in doc.css("a, h4") {
-                if let headerValue = header.text {
-                    if headerValue.contains("Episode ") && headerValue.contains("Scores") {
-                        // get the number out and convert to Int
-                        let result = headerValue.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789.").inverted)
-                        print("result: \(result)")
-                        self.weeksAvailable.append(result)
-                    }
-                }
-            }
-        }
-        let sorted = self.weeksAvailable.sorted { $0 > $1 }
-        print("weeks array: \(sorted)")
-        if let first = sorted.first {
-            self.currentAvailableWeek = first
-        } else {
-            self.currentAvailableWeek = ""
         }
     }
 }

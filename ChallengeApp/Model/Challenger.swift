@@ -7,12 +7,25 @@
 //
 
 import Foundation
+import Firebase
+
 
 struct Challenger {
     public var id: Int
     public var name: String
-    public var scoresForWeek: [Int] //scores for latest week or [[Int]]
-    //let total = numbers.reduce(0, +)
+    public var score: Int
+
+    init(forTest: Int, name: String, score: Int) {
+        self.id = forTest
+        self.name = name
+        self.score = score
+    }
+    
+    init(id: Int, name: String, score: Int) {
+        self.id = id
+        self.name = name
+        self.score = score
+    }
     
     func scoresFor(challenger: Challenger) -> [Int] {
         return [11,13,15]
@@ -27,7 +40,12 @@ struct Challenger {
     }
     
     static func generateTestChallengers() -> [Challenger] {
-        return [Challenger(id: 0, name: "Aneesa Ferreira", scoresForWeek: [12]), Challenger(id: 1, name: "Ashley Mitchell", scoresForWeek: [11]), Challenger(id: 2, name: "Bayleigh Dayton", scoresForWeek: [13]), Challenger(id: 3, name: "Cory Wharton", scoresForWeek: [55]), Challenger(id: 4, name: "CT Tamburello", scoresForWeek: [40]), Challenger(id: 5, name: "Dee Nguyen", scoresForWeek: [20]), Challenger(id: 6, name: "Fessy Shafaat", scoresForWeek: [14]), Challenger(id: 7, name: "Jenna Compono", scoresForWeek: [5]), Challenger(id: 8, name: "Jenny West", scoresForWeek: [20])]
+        return [Challenger(forTest: 0, name: "Aneesa Ferreira", score: 11),
+                Challenger(forTest: 1, name: "Ashley Mitchell", score: 13),
+                Challenger(forTest: 2, name: "Bayleigh Dayton", score: 7),
+                Challenger(forTest: 3, name: "Cory Wharton", score: 8),
+                Challenger(forTest: 4, name: "CT Tamburello", score: 30),
+                Challenger(forTest: 5, name: "Dee Nguyen", score: 20)]
     }
 }
 

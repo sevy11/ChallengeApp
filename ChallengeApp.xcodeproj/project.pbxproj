@@ -25,6 +25,7 @@
 		1A5DACEF2443AA9700C2AD19 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACEE2443AA9700C2AD19 /* FirebaseManager.swift */; };
 		1A5DACF12445098600C2AD19 /* ChallengerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACF02445098600C2AD19 /* ChallengerRow.swift */; };
 		1A5DACF3244A0DEA00C2AD19 /* ChallengeScores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACF2244A0DEA00C2AD19 /* ChallengeScores.swift */; };
+		1A5DACF5244F56F600C2AD19 /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACF4244F56F600C2AD19 /* DefaultsManager.swift */; };
 		4B9C553A6048716871BE177A /* Pods_ChallengeApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEDF69EFA27BBD255E2D4774 /* Pods_ChallengeApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		1A5DACEE2443AA9700C2AD19 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		1A5DACF02445098600C2AD19 /* ChallengerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengerRow.swift; sourceTree = "<group>"; };
 		1A5DACF2244A0DEA00C2AD19 /* ChallengeScores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeScores.swift; sourceTree = "<group>"; };
+		1A5DACF4244F56F600C2AD19 /* DefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsManager.swift; sourceTree = "<group>"; };
 		58AC706AAA98C34199C93B7E /* Pods-ChallengeApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChallengeApp.debug.xcconfig"; path = "Target Support Files/Pods-ChallengeApp/Pods-ChallengeApp.debug.xcconfig"; sourceTree = "<group>"; };
 		792E22E492687476029BA130 /* Pods-ChallengeApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChallengeApp.release.xcconfig"; path = "Target Support Files/Pods-ChallengeApp/Pods-ChallengeApp.release.xcconfig"; sourceTree = "<group>"; };
 		BEDF69EFA27BBD255E2D4774 /* Pods_ChallengeApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChallengeApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,16 +89,14 @@
 		1A5DACBA2438DF7F00C2AD19 /* ChallengeApp */ = {
 			isa = PBXGroup;
 			children = (
-				1A5DACDD243E604C00C2AD19 /* Model */,
 				1A5DACBB2438DF7F00C2AD19 /* AppDelegate.swift */,
 				1A5DACBD2438DF7F00C2AD19 /* SceneDelegate.swift */,
 				1A5DACBF2438DF7F00C2AD19 /* ContentView.swift */,
-				1A5DACED2443AA6400C2AD19 /* Networking */,
 				1A5DACD7243953E600C2AD19 /* Constants.swift */,
-				1A5DACD9243D2A7600C2AD19 /* ManagerTabView.swift */,
-				1A5DACE82443A39800C2AD19 /* ManagerRow.swift */,
-				1A5DACDB243E5FDA00C2AD19 /* WeeksScoresTabView.swift */,
-				1A5DACF02445098600C2AD19 /* ChallengerRow.swift */,
+				1A5DACED2443AA6400C2AD19 /* Networking */,
+				1A6E583F2454953700087976 /* ManagerTab */,
+				1A6E58402454954B00087976 /* ChallengerTab */,
+				1A5DACDD243E604C00C2AD19 /* Model */,
 				1A5DACC12438DF8100C2AD19 /* Assets.xcassets */,
 				1A5DACC62438DF8100C2AD19 /* LaunchScreen.storyboard */,
 				1A5DACC92438DF8100C2AD19 /* Info.plist */,
@@ -129,8 +129,27 @@
 				1A5DACD22438E1DA00C2AD19 /* WebScrapManager.swift */,
 				1A5DACF2244A0DEA00C2AD19 /* ChallengeScores.swift */,
 				1A5DACEE2443AA9700C2AD19 /* FirebaseManager.swift */,
+				1A5DACF4244F56F600C2AD19 /* DefaultsManager.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		1A6E583F2454953700087976 /* ManagerTab */ = {
+			isa = PBXGroup;
+			children = (
+				1A5DACD9243D2A7600C2AD19 /* ManagerTabView.swift */,
+				1A5DACE82443A39800C2AD19 /* ManagerRow.swift */,
+			);
+			path = ManagerTab;
+			sourceTree = "<group>";
+		};
+		1A6E58402454954B00087976 /* ChallengerTab */ = {
+			isa = PBXGroup;
+			children = (
+				1A5DACDB243E5FDA00C2AD19 /* WeeksScoresTabView.swift */,
+				1A5DACF02445098600C2AD19 /* ChallengerRow.swift */,
+			);
+			path = ChallengerTab;
 			sourceTree = "<group>";
 		};
 		2DE001682E1193665DC20677 /* Pods */ = {
@@ -275,6 +294,7 @@
 				1A5DACD8243953E600C2AD19 /* Constants.swift in Sources */,
 				1A5DACDC243E5FDA00C2AD19 /* WeeksScoresTabView.swift in Sources */,
 				1A5DACBC2438DF7F00C2AD19 /* AppDelegate.swift in Sources */,
+				1A5DACF5244F56F600C2AD19 /* DefaultsManager.swift in Sources */,
 				1A5DACDF243E605C00C2AD19 /* Manager.swift in Sources */,
 				1A5DACEF2443AA9700C2AD19 /* FirebaseManager.swift in Sources */,
 				1A5DACBE2438DF7F00C2AD19 /* SceneDelegate.swift in Sources */,

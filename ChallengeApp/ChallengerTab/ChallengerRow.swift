@@ -36,10 +36,7 @@ struct ChallengerRow: View {
     }
     
     func scoreFor(ch: Challenger) -> String {
-        if let score = ch.scoresForWeek.first {
-            return String(score)
-        }
-        return "no score"
+        return String(ch.score)
     }
 }
 
