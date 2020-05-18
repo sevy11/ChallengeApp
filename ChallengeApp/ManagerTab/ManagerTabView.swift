@@ -15,22 +15,25 @@ struct ManagerTabView: View {
     @ObservedObject var webScraperObserved = WebScrapManager()
     @ObservedObject var firebaseObserved = FirebaseManager()
     @ObservedObject var challengeObserved = ChallengeScores()
+    
     var subscriptions = Set<AnyCancellable>()
     
     @State var weekDidUpdate = false
+    @State private var newLeagueIsPresented = false
+    
     
     var body: some View {
  
         VStack {
             Button(action: {
                 self.getScores()
-                 }) {
-                  Text("Get Week")
-                 }
+            }) {
+                Text("Get Week")
+            }
             Spacer()
-            Text("Chicago Challenge League").bold()
-                .foregroundColor(.orange)
-                .font(Font.system(size: 25))
+//            Text("Chicago Challenge League").bold()
+//                .foregroundColor(.orange)
+//                .font(Font.system(size: 25))
             Text("Totals thru week: \(webScraperObserved.currentAvailableWeek)")
                 .foregroundColor(.orange)
                 .font(Font.system(size: 18))
@@ -71,7 +74,7 @@ struct ManagerTabView: View {
                 
                 if self.firebaseObserved.scores ==  nil {
                     
-                    print("fetching scores from web scraper")
+                    print("fetching scores from web scraper and uploading to firebase")
                     self.challengeObserved.getScoresFor(week: weekInt)
                     
                 } else {

@@ -13,8 +13,7 @@ struct WeeksScoresTabView: View {
     var challengers = Challenger.generateTestChallengers()
     @State var weekSelection = 0
     let weeks = ["0","1","2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
-    
-    @ObservedObject var observed = ChallengeScores()
+    @ObservedObject var challengeObserved = ChallengeScores()
     
     var body: some View {
         VStack {
@@ -26,7 +25,7 @@ struct WeeksScoresTabView: View {
                 }.id(weekSelection)
                     .pickerStyle(DefaultPickerStyle())
             }
-            List(observed.challengers) { ch in
+            List(challengeObserved.challengers) { ch in
                 ChallengerRow(challenger: ch, isPresented: true)
             }
         }
@@ -47,12 +46,11 @@ extension Binding {
 
 extension WeeksScoresTabView {
     func fetchData(_ tag: Int) {
-        observed.challengers = [Challenger]()
-        observed.getScoresFor(week: weekSelection + 1)
+        challengeObserved.getScoresFor(week: weekSelection + 1)
     }
     
     func initialFetch() {
-        observed.getScoresFor(week: weekSelection + 1)
+        challengeObserved.getScoresFor(week: weekSelection + 1)
     }
 }
 

@@ -11,38 +11,38 @@ import Combine
 import Firebase
 
 let kChallengersEndpoint    = "challengers/week/"
+let kLeagueEndpoint         = "leagues/"
 
 class FirebaseManager: ObservableObject {
-    
-    var publisher: AnyPublisher<Void, Never>! = nil
-
-    @Published var dataIsLoaded: Bool = false
-
-    @Published var postedScores: Bool?// = [Challenger]()
     @Published var scores: [Int]?
-    @Published var names: [String]?
     @Published var challengers: [Challenger]?
     
+    @Published var leaguePostedSuccessfully = false
+    @Published var updatedLeagueSuccessfully = false
+
+    var defaults = DefaultsManager()
+
+
+
     // MARK: - POST
-    func postScoresFor(week: Int, scores: [NSNumber], names: [NSString]) {
+    func postScoresFor(week: Int, scores: [NSNumber], names: [NSString], challengers: [Challenger]) {
         let db = Database.database()
         let reference = db.reference().child("\(kChallengersEndpoint)\(week)")
         
         let payload: [String : Any] = ["names" : names, "scores" : scores]
         
-        reference.setValue(payload) { [weak self] error, ref in
-            guard let self = self else { return }
+        reference.setValue(payload) { error, ref in
             
             if let error = error {
                 print("error for scores post: \(error)")
             } else {
+                self.defaults.saveChallengersFor(week: week, names: names, scores: scores)
                 print("reference succeeds posting: \(ref)")
-                DefaultsManager.saveScoresFor(week: week, scores: scores)
-                self.postedScores = true
+                //DefaultsManager.saveScoresFor(week: week, scores: scores)
+                //self.postedScores = true
             }
         }
     }
-    
     
     func update(scores: [Int], week: Int) {
         let db = Database.database()
@@ -54,6 +54,37 @@ class FirebaseManager: ObservableObject {
                 print("error for scores post: \(error)")
             } else {
                 print("scores update for week send to defaults")
+            }
+        }
+    }
+    
+    // Create a league with just the emails of the managers
+    func createLeagueWith(name: String, managerEmails: [String]) {
+        let db = Database.database()
+        let reference = db.reference().child("\(kLeagueEndpoint)\(name)").childByAutoId()
+
+        reference.setValue(managerEmails) { error, ref in
+            if let error = error {
+                print("error posting league: \(error)")
+            } else {
+                print("reference succeeds posting league: \(ref)")
+                self.leaguePostedSuccessfully = true
+            }
+        }
+    }
+    
+    func updateLeagueWith(contestants: [String], name: NSString, leagueName: NSString) {
+        let db = Database.database()
+        let reference = db.reference().child("\(kLeagueEndpoint)\(leagueName)/").childByAutoId()
+        
+        let contestantMeta: [NSString : Any] = ["contestants" : contestants, "email" : name]
+        reference.setValue(contestantMeta) { (error, reference) in
+            
+            if let error = error {
+                print("error for contestant updating: \(error)")
+            } else {
+                print("updated contestants for manager successfully")
+                self.updatedLeagueSuccessfully = true
             }
         }
     }
@@ -95,7 +126,7 @@ class FirebaseManager: ObservableObject {
                 names.append(name)
                 scores.append(score)
             }
-            self.postScoresFor(week: week, scores: scores, names: names)
+            self.postScoresFor(week: week, scores: scores, names: names, challengers: challengers)
             return
         }
         // Weeks 3-16 that have previous week
@@ -118,7 +149,7 @@ class FirebaseManager: ObservableObject {
                         }
                     }
                 }
-                self.postScoresFor(week: week, scores: summedScores, names: names)
+                self.postScoresFor(week: week, scores: summedScores, names: names, challengers: challengers)
             } else {
                 print("no previous challenger")
             }
@@ -162,6 +193,10 @@ class FirebaseManager: ObservableObject {
             }
         }
         return challengers
+    }
+    
+    func getLeagueManagersFor(leagueName: String) {
+        
     }
 
 }

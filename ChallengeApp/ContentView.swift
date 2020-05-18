@@ -10,27 +10,46 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var week = 0
-    var weeks = [2...16]
-    let managers = ["Sevy", "Caruso", "Drimalla", "BJ", "Shamir", "Nash"]
-    var managersTeams = [[String]]()
     @State private var determinedCurrentWeek = false
-    
+    @State private var isPresented = false
 
-    
+//    var managersTeams = [[String]]()
+
     var body: some View {
         TabView {
-            ManagerTabView(managers: Manager.chicagoManagers())
-                .tabItem({
-                    Image(systemName: "house")
-                    Text("Scores")
-                })
-            WeeksScoresTabView(challengers: Challenger.generateTestChallengers())
-                .tabItem({
-                    Image(systemName: "calendar")
-                    Text("Weeks")
-                })
-        
+            NavigationView {
+                ManagerTabView(managers: Manager.chicagoManagers())
+                    // @TODO pass in the league you're in
+                    .navigationBarTitle(League.generateRandomLeague().name)
+//                    .navigationBarItems(trailing: Button(action: {
+//                        self.isPresented = true
+//                    }, label: {
+//                         Text("Create New League").bold()
+//                    }))
+                .navigationBarItems(trailing:
+                    NavigationLink(destination: CreateNewLeagueView()) {
+                        Text("Create New League").bold()
+                    })
+//                .sheet(isPresented: $isPresented, onDismiss: {
+//                    // 3
+//                    print("Modal dismissed. State now: \(self.isPresented)")
+//                  }) {
+//                    // 4
+//                    CreateNewLeagueView()
+//                  }
+
+            }
+            .tabItem({
+                Image(systemName: "house")
+                Text("Scores")
+            })
+                 WeeksScoresTabView(challengers: Challenger.generateTestChallengers())
+            .tabItem({
+                Image(systemName: "calendar")
+                Text("Weeks")
+            })
         }
+
     }
 }
 

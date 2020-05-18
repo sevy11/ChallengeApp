@@ -16,7 +16,7 @@ typealias NamesAndScores = ([String], [Int])
 class WebScrapManager: ObservableObject {
     @Published var currentAvailableWeek: String = ""
     
-    var contestants = ["Aneesa Ferreira", "Asaf Goren", "Ashley Mitchell", "Bayleigh Dayton", "Cory Wharton", "CT Tamburello", "Dee Nguyen", "Fessy Shafaat", "Jay Starrett", "Jenna Compono", "Jennifer Lee", "Jenny West", "Johnny Bananas", "Jordan Wiseley", "Josh Martinez", "Kailah Casillas", "Kaycee Clark", "Kyle Christie", "Mattie Breaux", "Melissa Reeves", "Nany Gonzalez", "Nelson Thomas", "Rogan O\'Connor", "Stephen Bear", "Swaggy C Williams", "Tori Deal", "Tula Fazakerley", "Wes Bergmann"]
+//    var contestants = ["Aneesa Ferreira", "Asaf Goren", "Ashley Mitchell", "Bayleigh Dayton", "Cory Wharton", "CT Tamburello", "Dee Nguyen", "Fessy Shafaat", "Jay Starrett", "Jenna Compono", "Jennifer Lee", "Jenny West", "Johnny Bananas", "Jordan Wiseley", "Josh Martinez", "Kailah Casillas", "Kaycee Clark", "Kyle Christie", "Mattie Breaux", "Melissa Reeves", "Nany Gonzalez", "Nelson Thomas", "Rogan O\'Connor", "Stephen Bear", "Swaggy C Williams", "Tori Deal", "Tula Fazakerley", "Wes Bergmann"]
     var managersTeams = [[String]]()
     var weeksAvailable = [String]()
     
@@ -49,8 +49,7 @@ class WebScrapManager: ObservableObject {
     }
     
     func scrapChallengeScores(week: Int) {
-        AF.request("https://www.realtvfantasy.com/shows/scores/mtv-the-challenge-total-madness/\(week)").responseString { [weak self] response in
-            guard let self = self else { return }
+        AF.request("https://www.realtvfantasy.com/shows/scores/mtv-the-challenge-total-madness/\(week)").responseString { response in
             
             var challenger = Challenger(forTest: 0, name: "", score: 0)
             var counter = 1
@@ -59,7 +58,7 @@ class WebScrapManager: ObservableObject {
                 for header in doc.css("a, h4") {
                     if let headerValue = header.text {
                         // Add the player
-                        if self.contestants.contains(headerValue) {
+                        if Challenger.challengers.contains(headerValue) {
                             challenger.id = counter
                             challenger.name = headerValue
                             counter += 1
