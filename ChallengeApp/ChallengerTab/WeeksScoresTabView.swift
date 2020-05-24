@@ -11,25 +11,30 @@ import Combine
 
 struct WeeksScoresTabView: View {
     var challengers = Challenger.generateTestChallengers()
-    @State var weekSelection = 0
     let weeks = ["0","1","2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
-    @ObservedObject var challengeObserved = ChallengeScores()
+    
+    @State var weekSelection = 0
+    @ObservedObject var challengeObserved = FirebaseManager()
     
     var body: some View {
-        VStack {
-            Section {
-                Picker(selection: $weekSelection.onChange(fetchData), label: Text("Week").padding()) {
-                    ForEach(1 ..< self.weeks.count) {
-                        Text(self.weeks[$0])
-                    }
-                }.id(weekSelection)
-                    .pickerStyle(DefaultPickerStyle())
+        NavigationView {
+            VStack {
+                Section {
+                    Picker(selection: $weekSelection.onChange(fetchData), label: Text("Week").padding()) {
+                        ForEach(1 ..< self.weeks.count) {
+                            Text(self.weeks[$0])
+                        }
+                    }.id(weekSelection)
+                        .pickerStyle(DefaultPickerStyle())
+                        .padding(EdgeInsets(top: -20, leading: 0, bottom: -20, trailing: 0))
+                        .navigationBarTitle(ChallengeSeasons.totalMadness.rawValue)
+                }
+                List(challengeObserved.challengers) { ch in
+                    ChallengerRow(challenger: ch, isPresented: true)
+                }
             }
-            List(challengeObserved.challengers) { ch in
-                ChallengerRow(challenger: ch, isPresented: true)
-            }
+            .onAppear(perform: initialFetch)
         }
-        .onAppear(perform: initialFetch)
     }
 }
 
@@ -46,11 +51,11 @@ extension Binding {
 
 extension WeeksScoresTabView {
     func fetchData(_ tag: Int) {
-        challengeObserved.getScoresFor(week: weekSelection + 1)
+        challengeObserved.getScoresFor(week: weekSelection + 1, post: false, user: nil)
     }
     
     func initialFetch() {
-        challengeObserved.getScoresFor(week: weekSelection + 1)
+        challengeObserved.getScoresFor(week: weekSelection + 1, post: false, user: nil)
     }
 }
 

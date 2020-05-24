@@ -9,32 +9,21 @@
 import Foundation
 import Firebase
 
+enum ChallengeSeasons: String {
+    case totalMadness = "Total Madness"
+}
 
 struct League {
     public var name: String
-    // Freeze starting league at second week for now
-    public var startingWeek: Int = 2
+    public var creatorEmail: String?
     public var id: Int {
-        // create id
-        // pull from firebase to see last number created and concatonate
         return 00001
     }
-    // @TODO feed in real managers
-    public var managers: [Manager] {
-        return [Manager.init(name: "Sevy", challengers: [Challenger.init(id: 0, name: "Aneesa", score: 87)])]
-    }
+
+    public var managers: [Manager]?
     
     var type: Show {
         return Show(id: 0, name: "Survivor")
-    }
-    // @TODO
-    init?(datasnapShot: DataSnapshot) {
-        self.name = ""
-        self.startingWeek = 1
-    }
-    
-    init(name: String) {
-        self.name = name
     }
 
     static func testLeagues() -> [League] {

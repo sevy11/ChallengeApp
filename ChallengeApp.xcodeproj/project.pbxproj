@@ -26,8 +26,8 @@
 		1A5DACE92443A39800C2AD19 /* ManagerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACE82443A39800C2AD19 /* ManagerRow.swift */; };
 		1A5DACEF2443AA9700C2AD19 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACEE2443AA9700C2AD19 /* FirebaseManager.swift */; };
 		1A5DACF12445098600C2AD19 /* ChallengerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACF02445098600C2AD19 /* ChallengerRow.swift */; };
-		1A5DACF3244A0DEA00C2AD19 /* ChallengeScores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACF2244A0DEA00C2AD19 /* ChallengeScores.swift */; };
 		1A5DACF5244F56F600C2AD19 /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACF4244F56F600C2AD19 /* DefaultsManager.swift */; };
+		1A67DB4A24786408004CB8E5 /* ChooseLeagueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A67DB4924786408004CB8E5 /* ChooseLeagueView.swift */; };
 		1A9E6FE72465B4EB0013874C /* CreateNewLeagueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FE62465B4EB0013874C /* CreateNewLeagueView.swift */; };
 		1A9E6FE92465E2470013874C /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FE82465E2470013874C /* League.swift */; };
 		1A9E6FEB2465FF670013874C /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FEA2465FF670013874C /* Show.swift */; };
@@ -57,8 +57,8 @@
 		1A5DACE82443A39800C2AD19 /* ManagerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerRow.swift; sourceTree = "<group>"; };
 		1A5DACEE2443AA9700C2AD19 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		1A5DACF02445098600C2AD19 /* ChallengerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengerRow.swift; sourceTree = "<group>"; };
-		1A5DACF2244A0DEA00C2AD19 /* ChallengeScores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeScores.swift; sourceTree = "<group>"; };
 		1A5DACF4244F56F600C2AD19 /* DefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsManager.swift; sourceTree = "<group>"; };
+		1A67DB4924786408004CB8E5 /* ChooseLeagueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseLeagueView.swift; sourceTree = "<group>"; };
 		1A9E6FE62465B4EB0013874C /* CreateNewLeagueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewLeagueView.swift; sourceTree = "<group>"; };
 		1A9E6FE82465E2470013874C /* League.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = League.swift; sourceTree = "<group>"; };
 		1A9E6FEA2465FF670013874C /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
@@ -106,9 +106,7 @@
 				1A5DACBB2438DF7F00C2AD19 /* AppDelegate.swift */,
 				1A5DACBD2438DF7F00C2AD19 /* SceneDelegate.swift */,
 				1A5DACBF2438DF7F00C2AD19 /* ContentView.swift */,
-				1A5DACD7243953E600C2AD19 /* Constants.swift */,
-				1A9E6FEE246853D50013874C /* Color+Extension.swift */,
-				1A3028AD246DDE330031C03E /* HelperViews.swift */,
+				1A67DB482478618B004CB8E5 /* Helpers */,
 				1A5DACED2443AA6400C2AD19 /* Networking */,
 				1A6E583F2454953700087976 /* ManagerTab */,
 				1A6E58402454954B00087976 /* ChallengerTab */,
@@ -146,16 +144,26 @@
 			isa = PBXGroup;
 			children = (
 				1A5DACD22438E1DA00C2AD19 /* WebScrapManager.swift */,
-				1A5DACF2244A0DEA00C2AD19 /* ChallengeScores.swift */,
 				1A5DACEE2443AA9700C2AD19 /* FirebaseManager.swift */,
 				1A5DACF4244F56F600C2AD19 /* DefaultsManager.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
 		};
+		1A67DB482478618B004CB8E5 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				1A5DACD7243953E600C2AD19 /* Constants.swift */,
+				1A9E6FEE246853D50013874C /* Color+Extension.swift */,
+				1A3028AD246DDE330031C03E /* HelperViews.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		1A6E583F2454953700087976 /* ManagerTab */ = {
 			isa = PBXGroup;
 			children = (
+				1A67DB4924786408004CB8E5 /* ChooseLeagueView.swift */,
 				1A5DACD9243D2A7600C2AD19 /* ManagerTabView.swift */,
 				1A5DACE82443A39800C2AD19 /* ManagerRow.swift */,
 			);
@@ -210,6 +218,7 @@
 				1A5DACB52438DF7F00C2AD19 /* Frameworks */,
 				1A5DACB62438DF7F00C2AD19 /* Resources */,
 				EC72A687AE4A1A9BB45D9F1B /* [CP] Embed Pods Frameworks */,
+				88D18973AE7ECA0AC769F7B4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -296,6 +305,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		88D18973AE7ECA0AC769F7B4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ChallengeApp/Pods-ChallengeApp-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ChallengeApp/Pods-ChallengeApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChallengeApp/Pods-ChallengeApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		EC72A687AE4A1A9BB45D9F1B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -335,9 +361,9 @@
 				1A9E6FE92465E2470013874C /* League.swift in Sources */,
 				1A5DACDA243D2A7600C2AD19 /* ManagerTabView.swift in Sources */,
 				1A5DACD32438E1DA00C2AD19 /* WebScrapManager.swift in Sources */,
-				1A5DACF3244A0DEA00C2AD19 /* ChallengeScores.swift in Sources */,
 				1A3028B0246DE80A0031C03E /* CreateNewLeagueEnterChallengersView.swift in Sources */,
 				1A5DACE92443A39800C2AD19 /* ManagerRow.swift in Sources */,
+				1A67DB4A24786408004CB8E5 /* ChooseLeagueView.swift in Sources */,
 				1A5DACE1243E608900C2AD19 /* Challenger.swift in Sources */,
 				1A3028AE246DDE330031C03E /* HelperViews.swift in Sources */,
 				1A9E6FF12468CE5C0013874C /* CreateNewLeagueDetailManagerView.swift in Sources */,

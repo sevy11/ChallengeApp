@@ -8,11 +8,13 @@
 
 import SwiftUI
 import Combine
-
+import Firebase
 
 struct CreateNewLeagueEnterChallengersView: View {
     var leagueName: String
     var managers: [String]
+    var user: User?
+    
     @State var managerCounter = 0
     
     @State var challengers = [String]()

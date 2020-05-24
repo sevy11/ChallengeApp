@@ -16,8 +16,8 @@ struct ManagerRow: View {
         Button(action: {
             self.isPresented.toggle()
         }) {
-            ScrollView() {
-                List(manager.challengersFor(manager: manager.name)) { challenger in
+            ScrollView {
+                List(manager.challengers!) { challenger in
                     HStack {
                         Image(challenger.name)
                         .renderingMode(Image.TemplateRenderingMode.original)

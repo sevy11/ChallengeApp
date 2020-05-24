@@ -7,8 +7,11 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct CreateNewLeagueView: View {
+    var user: User?
+    
     @State private var name = ""
     @State var leagueType = "Choose League:"
     @State var managersInLeague = 0
@@ -61,13 +64,12 @@ struct CreateNewLeagueView: View {
 //                        }
                         Text("Enter Managers in league (3-8):")
                             .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
-                        // Picker
-                        Picker(selection: $managersInLeague, label: Text("")) {
-                            ForEach(0 ..< Manager.managersAvailable.count) {
-                                Text(Manager.managersAvailable[$0])
+                      Picker(selection: $managersInLeague, label: Text("")) {
+                            ForEach(0 ..< Manager.managersAvailable.count) { index in
+                                Text(Manager.managersAvailable[index]).tag(index)
                             }
                         }.id(managersInLeague)
-                            .pickerStyle(DefaultPickerStyle())
+                            .pickerStyle(WheelPickerStyle())
                             .padding(EdgeInsets(top: -20, leading: 0, bottom: -20, trailing: 0))
                         HStack(alignment: .center) {
                             Spacer()
@@ -80,7 +82,7 @@ struct CreateNewLeagueView: View {
                             Spacer()
                         }
                     }
-                    NavigationLink(destination: CreateNewLeagueDetailManagerView(leagueName: self.name, managerCount: self.managersInLeague + 3), tag: 1, selection: $buttonTapped) {
+                    NavigationLink(destination: CreateNewLeagueDetailManagerView(leagueName: self.name, managerCount: self.managersInLeague + 3, user: user!), tag: 1, selection: $buttonTapped) {
                         Button(action: {
                             self.buttonTapped = 1
                         }) {
@@ -100,6 +102,14 @@ struct CreateNewLeagueView: View {
                 }
             }
         .navigationBarTitle("Create New League")
+    }
+    
+     var dateClosedRange: ClosedRange<Int> {
+        let min = 3
+        let max = 8
+//        let min = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+//        let max = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+        return min...max
     }
 
     func isValidEmail(email: String) -> Bool {

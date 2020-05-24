@@ -8,6 +8,8 @@
 
 import UIKit
 import SwiftUI
+import Firebase
+import FirebaseUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -19,16 +21,50 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
-        // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView()
-
-        // Use a UIHostingController as window root view controller.
-        if let windowScene = scene as? UIWindowScene {
-            let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: contentView)
-            self.window = window
-            window.makeKeyAndVisible()
+        // Here we can choose to initialize the ContentView() or our auth if there if no user
+        // Firebase Auth
+        FirebaseApp.configure()
+        
+        Auth.auth().addStateDidChangeListener { auth, user in
+            if user != nil {
+                print("user logged in: \(user!.email!)")
+                // Create the SwiftUI view that provides the window contents.
+                let contentView = ContentView(user: user)
+                
+                // Use a UIHostingController as window root view controller.
+                if let windowScene = scene as? UIWindowScene {
+                    let window = UIWindow(windowScene: windowScene)
+                    window.rootViewController = UIHostingController(rootView: contentView)
+                    self.window = window
+                    window.makeKeyAndVisible()
+                }
+            } else {
+                print("user not logged in")
+                // @TODO add an option for no user joining as a guest
+                if let authUI = FUIAuth.defaultAuthUI() {
+                         
+                    authUI.delegate = self as? FUIAuthDelegate
+                    let providers: [FUIAuthProvider] = [FUIEmailAuth()]
+                    authUI.providers = providers
+            
+                     
+                     // VC
+                    let authVC = authUI.authViewController()
+                
+                    if let windowScene = scene as? UIWindowScene {
+                        let window = UIWindow(windowScene: windowScene)
+                        window.rootViewController = authVC //UIHostingController(rootView: contentView)
+                        self.window = window
+                        window.makeKeyAndVisible()
+                    }
+                }
+            }
         }
+        
+        
+            
+           
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -59,6 +95,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-
+    // MARK: - Firebase Handlers
+      func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
+          let sourceApplication = options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?
+          
+          if FUIAuth.defaultAuthUI()?.handleOpen(url, sourceApplication: sourceApplication) ?? false {
+            print("handler callback handle opened.")
+            return true
+        }
+        // other URL handling goes here.
+        return false
+    }
+    
+    func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
+        // handle user and error as necessary
+        if let user = user,
+            let email = user.email {
+            
+            print("user signed in successfully!: \(email)")
+        }
+    }
+    
 }
 

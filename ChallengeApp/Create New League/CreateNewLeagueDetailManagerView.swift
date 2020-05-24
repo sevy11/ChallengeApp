@@ -7,10 +7,12 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct CreateNewLeagueDetailManagerView: View {
     var leagueName: String
     var managerCount: Int
+    var user: User?
     
     @State var managers = [String]()
     @State var manager1: String = ""
@@ -174,7 +176,7 @@ struct CreateNewLeagueDetailManagerView: View {
                         .modifier(TextFieldModifer())
                 }.padding()
             }
-            NavigationLink(destination: CreateNewLeagueEnterChallengersView(leagueName: leagueName, managers: self.managerNames), tag: 1, selection: $buttonTapped) {
+            NavigationLink(destination: CreateNewLeagueEnterChallengersView(leagueName: leagueName, managers: self.managerNames, user: user!), tag: 1, selection: $buttonTapped) {
                 Button(action: {
                     self.saveLeague()
                     self.buttonTapped = 1
@@ -250,7 +252,7 @@ struct CreateNewLeagueDetailManagerView: View {
             print("no manager count or less than 2")
         }
         
-        firebaseObserved.createLeagueWith(name: self.leagueName, managerEmails: managerNames)
+        firebaseObserved.createLeagueWith(name: self.leagueName, managerEmails: managerNames, user: user!)
         
         
         self.savingInProgress = !firebaseObserved.leaguePostedSuccessfully

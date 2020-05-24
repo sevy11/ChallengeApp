@@ -7,49 +7,54 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct ContentView: View {
+    var user: User?
+    
     @State private var week = 0
     @State private var determinedCurrentWeek = false
     @State private var isPresented = false
-
-//    var managersTeams = [[String]]()
-
+    @State var isUser = false
+    
     var body: some View {
         TabView {
-            NavigationView {
-                ManagerTabView(managers: Manager.chicagoManagers())
-                    // @TODO pass in the league you're in
-                    .navigationBarTitle(League.generateRandomLeague().name)
-//                    .navigationBarItems(trailing: Button(action: {
-//                        self.isPresented = true
-//                    }, label: {
-//                         Text("Create New League").bold()
-//                    }))
-                .navigationBarItems(trailing:
-                    NavigationLink(destination: CreateNewLeagueView()) {
-                        Text("Create New League").bold()
+            if DefaultsManager.defaultLeagueExists {
+                NavigationView {
+                    ManagerTabView(user: user!)
+                        .navigationBarItems(trailing:
+                            NavigationLink(destination: CreateNewLeagueView(user: user)) {
+                                Text("Create New League").bold()
+                        })
+                }
+                .tabItem({
+                    Image(systemName: "house")
+                    Text("Scores")
+                })
+                WeeksScoresTabView(challengers: Challenger.generateTestChallengers())
+                    .tabItem({
+                        Image(systemName: "calendar")
+                        Text("Weeks")
                     })
-//                .sheet(isPresented: $isPresented, onDismiss: {
-//                    // 3
-//                    print("Modal dismissed. State now: \(self.isPresented)")
-//                  }) {
-//                    // 4
-//                    CreateNewLeagueView()
-//                  }
-
+            } else {
+                NavigationView {
+                    ChooseLeagueView(user: user!)
+                    .navigationBarItems(trailing:
+                        NavigationLink(destination: CreateNewLeagueView(user: user)) {
+                            Text("Create New League").bold()
+                    })
+                }
+                .tabItem({
+                    Image(systemName: "house")
+                    Text("Scores")
+                })
+                WeeksScoresTabView(challengers: Challenger.generateTestChallengers())
+                    .tabItem({
+                        Image(systemName: "calendar")
+                        Text("Weeks")
+                    })
             }
-            .tabItem({
-                Image(systemName: "house")
-                Text("Scores")
-            })
-                 WeeksScoresTabView(challengers: Challenger.generateTestChallengers())
-            .tabItem({
-                Image(systemName: "calendar")
-                Text("Weeks")
-            })
         }
-
     }
 }
 

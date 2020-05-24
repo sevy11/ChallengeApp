@@ -14,37 +14,31 @@ import Firebase
 struct Manager {
     static let managersAvailable = ["3", "4", "5", "6", "7", "8"]
 
-    public var name: String
-    public var challengers: [Challenger]
-   
-    public var id: Int {// Firebase Id
- 
-//        if let user = Auth.auth().currentUser
-//        return user.uid
-        return 1
-    }
-    public var email: String { // Firebase email
-        return ""
-    }
+    public var firebaseEmail: String
+    public var contestantNames: [String]?
+    public var challengers: [Challenger]?
+    public var id = 1
     public var leagues: [League] {
         return [League.init(name: "Chicago Challenge")]
     }
+    
     public var score: Int {
       var scores = [Int]()
       
-      for ch in self.challengers {
-          scores.append(ch.score)
-      }
+        if let challengers = self.challengers {
+            for ch in challengers {
+                scores.append(ch.score)
+            }
+        }
         let sum = scores.reduce(0, +)
         return sum
     }
     
-    init(name: String, challengers: [Challenger]) {
-        self.name = name
-        self.challengers = challengers
+    init(email: String, contestantNames: [String]) {
+        self.firebaseEmail = email
+        self.contestantNames = contestantNames
     }
     
-    // @TODO fetch this from firebase db in future, set up with a post now
     func challengersFor(manager: String) -> [Challenger] {
         if manager == "sevy" {
             return [createChallenger(named: "Jordan Wiseley"),
@@ -87,21 +81,37 @@ struct Manager {
     }
     
     static func chicagoManagers() -> [Manager] {
-        let challengers = [Challenger.init(forTest: 0, name: "Aneesa", score: 5), Challenger.init(forTest: 1, name: "Bayleigh", score: 10), Challenger.init(forTest: 2, name: "Cory", score: 15), Challenger.init(forTest: 3, name: "CT", score: 20)]
-        // @TODO replace with firebase manager for leagueId(to be randomly assigned when created)
-        let managers = [Manager(name: "sevy", challengers: challengers),
-                        Manager(name: "caruso", challengers: challengers),
-                        Manager(name: "shamir", challengers: challengers),
-                        Manager(name: "bj", challengers: challengers),
-                        Manager(name: "nash", challengers: challengers),
-                        Manager(name: "drimalla", challengers: challengers)]
-
-        return managers as! [Manager]
+//        let challengers = [Challenger.init(forTest: 0, name: "Aneesa", score: 5), Challenger.init(forTest: 1, name: "Bayleigh", score: 10), Challenger.init(forTest: 2, name: "Cory", score: 15), Challenger.init(forTest: 3, name: "CT", score: 20)]
+        return [Manager(email: "michaelsevy@gmail.com", contestantNames: [Challenger.genrateRandomChallenger().name,
+                                                                          Challenger.genrateRandomChallenger().name,
+                                                                          Challenger.genrateRandomChallenger().name,
+                                                                          Challenger.genrateRandomChallenger().name]),
+                Manager(email: "bryancauso@gmail.com", contestantNames: [Challenger.genrateRandomChallenger().name,
+                                                                         Challenger.genrateRandomChallenger().name,
+                                                                         Challenger.genrateRandomChallenger().name,
+                                                                         Challenger.genrateRandomChallenger().name]),
+                Manager(email: "shamirtrangle@gmail.com", contestantNames: [Challenger.genrateRandomChallenger().name,
+                                                                            Challenger.genrateRandomChallenger().name,
+                                                                            Challenger.genrateRandomChallenger().name,
+                                                                            Challenger.genrateRandomChallenger().name]),
+                Manager(email: "bryanjustus@gmail.com", contestantNames: [Challenger.genrateRandomChallenger().name,
+                                                                          Challenger.genrateRandomChallenger().name,
+                                                                          Challenger.genrateRandomChallenger().name,
+                                                                          Challenger.genrateRandomChallenger().name]),
+                Manager(email: "jmnash@gmail.com", contestantNames: [Challenger.genrateRandomChallenger().name,
+                                                                     Challenger.genrateRandomChallenger().name,
+                                                                     Challenger.genrateRandomChallenger().name,
+                                                                     Challenger.genrateRandomChallenger().name]),
+                Manager(email: "ryandrimalla@gmail.com", contestantNames: [Challenger.genrateRandomChallenger().name,
+                                                                           Challenger.genrateRandomChallenger().name,
+                                                                           Challenger.genrateRandomChallenger().name,
+                                                                           Challenger.genrateRandomChallenger().name])]
     }
     
     private func createChallenger(named: String) -> Challenger {
         Challenger(forTest: indexFor(challenger: named), name: named, score: 11)
     }
+    
     private func indexFor(challenger: String) -> Int {
         return Challenger.challengers.firstIndex(of: challenger)!
     }
