@@ -7,29 +7,53 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct ContentView: View {
-    @State private var week = 0
-    var weeks = [2...16]
-    let managers = ["Sevy", "Caruso", "Drimalla", "BJ", "Shamir", "Nash"]
-    var managersTeams = [[String]]()
-    @State private var determinedCurrentWeek = false
+    var user: User?
     
-
+    @State private var week = 0
+    @State private var determinedCurrentWeek = false
+    @State private var isPresented = false
+    @State var isUser = false
     
     var body: some View {
         TabView {
-            ManagerTabView(managers: Manager.chicagoManagers())
+            if DefaultsManager.defaultLeagueExists {
+                NavigationView {
+                    ManagerTabView(user: user!)
+                        .navigationBarItems(trailing:
+                            NavigationLink(destination: CreateNewLeagueView(user: user)) {
+                                Text("Create New League").bold()
+                        })
+                }
                 .tabItem({
                     Image(systemName: "house")
                     Text("Scores")
                 })
-            WeeksScoresTabView(challengers: Challenger.generateTestChallengers())
+                WeeksScoresTabView(challengers: Challenger.generateTestChallengers())
+                    .tabItem({
+                        Image(systemName: "calendar")
+                        Text("Weeks")
+                    })
+            } else {
+                NavigationView {
+                    ChooseLeagueView(user: user!)
+                    .navigationBarItems(trailing:
+                        NavigationLink(destination: CreateNewLeagueView(user: user)) {
+                            Text("Create New League").bold()
+                    })
+                }
                 .tabItem({
-                    Image(systemName: "calendar")
-                    Text("Weeks")
+                    Image(systemName: "house")
+                    Text("Scores")
                 })
-        
+                WeeksScoresTabView(challengers: Challenger.generateTestChallengers())
+                    .tabItem({
+                        Image(systemName: "calendar")
+                        Text("Weeks")
+                    })
+            }
         }
     }
 }

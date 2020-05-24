@@ -7,84 +7,69 @@
 //
 
 import Foundation
+import Combine
 
-class DefaultsManager {
-    static let kCurrentWeek         = "kCurrentWeek"
-    static let kScoresForWeek       = "kScoresForWeek"
-    static let kCurrentChallengers  = "kCurrentChallengers"
+
+let kDefaultLeagueName      = "defaultLeagueName"
+let kDefaultLeagueExists    = "defaultLeagueExists"
+
+
+let kContestantNames        = "contestantNames"
+let kContestantScores       = "contestantScores"
+
+
+
+
+class DefaultsManager: ObservableObject {
+    @Published var challengers = [Challenger]()
+    @Published var challengersPresentInCache = false
+
     
-    
-    var currentWeek: Int? {
-        return UserDefaults.standard.integer(forKey: DefaultsManager.kCurrentWeek)
+    // MARK: - Leagues
+    static var defaultLeagueExists: Bool {
+        return UserDefaults.standard.bool(forKey: kDefaultLeagueExists)
     }
-    // Current Week
-    func updateCurrent(week: Int) {
-        UserDefaults.standard.setValue(week, forKey: DefaultsManager.kCurrentWeek)
-    }
-    
-//    func currentWeek() -> Int? {
-//        return UserDefaults.standard.integer(forKey: DefaultsManager.kCurrentWeek)
-//    }
-    
-    // Scores
-    func updateWeeks(scores: [Int]) {
-        UserDefaults.standard.setValue(scores, forKey: DefaultsManager.kScoresForWeek)
-    }
-    
-    func currentWeeksScores() -> [Int]? {
-        if let scores = UserDefaults.standard.array(forKey: DefaultsManager.kScoresForWeek) as? [Int] {
-            return scores
-        }
-        return nil
-    }
-    
-    // MARK: - Challengers
-    static func saveScoresFor(week: Int, scores: [NSNumber]) {
-        UserDefaults.standard.set(scores, forKey: "\(DefaultsManager.kScoresForWeek)/\(week)")
-    }
-    
-    static func getScoresFor(week: Int) -> [Int]? {
-        if let scores = UserDefaults.standard.array(forKey: "\(DefaultsManager.kScoresForWeek)/\(week)") {
-            return scores as? [Int]
-        }
-        return nil
-    }
-    
-    func addNewWeek(scores: [Int]) {
-        var ids = [Int]()
-        var newScores = [Int]()
-        var names = [String]()
         
-        // challengers re-create chs to add score on the end
-        if let chs = getCurrentChallengers() {
-            for c in chs {
-                ids.append(c.id)
-                names.append(c.name)
-                
-                for s in scores {
-                    newScores.append(c.score + s)
-                }
-            }
-        }
+    static func saveDefaultLeague(name: String) {
+        UserDefaults.standard.set(name, forKey: kDefaultLeagueName)
+        // After setting the default league name, also turn on the Bool that it exists
+        UserDefaults.standard.set(true, forKey: kDefaultLeagueExists)
     }
     
-    func getLastSavedWeek() -> Int? {
-        if let scores = UserDefaults.standard.array(forKey: DefaultsManager.kCurrentChallengers) {
-            return scores.count
+    static func getDefaultLeagueName() -> String? {
+        if let leagueName = UserDefaults.standard.object(forKey: kDefaultLeagueName) as? String {
+            return leagueName
         }
         return nil
     }
     
-//    func save(challengers: [Challenger], week: Int) {
-//        if week
-//        UserDefaults.standard.setValue(challengers, forKey: DefaultsManager.kCurrentChallengers)
+    static func saveChallengersFor(week: Int, names: [NSString], scores: [NSNumber]) {
+        UserDefaults.standard.set(names, forKey: kContestantNames)
+        UserDefaults.standard.set(scores, forKey: kContestantScores)
+    }
+    
+//    static func getChallengersFor(week: Int) {
+//        if let names = UserDefaults.standard.array(forKey: "\("kNamesForWeek")/\(week)"),
+//           let scores = UserDefaults.standard.array(forKey: "\("kScoresForWeek")/\(week)") {
+//            
+//           // create challenger object from arrays
+//            if let nameArr = names as? [NSString],
+//                let scoreArr = scores as? [NSNumber] {
+//                var counter = 0
+//
+//                for n in nameArr {
+//                    let name = n as String
+//
+//                    let challenger = Challenger.init(id: counter, name: name, score: Int(truncating: scoreArr[counter]))
+//                    self.challengers.append(challenger)
+//                    counter += 1
+//                }
+//            }
+//        }
+//        self.challengersPresentInCache = self.challengers.count > 0 ? true : false
 //    }
     
-    func getCurrentChallengers() -> [Challenger]? {
-        if let challengers = UserDefaults.standard.array(forKey: DefaultsManager.kCurrentChallengers) {
-            return challengers as? [Challenger]
-        }
-        return nil
-    }
     
+    // MARK: - Get
+
 }

@@ -9,12 +9,14 @@
 import Foundation
 import Firebase
 
-
 struct Challenger {
+    static var challengers = ["Aneesa Ferreira", "Asaf Goren", "Ashley Mitchell", "Bayleigh Dayton", "Cory Wharton", "CT Tamburello", "Dee Nguyen", "Fessy Shafaat", "Jay Starrett", "Jenna Compono", "Jennifer Lee", "Jenny West", "Johnny Bananas", "Jordan Wiseley", "Josh Martinez", "Kailah Casillas", "Kaycee Clark", "Kyle Christie", "Mattie Breaux", "Melissa Reeves", "Nany Gonzalez", "Nelson Thomas", "Rogan O\'Connor", "Stephen Bear", "Swaggy C Williams", "Tori Deal", "Tula Fazakerley", "Wes Bergmann"]
+    static let challengerCount = 28
     public var id: Int
     public var name: String
     public var score: Int
-
+    public var week: Int?
+    
     init(forTest: Int, name: String, score: Int) {
         self.id = forTest
         self.name = name
@@ -30,11 +32,7 @@ struct Challenger {
     func scoresFor(challenger: Challenger) -> [Int] {
         return [11,13,15]
     }
-    
-    static func genrateRandomChallenger() -> String {
-        return Constants().contestants.randomElement()!
-    }
-    
+
     static func genrateRandomChallenger() -> Challenger {
         return generateTestChallengers().randomElement()!
     }
