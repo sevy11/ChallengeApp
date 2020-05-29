@@ -81,7 +81,6 @@ struct Manager {
     }
     
     static func chicagoManagers() -> [Manager] {
-//        let challengers = [Challenger.init(forTest: 0, name: "Aneesa", score: 5), Challenger.init(forTest: 1, name: "Bayleigh", score: 10), Challenger.init(forTest: 2, name: "Cory", score: 15), Challenger.init(forTest: 3, name: "CT", score: 20)]
         return [Manager(email: "michaelsevy@gmail.com", contestantNames: [Challenger.genrateRandomChallenger().name,
                                                                           Challenger.genrateRandomChallenger().name,
                                                                           Challenger.genrateRandomChallenger().name,
@@ -109,7 +108,7 @@ struct Manager {
     }
     
     private func createChallenger(named: String) -> Challenger {
-        Challenger(forTest: indexFor(challenger: named), name: named, score: 11)
+        Challenger(forTest: indexFor(challenger: named), name: named, score: 11, active: true)
     }
     
     private func indexFor(challenger: String) -> Int {

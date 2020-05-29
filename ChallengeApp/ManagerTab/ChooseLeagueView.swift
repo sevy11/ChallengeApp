@@ -8,45 +8,72 @@
 
 import SwiftUI
 import Firebase
+import FirebaseUI
 
 struct ChooseLeagueView: View {
-    @ObservedObject var firebaseObserved = FirebaseManager()
     var user: User?
-    
-    
+
+    @ObservedObject var firebaseObserved = FirebaseManager()
+    @State var selectedLeague = ""
+    @State var title = ""
+
     var body: some View {
         VStack {
-            if firebaseObserved.leagues.count > 1 {
-                Text("Choose a default league")
-                List {
-                    ForEach(firebaseObserved.leagues, id: \.name) { league in
-                          Button(action: {
-                            self.selectDefault(league: league)
-                          }) {
-                            Text(league.name)
-                        }
-                    }
-                }
-                .navigationBarTitle("Your leagues")
+            if firebaseObserved.leagues.count == 0 {
+                NoLeagueView()
+                signOutButton
+                Spacer()
             } else {
-              // @TODO segue to the one league the player is in and set the default
+                Text("Select Default League:").opacity(firebaseObserved.leagues.count > 1 ? 1 : 0)
+                List(firebaseObserved.leagues, id: \.name) { league in
+                    Button(action: {
+                        self.selectDefault(league: league)
+                    }) {
+                        league.name == self.selectedLeague  ? Text(league.name).foregroundColor(.green).bold() : Text(league.name)
+                    }
+                }.id(UUID().uuidString)
+                    .navigationBarTitle(self.title)
+                Spacer()
+                signOutButton
+                Spacer()
             }
         }.onAppear(perform: getLeagues)
+            .onDisappear(perform: clearLeagues)
     }
     
     func getLeagues() {
-        if let user = user {
+        self.title = firebaseObserved.leagues.count > 1 ? "Your Leagues" : "Your League"
+        if let user = user,
+           let name = DefaultsManager.getDefaultLeagueName() {
             firebaseObserved.getLeaguesFor(user: user)
+            self.selectedLeague = name
         }
     }
     
     func selectDefault(league: League) {
-        print("todo select default league: \(league.name)")
+        self.selectedLeague = league.name
         DefaultsManager.saveDefaultLeague(name: league.name)
-        // @This doesn't work?
-//        _ = NavigationView {
-//            ManagerTabView(managers: Manager.chicagoManagers(), user: self.user!)
-//        }
+    }
+    
+    func clearLeagues() {
+        firebaseObserved.leagues = [League]()
+    }
+    
+    func signOut() {
+        if let authUI = FUIAuth.defaultAuthUI() {
+            try? authUI.signOut()
+        }
+    }
+    
+    var signOutButton: some View {
+        return Button(action: {
+            self.signOut()
+        }) {
+            Text("Sign Out")
+        }.padding(15)
+            .background(LinearGradient(gradient: Gradient(colors: [.red, .black]), startPoint: .leading, endPoint: .trailing))
+            .foregroundColor(.white)
+            .cornerRadius(40)
     }
 }
 

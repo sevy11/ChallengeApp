@@ -16,7 +16,6 @@
 		1A5DACC52438DF8100C2AD19 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A5DACC42438DF8100C2AD19 /* Preview Assets.xcassets */; };
 		1A5DACC82438DF8100C2AD19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A5DACC62438DF8100C2AD19 /* LaunchScreen.storyboard */; };
 		1A5DACD32438E1DA00C2AD19 /* WebScrapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACD22438E1DA00C2AD19 /* WebScrapManager.swift */; };
-		1A5DACD62438E22F00C2AD19 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 1A5DACD52438E22F00C2AD19 /* Alamofire */; };
 		1A5DACD8243953E600C2AD19 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACD7243953E600C2AD19 /* Constants.swift */; };
 		1A5DACDA243D2A7600C2AD19 /* ManagerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACD9243D2A7600C2AD19 /* ManagerTabView.swift */; };
 		1A5DACDC243E5FDA00C2AD19 /* WeeksScoresTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACDB243E5FDA00C2AD19 /* WeeksScoresTabView.swift */; };
@@ -28,6 +27,8 @@
 		1A5DACF12445098600C2AD19 /* ChallengerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACF02445098600C2AD19 /* ChallengerRow.swift */; };
 		1A5DACF5244F56F600C2AD19 /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACF4244F56F600C2AD19 /* DefaultsManager.swift */; };
 		1A67DB4A24786408004CB8E5 /* ChooseLeagueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A67DB4924786408004CB8E5 /* ChooseLeagueView.swift */; };
+		1A684659248031FB00B23AEB /* NotificationName+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A684658248031FB00B23AEB /* NotificationName+Extension.swift */; };
+		1A68465B24806CCC00B23AEB /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A68465A24806CCC00B23AEB /* String+Extension.swift */; };
 		1A9E6FE72465B4EB0013874C /* CreateNewLeagueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FE62465B4EB0013874C /* CreateNewLeagueView.swift */; };
 		1A9E6FE92465E2470013874C /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FE82465E2470013874C /* League.swift */; };
 		1A9E6FEB2465FF670013874C /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FEA2465FF670013874C /* Show.swift */; };
@@ -59,6 +60,8 @@
 		1A5DACF02445098600C2AD19 /* ChallengerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengerRow.swift; sourceTree = "<group>"; };
 		1A5DACF4244F56F600C2AD19 /* DefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsManager.swift; sourceTree = "<group>"; };
 		1A67DB4924786408004CB8E5 /* ChooseLeagueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseLeagueView.swift; sourceTree = "<group>"; };
+		1A684658248031FB00B23AEB /* NotificationName+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extension.swift"; sourceTree = "<group>"; };
+		1A68465A24806CCC00B23AEB /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		1A9E6FE62465B4EB0013874C /* CreateNewLeagueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewLeagueView.swift; sourceTree = "<group>"; };
 		1A9E6FE82465E2470013874C /* League.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = League.swift; sourceTree = "<group>"; };
 		1A9E6FEA2465FF670013874C /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
@@ -74,7 +77,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A5DACD62438E22F00C2AD19 /* Alamofire in Frameworks */,
 				4B9C553A6048716871BE177A /* Pods_ChallengeApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -155,6 +157,8 @@
 			children = (
 				1A5DACD7243953E600C2AD19 /* Constants.swift */,
 				1A9E6FEE246853D50013874C /* Color+Extension.swift */,
+				1A684658248031FB00B23AEB /* NotificationName+Extension.swift */,
+				1A68465A24806CCC00B23AEB /* String+Extension.swift */,
 				1A3028AD246DDE330031C03E /* HelperViews.swift */,
 			);
 			path = Helpers;
@@ -226,7 +230,6 @@
 			);
 			name = ChallengeApp;
 			packageProductDependencies = (
-				1A5DACD52438E22F00C2AD19 /* Alamofire */,
 			);
 			productName = ChallengeApp;
 			productReference = 1A5DACB82438DF7F00C2AD19 /* ChallengeApp.app */;
@@ -352,11 +355,13 @@
 				1A5DACDC243E5FDA00C2AD19 /* WeeksScoresTabView.swift in Sources */,
 				1A5DACBC2438DF7F00C2AD19 /* AppDelegate.swift in Sources */,
 				1A5DACF5244F56F600C2AD19 /* DefaultsManager.swift in Sources */,
+				1A684659248031FB00B23AEB /* NotificationName+Extension.swift in Sources */,
 				1A9E6FE72465B4EB0013874C /* CreateNewLeagueView.swift in Sources */,
 				1A5DACDF243E605C00C2AD19 /* Manager.swift in Sources */,
 				1A5DACEF2443AA9700C2AD19 /* FirebaseManager.swift in Sources */,
 				1A5DACBE2438DF7F00C2AD19 /* SceneDelegate.swift in Sources */,
 				1A5DACC02438DF7F00C2AD19 /* ContentView.swift in Sources */,
+				1A68465B24806CCC00B23AEB /* String+Extension.swift in Sources */,
 				1A5DACF12445098600C2AD19 /* ChallengerRow.swift in Sources */,
 				1A9E6FE92465E2470013874C /* League.swift in Sources */,
 				1A5DACDA243D2A7600C2AD19 /* ManagerTabView.swift in Sources */,
@@ -573,14 +578,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		1A5DACD52438E22F00C2AD19 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1A5DACD42438E22F00C2AD19 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1A5DACB02438DF7F00C2AD19 /* Project object */;
 }

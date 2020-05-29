@@ -6,10 +6,11 @@ target 'ChallengeApp' do
   use_frameworks!
 
   # Pods for ChallengeApp
-  pod 'Kanna', '~> 5.2.2'
+  pod 'Alamofire', '~> 5.2'
   pod 'FirebaseUI'
   pod 'Firebase/Analytics'
   pod 'FirebaseUI/Auth'
   pod 'Firebase/Database'
+  pod 'Kanna', '~> 5.2.2'
 
 end

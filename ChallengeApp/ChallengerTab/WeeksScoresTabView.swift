@@ -51,11 +51,12 @@ extension Binding {
 
 extension WeeksScoresTabView {
     func fetchData(_ tag: Int) {
-        challengeObserved.getScoresFor(week: weekSelection + 1, post: false, user: nil)
+        challengeObserved.getScoresFor(week: weekSelection + 1, post: false)
     }
     
     func initialFetch() {
-        challengeObserved.getScoresFor(week: weekSelection + 1, post: false, user: nil)
+        self.weekSelection = challengeObserved.currentWeek
+        challengeObserved.getScoresFor(week: weekSelection + 1, post: false)
     }
 }
 

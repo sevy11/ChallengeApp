@@ -38,7 +38,7 @@ class WebScrapManager: ObservableObject {
         let sorted = self.weeksAvailable.sorted { $0 > $1 }
         if let currentWeek = sorted.first {
             self.currentAvailableWeek = currentWeek
-            self.firebaseManager.compareScraperAndFetchScoresIfNecesary(week: currentWeek, user: user)
+            self.firebaseManager.compareScraperAndFetchScoresIfNecesary(week: currentWeek)
         } else {
             self.currentAvailableWeek = "Loading..."
         }

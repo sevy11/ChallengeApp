@@ -13,13 +13,12 @@ struct CreateNewLeagueView: View {
     var user: User?
     
     @State private var name = ""
-    @State var leagueType = "Choose League:"
+    @State var leagueType = Show.none.rawValue
     @State var managersInLeague = 0
     @State var buttonTapped: Int? = nil
     @State var selected = false
     @State var showNameAlert = false
     
-
     var body: some View {
             Section {
                 VStack {
@@ -28,17 +27,17 @@ struct CreateNewLeagueView: View {
                             .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
                         if selected == false {
                             Button(action: {
-                                self.leagueType = "The Challenge"
+                                self.leagueType = Show.challenge.rawValue
                                 self.selected = true
                             }) {
-                                Text("The Challenge")
+                                Text(Show.challenge.rawValue)
                             }
                             Button(action: {
-                                self.leagueType = "The Challenge"
+                                self.leagueType = Show.challenge.rawValue
 //                                self.leagueType = "Survivor"
                                 self.selected = true
                             }) {
-                                Text("Survivor(Coming soon)")
+                                Text("Survivor(Coming soon!)")
                             }
                         } else {
                             EmptyView()
@@ -50,8 +49,7 @@ struct CreateNewLeagueView: View {
 //                        if !isValidEmail(email: name) {
 //                            self.showNameAlert = true
 //                        }
-                            .padding(EdgeInsets(top: 8, leading: 16,
-                                                bottom: 8, trailing: 16))
+                            .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(lineWidth: 2)
@@ -117,13 +115,15 @@ struct CreateNewLeagueView: View {
     }
     
     var leagueTypeEntered: String {
-        return leagueType == "Choose League:" ? leagueType : "Choose League:"
+        return leagueType == Show.none.rawValue ? leagueType : Show.none.rawValue
     }
     
     var leagueShow: Bool {
-        return leagueType == "Choose League:" ? true : false
+        return leagueType == Show.none.rawValue ? true : false
     }
     
+    
+    // @TODO call firebase to see if that name has been used
     var allowedToEnterTeams: Bool {
         return !name.isEmpty && selected
     }

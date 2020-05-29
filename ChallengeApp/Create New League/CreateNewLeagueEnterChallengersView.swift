@@ -16,10 +16,10 @@ struct CreateNewLeagueEnterChallengersView: View {
     var user: User?
     
     @State var managerCounter = 0
-    
     @State var challengers = [String]()
     @State var challengerCount = 0
-    
+    @State var buttonTitle = "Next Manager"
+    @State var buttonTapped: Int? = nil
     @State var challenger1 = ""
     @State var challenger2 = ""
     @State var challenger3 = ""
@@ -31,7 +31,8 @@ struct CreateNewLeagueEnterChallengersView: View {
     @State var challenger9 = ""
 
     @ObservedObject var firebaseObserved = FirebaseManager()
-    
+    let pub = NotificationCenter.default.publisher(for: Notification.Name.LeagueCompletedSaving)
+
     var body: some View {
         VStack {
             List {
@@ -130,11 +131,13 @@ struct CreateNewLeagueEnterChallengersView: View {
                     }
                 }
             }
+            NavigationLink(destination: ManagerTabView(user: user), tag: 1, selection: $buttonTapped) {
             // Move on to next manger
-            Button(action: {
-                self.save(manager: self.managers[self.managerCounter])
-            }) {
-                Text("Next Manager")
+                Button(action: {
+                    self.save(manager: self.managers[self.managerCounter])
+                }) {
+                    Text(buttonTitle)
+                }
             }
             .padding(20)
             .background(LinearGradient(gradient: Gradient(colors: [.gray, .babyBlue]), startPoint: .leading, endPoint: .trailing))
@@ -153,7 +156,26 @@ struct CreateNewLeagueEnterChallengersView: View {
         // check for last manager adn do somethign with it. pop back or dismiss modal?
         if managerCounter == managers.count - 1 {
             print("end of entry")
+            buttonTitle = "League Completed"
+            // This button tap performs the conditional segue
+            self.buttonTapped = 1
+            
+            _ = NavigationLink(destination: ManagerTabView(user: user), tag: 1, selection: $buttonTapped) {
+                Button(action: {
+                    self.buttonTapped = 1
+                }) {
+                    Text("")
+                }
+            }
+            // @TODO Maybe save to UserDefaults here too,
+             // problem here is once the creator email already has a default league set, we won't get the right screen
+             // reset userDisct here??
+            
+//            DefaultsManager.setDefaultLeagueExists(flag: false)
+            
             return
+        } else {
+            self.buttonTapped = 0
         }
         challengers.removeAll()
         challengerCount = 0

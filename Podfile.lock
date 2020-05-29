@@ -212,6 +212,7 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
+  - Alamofire (5.2.0)
   - AppAuth (1.3.0):
     - AppAuth/Core (= 1.3.0)
     - AppAuth/ExternalUserAgent (= 1.3.0)
@@ -419,6 +420,7 @@ PODS:
   - SDWebImage/Core (5.8.0)
 
 DEPENDENCIES:
+  - Alamofire (~> 5.2)
   - Firebase/Analytics
   - Firebase/Database
   - FirebaseUI
@@ -428,6 +430,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - abseil
+    - Alamofire
     - AppAuth
     - BoringSSL-GRPC
     - FBSDKCoreKit
@@ -461,6 +464,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
+  Alamofire: c1ca147559e730bfb2182c8c7aafbdd90a867987
   AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
@@ -492,6 +496,6 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SDWebImage: 84000f962cbfa70c07f19d2234cbfcf5d779b5dc
 
-PODFILE CHECKSUM: 16949510c6d2c05f0236dc8258895ea597b6b8d3
+PODFILE CHECKSUM: 0d82aef9c22a85e00352b2cc00b6c721d13768ee
 
 COCOAPODS: 1.8.4

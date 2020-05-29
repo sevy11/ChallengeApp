@@ -17,6 +17,8 @@ let kChallengersScoresEndpoint  = "challengers/scores/"
 let kChallengersEndpoint        = "challengers/"
 let kLeagueEndpoint             = "leagues/"
 let kChallengersWeeksEndpoint   = "challengers/weeks/"
+let kTotalMadnessWeeklyEndpoint = "https://www.realtvfantasy.com/shows/scores/mtv-the-challenge-total-madness/"
+
 
 class FirebaseManager: ObservableObject {
     @Published var scores: [Int]?
@@ -27,7 +29,9 @@ class FirebaseManager: ObservableObject {
     @Published var league: League?
     @Published var leagueName = ""
     @Published var managers = [Manager]()
-    var defaults = DefaultsManager()
+    @Published var currentWeek = 0
+
+    var defaultsManager = DefaultsManager()
 
 
     // MARK: - POST League
@@ -64,22 +68,24 @@ class FirebaseManager: ObservableObject {
         }
     }
             
-    private func parseData(snapshot: DataSnapshot) -> [Challenger]? {
+    private func parseChallengers(snapshot: DataSnapshot) -> [Challenger]? {
         var challengers = [Challenger]()
         
         if let values = snapshot.value as? [NSString : Any],
-            let names  = values["names"] as? [String],
-            let scores = values["scores"] as? [Int],
-            let week   = values["week"] as? Int {
+            let names   = values["names"] as? [String],
+            let scores  = values["scores"] as? [Int],
+            let week    = values["week"] as? Int,
+            let actives = values["actives"] as? [Bool] {
             
             var counter = 0
-            var ch = Challenger.init(id: 0, name: "", score: 0)
+            var ch = Challenger.init(id: 0, name: "", score: 0, active: true)
             ch.week = week
 
             for n in names {
                 ch.id = counter
                 ch.name = n
                 ch.score = scores[counter]
+                ch.active = actives[counter]
                 counter += 1
                 
                 challengers.append(ch)
@@ -101,12 +107,12 @@ class FirebaseManager: ObservableObject {
                 print("no league objects yet :(, handle condition")
                 return
             } else {
-                self.parseLeague(dataSnapshot: snapshot, user: user)
+                self.parseAndAssignLeague(dataSnapshot: snapshot, user: user)
             }
         }
     }
     
-    func compareScraperAndFetchScoresIfNecesary(week: String, user: User) {
+    func compareScraperAndFetchScoresIfNecesary(week: String) {
         let db = Database.database()
         let reference = db.reference().child(kChallengersEndpoint)
         
@@ -115,11 +121,11 @@ class FirebaseManager: ObservableObject {
                 print("no challengers from firebase")
                 return
             } else {
-                if let firebaseWeek = self.getWeek(snapshot: snapshot) {
+                if let firebaseWeek = self.parseWeek(snapshot: snapshot) {
                     if let weekInt = Int(week) {
                         if weekInt > firebaseWeek {
                             // Comment out this line when manaually updating the weeks in Firebase
-                            self.getScoresFor(week: weekInt, post: true, user: user)
+                            self.getScoresFor(week: weekInt, post: true)
                         }
                     }
                 }
@@ -127,7 +133,7 @@ class FirebaseManager: ObservableObject {
         }
     }
     
-    private func getWeek(snapshot: DataSnapshot) -> Int? {
+    private func parseWeek(snapshot: DataSnapshot) -> Int? {
         if let values = snapshot.value as? [NSString : Any],
             let week   = values["week"] as? Int {
             return week
@@ -136,7 +142,7 @@ class FirebaseManager: ObservableObject {
         }
     }
     
-    private func parseLeague(dataSnapshot: DataSnapshot, user: User) {
+    private func parseAndAssignLeague(dataSnapshot: DataSnapshot, user: User) {
         if let dataValue = dataSnapshot.value as? [NSString : Any] {
 
             var leagues = [League]()
@@ -163,42 +169,54 @@ class FirebaseManager: ObservableObject {
                             }
                         }
                     }
-                    
                     league.managers = managers
                     leagues.append(league)
                 }
             }
             
             // for user
-            self.leaguesFor(user: user, leagues: leagues)
+            self.leaguesFor(user: user, allLeagues: leagues)
         } else {
             print("could not interprept snapshot value")
         }
     }
     
-    private func leaguesFor(user: User, leagues: [League]) {
-        for league in leagues {
-            if let email = user.email,
-               let leagueEmail = league.creatorEmail {
-                
-                if email == leagueEmail {
+    private func leaguesFor(user: User, allLeagues: [League]) {
+        var userIsCreator = false
+
+        for league in allLeagues {
+            if let userEmail = user.email,
+               let creatorEmail = league.creatorEmail {
+                // Creator added to user leagues
+                if userEmail.isEqualToCaseInsensitive(string: creatorEmail) {
                     self.leagues.append(league)
+                    userIsCreator = true
                 }
-                
-                // get league
-                for league in self.leagues {
-                    if league.name == DefaultsManager.getDefaultLeagueName() {
-                        self.league = league
-                        self.leagueName = league.name
+                // Managers who's not creator added to leagues
+                if !userIsCreator {
+                    if let managers = league.managers {
+                        for manager in managers {
+                            if userEmail.isEqualToCaseInsensitive(string: manager.firebaseEmail) {
+                                self.leagues.append(league)
+                            }
+                        }
                     }
-                }
-                
-                // now get the managers with full challengers for the league
-                if let unwrappedLeague = self.league {
-                    self.getChallengersFor(league: unwrappedLeague)
                 }
             }
         }
+        
+        // Set League
+        for league in self.leagues {
+            if league.name == DefaultsManager.getDefaultLeagueName() {
+                self.league = league
+                self.leagueName = league.name
+            }
+        }
+        
+        // Inflate Managers with full Challenger Object
+        if let unwrappedLeague = self.league {
+            self.getChallengersFor(league: unwrappedLeague)
+        }        
     }
     
     private func getChallengersFor(league: League) {
@@ -210,7 +228,7 @@ class FirebaseManager: ObservableObject {
                 print("no challengers from firebase")
                 return
             } else {
-                if let fireChallengers = self.parseData(snapshot: snapshot) {
+                if let fireChallengers = self.parseChallengers(snapshot: snapshot) {
                     var managersPreSort = [Manager]()
                     
                     if let managers = league.managers {
@@ -226,7 +244,7 @@ class FirebaseManager: ObservableObject {
     }
     
     private func populateManagersWithChallengers(manager: Manager, challengers: [Challenger]) -> Manager {
-        // Remake the manager with fully form challenger objects
+        // Remake the manager with fully formed challenger objects
         var newManager = Manager(email: manager.firebaseEmail, contestantNames: manager.contestantNames!)
         var newChallengers = [Challenger]()
         
@@ -242,18 +260,17 @@ class FirebaseManager: ObservableObject {
         newManager.challengers = newChallengers
         return newManager
     }
-    
 }
     
 
 // MARK: - Post Challengers
 extension FirebaseManager {
     // MARK: - Week 2 only
-      func postForWeek2(names: [NSString], scores: [NSNumber]) {
+    func postForWeek2(names: [NSString], scores: [NSNumber], actives: [Bool]) {
           let db = Database.database()
           let reference = db.reference().child(kChallengersEndpoint)
-          // @TODO update hard coded week here
-          let payload: [String : Any] = ["names" : names, "scores" : scores, "week" : 2]
+        
+        let payload: [String : Any] = ["names" : names, "scores" : scores, "actives" : actives, "week" : 2]
           
           reference.setValue(payload) { error, ref in
               
@@ -270,7 +287,7 @@ extension FirebaseManager {
       }
     
     // MARK: - All other weeks will add the new scores on
-    func postPostWeek2(challengers: [Challenger], names: [NSString], week: Int, user: User?) {
+    func postPostWeek2(challengers: [Challenger], names: [NSString], week: Int) {
           /*
            Fetch names, compare with incoming names
            */
@@ -283,15 +300,19 @@ extension FirebaseManager {
               if snapshot.children.allObjects.count == 0 {
                   return
               } else {
-                  if let fireChallengers = self.parseData(snapshot: snapshot) {
+                  if let fireChallengers = self.parseChallengers(snapshot: snapshot) {
                       
                       var summedScores = [Int]()
                       var cloudNames = [String]()
-                      
+                      var actives = [Bool]()
+                    
                       for cloudChallenger in fireChallengers {
                           cloudNames.append(cloudChallenger.name)
-                          
+
                           if names.contains(cloudChallenger.name as NSString) {
+                            // Add the names of the remaining
+                            actives.append(true)
+                            
                               for currentChallenger in challengers {
                                   if cloudChallenger.name == currentChallenger.name {
                                       // they scored this week so add there scores together
@@ -300,11 +321,12 @@ extension FirebaseManager {
                                   }
                               }
                           } else {
-                              summedScores.append(cloudChallenger.score)
-                              print("you didn't make it sucker(\(cloudChallenger.name))")
+                            print("\(cloudChallenger.name) see ya!")
+                            actives.append(false)
+                            summedScores.append(cloudChallenger.score)
                           }
                       }
-                        self.postSummed(scores: summedScores, names: cloudNames, week: week, user: user)
+                        self.postSummed(scores: summedScores, names: cloudNames, actives: actives, week: week)
                   } else {
                       print("error parsing challenger")
                   }
@@ -312,11 +334,11 @@ extension FirebaseManager {
           }
       }
       
-    private func postSummed(scores: [Int], names: [String], week: Int, user: User?) {
+    private func postSummed(scores: [Int], names: [String], actives: [Bool], week: Int) {
         let db = Database.database()
         let reference = db.reference().child(kChallengersEndpoint)
         
-        let payload: [String : Any] = ["names" : names, "scores" : scores, "week" : week]
+        let payload: [String : Any] = ["names" : names, "scores" : scores, "actives" : actives, "week" : week]
         
         reference.setValue(payload) { error, ref in
             
@@ -325,7 +347,7 @@ extension FirebaseManager {
             } else {
                 print("post updated challengers scores for week \(week) successfully")
                 // And now return the managers to the UI, with:
-                NotificationCenter.default.post(name: NSNotification.Name("UpdatedChallengerScores"), object: nil)
+                NotificationCenter.default.post(name: Notification.Name.UpdatedChallengerScores, object: nil)
                 // @TODO
                 //self.defaults.saveChallengersFor(week: week, names: names, scores: scores)
                 //DefaultsManager.saveScoresFor(week: week, scores: scores)
@@ -337,15 +359,15 @@ extension FirebaseManager {
 }
 
 extension FirebaseManager {
-    public func getScoresFor(week: Int, post: Bool, user: User?) {
-          AF.request("https://www.realtvfantasy.com/shows/scores/mtv-the-challenge-total-madness/\(week)").responseString { [weak self] response in
+    public func getScoresFor(week: Int, post: Bool) {
+          AF.request("\(kTotalMadnessWeeklyEndpoint)\(week)").responseString { [weak self] response in
               guard let self = self else { return }
               
-            // clear the array first:
             self.challengers = [Challenger]()
-            var challenger = Challenger(forTest: 0, name: "", score: 0)
+            var challenger = Challenger(forTest: 0, name: "", score: 0, active: true)
             var names = [NSString]()
             var scores = [NSNumber]()
+            var actives = [Bool]()
             var currentName = ""
             var counter = 1
             var previousName = ""
@@ -359,6 +381,7 @@ extension FirebaseManager {
                         if Challenger.challengers.contains(headerValue) { // this is a challenger's name
                             challenger.id = counter
                             challenger.name = headerValue
+                            actives.append(true)
                             names.append(headerValue as NSString)
                             counter += 1
                             namePopulated = true
@@ -385,10 +408,10 @@ extension FirebaseManager {
                 // send to firebase
                 if self.challengers.count > 0 {
                     if week == 2 {
-                        self.postForWeek2(names: names, scores: scores)
+                        self.postForWeek2(names: names, scores: scores, actives: actives)
                     } else {
                         // after week 2 we only need the next week's score
-                        self.postPostWeek2(challengers: self.challengers, names: names, week: week, user: user)
+                        self.postPostWeek2(challengers: self.challengers, names: names, week: week)
                     }
                 }
             }

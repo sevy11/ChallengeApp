@@ -15,18 +15,21 @@ struct Challenger {
     public var id: Int
     public var name: String
     public var score: Int
+    public var active: Bool
     public var week: Int?
     
-    init(forTest: Int, name: String, score: Int) {
+    init(forTest: Int, name: String, score: Int, active: Bool) {
         self.id = forTest
         self.name = name
         self.score = score
+        self.active = true
     }
     
-    init(id: Int, name: String, score: Int) {
+    init(id: Int, name: String, score: Int, active: Bool) {
         self.id = id
         self.name = name
         self.score = score
+        self.active = active
     }
     
     func scoresFor(challenger: Challenger) -> [Int] {
@@ -38,12 +41,12 @@ struct Challenger {
     }
     
     static func generateTestChallengers() -> [Challenger] {
-        return [Challenger(forTest: 0, name: "Aneesa Ferreira", score: 11),
-                Challenger(forTest: 1, name: "Ashley Mitchell", score: 13),
-                Challenger(forTest: 2, name: "Bayleigh Dayton", score: 7),
-                Challenger(forTest: 3, name: "Cory Wharton", score: 8),
-                Challenger(forTest: 4, name: "CT Tamburello", score: 30),
-                Challenger(forTest: 5, name: "Dee Nguyen", score: 20)]
+        return [Challenger(forTest: 0, name: "Aneesa Ferreira", score: 11, active: true),
+                Challenger(forTest: 1, name: "Ashley Mitchell", score: 13, active: false),
+                Challenger(forTest: 2, name: "Bayleigh Dayton", score: 7, active: true),
+                Challenger(forTest: 3, name: "Cory Wharton", score: 8, active: true),
+                Challenger(forTest: 4, name: "CT Tamburello", score: 30, active: false),
+                Challenger(forTest: 5, name: "Dee Nguyen", score: 20, active: true)]
     }
 }
 

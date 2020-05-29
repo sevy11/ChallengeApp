@@ -21,10 +21,6 @@ struct League {
     }
 
     public var managers: [Manager]?
-    
-    var type: Show {
-        return Show(id: 0, name: "Survivor")
-    }
 
     static func testLeagues() -> [League] {
         return [League.init(name: "Chicago Challenge"),
