@@ -47,7 +47,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     let providers: [FUIAuthProvider] = [FUIEmailAuth()]
                     authUI.providers = providers
             
-                     
                      // VC
                     let authVC = authUI.authViewController()
                 

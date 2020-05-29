@@ -25,15 +25,15 @@ struct ManagerRow: View {
                             .frame(width: 35, height: 35, alignment: .leading)
                             .cornerRadius(35/2)
                 Text(challenger.name)
-                    .foregroundColor(.black)
+                    .foregroundColor(self.challengerNameColor(challenger: challenger))
                     .bold()
                     .font(.subheadline)
                 Spacer()
-                        Text("Total: \(challenger.score)").font(.footnote)
-                    .foregroundColor(.black)
+                        Text("Total: \(challenger.score)").font(.subheadline)
+                            .foregroundColor(self.challengerNameColor(challenger: challenger))
                     .frame(width: 100, alignment: .topTrailing)
                     }
-                }.frame(height: 190)
+                }.frame(height: 180)
             .disabled(true)
                 Text("Total: \(manager.score)")
                     .font(.system(size: 20))
@@ -42,6 +42,10 @@ struct ManagerRow: View {
                     .padding()
             }
         }
+    }
+    
+    func challengerNameColor(challenger: Challenger) -> Color {
+        return challenger.active ? .green : .red
     }
 }
 

@@ -16,44 +16,31 @@ struct ContentView: View {
     @State private var determinedCurrentWeek = false
     @State private var isPresented = false
     @State var isUser = false
-    
+    var defaultsManager = DefaultsManager()
+
     var body: some View {
         TabView {
-            if DefaultsManager.defaultLeagueExists {
-                NavigationView {
-                    ManagerTabView(user: user!)
-                        .navigationBarItems(trailing:
-                            NavigationLink(destination: CreateNewLeagueView(user: user)) {
-                                Text("Create New League").bold()
-                        })
-                }
-                .tabItem({
-                    Image(systemName: "house")
-                    Text("Scores")
-                })
-                WeeksScoresTabView(challengers: Challenger.generateTestChallengers())
-                    .tabItem({
-                        Image(systemName: "calendar")
-                        Text("Weeks")
-                    })
-            } else {
-                NavigationView {
-                    ChooseLeagueView(user: user!)
-                    .navigationBarItems(trailing:
+            NavigationView {
+                ManagerTabView(user: user!)
+                    .navigationBarItems(leading:
+                        NavigationLink(destination: ChooseLeagueView(user: user)) {
+                            Text("Leagues")
+                                .bold()
+                        },trailing:
                         NavigationLink(destination: CreateNewLeagueView(user: user)) {
-                            Text("Create New League").bold()
-                    })
-                }
-                .tabItem({
-                    Image(systemName: "house")
-                    Text("Scores")
-                })
-                WeeksScoresTabView(challengers: Challenger.generateTestChallengers())
-                    .tabItem({
-                        Image(systemName: "calendar")
-                        Text("Weeks")
+                            Text("Create New League")
+                                .bold()
                     })
             }
+            .tabItem({
+                Image(systemName: "house")
+                Text("Scores")
+            })
+            WeeksScoresTabView()
+                .tabItem({
+                    Image(systemName: "calendar")
+                    Text("Weeks")
+                })
         }
     }
 }

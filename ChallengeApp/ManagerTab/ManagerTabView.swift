@@ -9,25 +9,22 @@
 import SwiftUI
 import Combine
 import Firebase
+import FirebaseUI
 
 struct ManagerTabView: View {
     var user: User?
-    
+    // @TODO push off to VM
     @ObservedObject var webScraperObserved = WebScrapManager()
     @ObservedObject var firebaseObserved = FirebaseManager()
-        
-    @State var weekDidUpdate = false
-    @State private var newLeagueIsPresented = false
+    @ObservedObject var defaultsObservable = DefaultsManager()
     
-    let pub = NotificationCenter.default.publisher(for: NSNotification.Name("UpdatedChallengerScores"))
+    let pub = NotificationCenter.default.publisher(for: NSNotification.Name.UpdatedChallengerScores)
     
     var body: some View {
         VStack {
-//            Button(action: {
-//                self.manuallyUpdateScoresForWeek()
-//            }) {
-//                Text("Update Scores")
-//            }
+            if firebaseObserved.leagues.count == 0 {
+                NoLeagueView()
+            } else {
             Spacer()
                 Text("Totals thru week: \(webScraperObserved.currentAvailableWeek)")
                     .foregroundColor(.orange)
@@ -43,9 +40,9 @@ struct ManagerTabView: View {
                             }
                         }
                     }.id(UUID().uuidString)
-                }
+            }
             .navigationBarTitle(firebaseObserved.leagueName)
-         
+            }
         }.onAppear(perform: getCurrentWeek)
             .onReceive(pub) { (output) in
                 self.loadUpdatedChallengers()
@@ -68,14 +65,25 @@ struct ManagerTabView: View {
     
     func manuallyUpdateScoresForWeek() {
         // Comment out FirebaseManager.compareScraperAndFetchScoresIfNecesary when updating manaully
-        if let user = user {
-            self.firebaseObserved.getScoresFor(week: 2, post: true, user: user)
-        }
+        self.firebaseObserved.getScoresFor(week: 7, post: true)
     }
 }
 
 struct ManagerTabView_Previews: PreviewProvider {
     static var previews: some View {
         ManagerTabView()
+    }
+}
+
+struct NoLeagueView: View {
+    var body: some View {
+        VStack {
+            Spacer()
+             Text("There are no leagues associated with this email address.")
+            .lineLimit(nil)
+            .multilineTextAlignment(.center)
+            .navigationBarTitle("No Leagues 😥")
+            Spacer()
+        }
     }
 }
