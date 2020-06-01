@@ -12,18 +12,11 @@ import Combine
 
 let kDefaultLeagueName      = "defaultLeagueName"
 let kDefaultLeagueExists    = "defaultLeagueExists"
-
 let kLeagueNames            = "leagueNames"
-
 let kContestantNames        = "contestantNames"
 let kContestantScores       = "contestantScores"
 
-
-
-
 class DefaultsManager: ObservableObject {
-
-
     // MARK: - Leagues
     static var defaultLeagueExists: Bool {
         return UserDefaults.standard.bool(forKey: kDefaultLeagueExists)

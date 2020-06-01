@@ -11,11 +11,6 @@ import Firebase
 
 struct ContentView: View {
     var user: User?
-    
-    @State private var week = 0
-    @State private var determinedCurrentWeek = false
-    @State private var isPresented = false
-    @State var isUser = false
     var defaultsManager = DefaultsManager()
 
     var body: some View {
@@ -24,12 +19,10 @@ struct ContentView: View {
                 ManagerTabView(user: user!)
                     .navigationBarItems(leading:
                         NavigationLink(destination: ChooseLeagueView(user: user)) {
-                            Text("Leagues")
-                                .bold()
+                            Text("Leagues").bold()
                         },trailing:
                         NavigationLink(destination: CreateNewLeagueView(user: user)) {
-                            Text("Create New League")
-                                .bold()
+                            Text("Create New League").bold()
                     })
             }
             .tabItem({

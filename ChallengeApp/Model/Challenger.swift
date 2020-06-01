@@ -48,6 +48,32 @@ struct Challenger {
                 Challenger(forTest: 4, name: "CT Tamburello", score: 30, active: false),
                 Challenger(forTest: 5, name: "Dee Nguyen", score: 20, active: true)]
     }
+    
+    static func parseWith(snapshot: DataSnapshot) -> [Challenger]? {
+          var challengers = [Challenger]()
+          
+          if let values = snapshot.value as? [NSString : Any],
+              let names   = values["names"] as? [String],
+              let scores  = values["scores"] as? [Int],
+              let week    = values["week"] as? Int,
+              let actives = values["actives"] as? [Bool] {
+              
+              var counter = 0
+              var ch = Challenger.init(id: 0, name: "", score: 0, active: true)
+              ch.week = week
+              
+              for n in names {
+                  ch.id = counter
+                  ch.name = n
+                  ch.score = scores[counter]
+                  ch.active = actives[counter]
+                  counter += 1
+                  
+                  challengers.append(ch)
+              }
+          }
+          return challengers
+      }
 }
 
 extension Challenger: Identifiable {

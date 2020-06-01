@@ -13,23 +13,23 @@ import FirebaseUI
 
 struct ManagerTabView: View {
     var user: User?
-    // @TODO push off to VM
-    @ObservedObject var webScraperObserved = WebScrapManager()
-    @ObservedObject var firebaseObserved = FirebaseManager()
-    @ObservedObject var defaultsObservable = DefaultsManager()
-    
+    @ObservedObject var viewModel = ManagerTabViewModel()
     let pub = NotificationCenter.default.publisher(for: NSNotification.Name.UpdatedChallengerScores)
     
     var body: some View {
         VStack {
-            if firebaseObserved.leagues.count == 0 {
+            if viewModel.isLoading {
+                ActivityIndicator(isAnimating: .constant(viewModel.isLoading), style: .large)
+            } else if viewModel.leagues.count == 0 {
+                Spacer()
                 NoLeagueView()
+                Spacer()
             } else {
             Spacer()
-                Text("Totals thru week: \(webScraperObserved.currentAvailableWeek)")
+                Text("Totals thru week: \(viewModel.currentAvailableWeek)")
                     .foregroundColor(.orange)
                     .font(Font.system(size: 18))
-            List(firebaseObserved.managers, id: \.firebaseEmail) { manager in
+            List(viewModel.managers, id: \.firebaseEmail) { manager in
                     ScrollView {
                         VStack {
                             Spacer()
@@ -41,7 +41,7 @@ struct ManagerTabView: View {
                         }
                     }.id(UUID().uuidString)
             }
-            .navigationBarTitle(firebaseObserved.leagueName)
+            .navigationBarTitle(viewModel.leagueName)
             }
         }.onAppear(perform: getCurrentWeek)
             .onReceive(pub) { (output) in
@@ -51,39 +51,26 @@ struct ManagerTabView: View {
     
     func getCurrentWeek() {
         if let user = user {
-            webScraperObserved.getCurrentWeek(user: user)
+            viewModel.getCurrentWeek(user: user)
             // This ultimately gets firebaseObserved.managers
-            firebaseObserved.getLeaguesFor(user: user)
+            viewModel.getLeaguesFor(user: user)
         }
     }
     
     func loadUpdatedChallengers() {
         if let user = user {
-            firebaseObserved.getLeaguesFor(user: user)
+            viewModel.getLeaguesFor(user: user)
         }
     }
     
-    func manuallyUpdateScoresForWeek() {
-        // Comment out FirebaseManager.compareScraperAndFetchScoresIfNecesary when updating manaully
-        self.firebaseObserved.getScoresFor(week: 7, post: true)
-    }
+//    func manuallyUpdateScoresForWeek() {
+//        // Comment out FirebaseManager.compareScraperAndFetchScoresIfNecesary when updating manaully
+//        self.firebaseObserved.getScoresFor(week: 7, post: true)
+//    }
 }
 
 struct ManagerTabView_Previews: PreviewProvider {
     static var previews: some View {
         ManagerTabView()
-    }
-}
-
-struct NoLeagueView: View {
-    var body: some View {
-        VStack {
-            Spacer()
-             Text("There are no leagues associated with this email address.")
-            .lineLimit(nil)
-            .multilineTextAlignment(.center)
-            .navigationBarTitle("No Leagues 😥")
-            Spacer()
-        }
     }
 }

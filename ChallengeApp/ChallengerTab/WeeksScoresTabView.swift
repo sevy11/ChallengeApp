@@ -10,27 +10,39 @@ import SwiftUI
 import Combine
 
 struct WeeksScoresTabView: View {
-    var challengers = Challenger.generateTestChallengers()
-    let weeks = ["0","1","2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
-    
     @State var weekSelection = 0
-    @ObservedObject var challengeObserved = FirebaseManager()
+    @ObservedObject var viewModel = WeeklyScoresViewModel()
     
     var body: some View {
         NavigationView {
             VStack {
-                Section {
-                    Picker(selection: $weekSelection.onChange(fetchData), label: Text("Week").padding()) {
-                        ForEach(1 ..< self.weeks.count) {
-                            Text(self.weeks[$0])
-                        }
-                    }.id(weekSelection)
-                        .pickerStyle(DefaultPickerStyle())
-                        .padding(EdgeInsets(top: -20, leading: 0, bottom: -20, trailing: 0))
-                        .navigationBarTitle(ChallengeSeasons.totalMadness.rawValue)
-                }
-                List(challengeObserved.challengers) { ch in
-                    ChallengerRow(challenger: ch, isPresented: true)
+                if viewModel.isLoading {
+                    ActivityIndicator(isAnimating: .constant(viewModel.isLoading), style: .large)
+                } else if !viewModel.isLoading && viewModel.challengers.count > 0 {
+                    Section {
+                        Picker(selection: $weekSelection.onChange(fetchData), label: Text("Week").padding()) {
+                            ForEach(1 ..< League.weeks.count) {
+                                Text(League.weeks[$0])
+                            }
+                        }.id(weekSelection)
+                            .pickerStyle(DefaultPickerStyle())
+                            .padding(EdgeInsets(top: -20, leading: 0, bottom: -20, trailing: 0))
+                            .navigationBarTitle(ChallengeSeasons.totalMadness.rawValue)
+                    }
+                    List(viewModel.challengers) { ch in
+                        ChallengerRow(challenger: ch, isPresented: true)
+                    }
+                } else {
+                    Section {
+                        Picker(selection: $weekSelection.onChange(fetchData), label: Text("Week").padding()) {
+                            ForEach(1 ..< League.weeks.count) {
+                                Text(League.weeks[$0])
+                            }
+                        }.id(weekSelection)
+                            .pickerStyle(DefaultPickerStyle())
+                            .navigationBarTitle(ChallengeSeasons.totalMadness.rawValue)
+                    }
+                    Text("No scores available for this week yet 🙄")
                 }
             }
             .onAppear(perform: initialFetch)
@@ -51,17 +63,16 @@ extension Binding {
 
 extension WeeksScoresTabView {
     func fetchData(_ tag: Int) {
-        challengeObserved.getScoresFor(week: weekSelection + 1, post: false)
+        viewModel.getScoresFor(week: weekSelection + 1)
     }
     
     func initialFetch() {
-        self.weekSelection = challengeObserved.currentWeek
-        challengeObserved.getScoresFor(week: weekSelection + 1, post: false)
+        viewModel.getScoresFor(week: weekSelection + 1)
     }
 }
 
 struct WeeksScoresTabView_Previews: PreviewProvider {
     static var previews: some View {
-        WeeksScoresTabView(challengers: Challenger.generateTestChallengers(), weekSelection: 1)
+        WeeksScoresTabView(weekSelection: 1)
     }
 }

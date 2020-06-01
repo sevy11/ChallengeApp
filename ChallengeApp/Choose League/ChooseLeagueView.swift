@@ -9,31 +9,33 @@
 import SwiftUI
 import Firebase
 import FirebaseUI
+import Combine
 
 struct ChooseLeagueView: View {
     var user: User?
-
-    @ObservedObject var firebaseObserved = FirebaseManager()
+    @ObservedObject var viewModel = ChooseLeagueViewModel()
     @State var selectedLeague = ""
-    @State var title = ""
 
     var body: some View {
         VStack {
-            if firebaseObserved.leagues.count == 0 {
-                NoLeagueView()
-                signOutButton
-                Spacer()
-            } else {
-                Text("Select Default League:").opacity(firebaseObserved.leagues.count > 1 ? 1 : 0)
-                List(firebaseObserved.leagues, id: \.name) { league in
+            if viewModel.isLoading {
+                ActivityIndicator(isAnimating: .constant(viewModel.isLoading), style: .large)
+            } else if viewModel.leagues.count > 0 {
+                Text("Select Default League:").opacity(viewModel.leagues.count > 1 ? 1 : 0)
+                List(viewModel.leagues, id: \.name) { league in
                     Button(action: {
                         self.selectDefault(league: league)
                     }) {
                         league.name == self.selectedLeague  ? Text(league.name).foregroundColor(.green).bold() : Text(league.name)
                     }
                 }.id(UUID().uuidString)
-                    .navigationBarTitle(self.title)
+                    .navigationBarTitle(viewModel.leagues.count > 1 ? "Your Leagues" : "Your League")
                 Spacer()
+                Text("Sign out of user: \(user?.email == nil ? "" : (user?.email)!)").padding()
+                signOutButton
+                Spacer()
+            } else if !viewModel.isLoading && viewModel.leagues.count == 0 {
+                NoLeagueView()
                 signOutButton
                 Spacer()
             }
@@ -42,10 +44,9 @@ struct ChooseLeagueView: View {
     }
     
     func getLeagues() {
-        self.title = firebaseObserved.leagues.count > 1 ? "Your Leagues" : "Your League"
         if let user = user,
-           let name = DefaultsManager.getDefaultLeagueName() {
-            firebaseObserved.getLeaguesFor(user: user)
+            let name = DefaultsManager.getDefaultLeagueName() {
+            viewModel.getLeaguesFor(user: user)
             self.selectedLeague = name
         }
     }
@@ -56,7 +57,7 @@ struct ChooseLeagueView: View {
     }
     
     func clearLeagues() {
-        firebaseObserved.leagues = [League]()
+        viewModel.leagues = [League]()
     }
     
     func signOut() {
