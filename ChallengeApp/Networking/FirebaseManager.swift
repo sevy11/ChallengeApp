@@ -30,13 +30,13 @@ class FirebaseManager: ObservableObject {
     @Published var managers = [Manager]()
 
     // MARK: - POST League
-    func createLeagueWith(name: String, managerEmails: [String], user: User, posted: @escaping (_ posted: Bool) -> Void, failure: @escaping (_ failed: Error) -> Void) {
+    func createLeagueWith(name: String, managerEmails: [String], user: User, show: String, posted: @escaping (_ posted: Bool) -> Void, failure: @escaping (_ failed: Error) -> Void) {
          let db = Database.database()
          let reference = db.reference().child("\(kLeagueEndpoint)\(name)").childByAutoId()
          
          guard let email = user.email else { return }
          
-         let payload: [NSString : Any] = ["emails" : managerEmails, "creator_email" : email]
+        let payload: [NSString : Any] = ["emails" : managerEmails, "creator_email" : email, "show" : show]
          reference.setValue(payload) { error, ref in
              if let error = error {
                 failure(error)

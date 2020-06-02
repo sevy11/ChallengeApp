@@ -13,11 +13,12 @@ struct CreateNewLeagueView: View {
     var user: User?
 
     @State private var name = ""
-    @State private var leagueType = Show.none.rawValue
+    @State private var leagueType: Show = .none
     @State private var managersInLeague = 0
     @State private var buttonTapped: Int? = nil
     @State var selected = false
     @State var showNameAlert = false
+    
     @ObservedObject var viewModel = CreateNewLeagueViewModel()
     
     
@@ -25,18 +26,17 @@ struct CreateNewLeagueView: View {
             Section {
                 VStack {
                     List {
-                        Text(selected ? "\(leagueType.uppercased())" : leagueType)
+                        Text(selected ? "\(leagueType.rawValue.uppercased())" : leagueType.rawValue)
                             .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
                         if selected == false {
                             Button(action: {
-                                self.leagueType = Show.challenge.rawValue
+                                self.leagueType = .challenge
                                 self.selected = true
                             }) {
                                 Text(Show.challenge.rawValue)
                             }
                             Button(action: {
-                                self.leagueType = Show.challenge.rawValue
-//                                self.leagueType = "Survivor"
+                                self.leagueType = .challenge
                                 self.selected = true
                             }) {
                                 Text("Survivor(Coming soon!)")
@@ -57,15 +57,15 @@ struct CreateNewLeagueView: View {
                         Text("Enter Managers in league (3-8):")
                             .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
                       Picker(selection: $managersInLeague, label: Text("")) {
-                            ForEach(0 ..< Manager.managersAvailable.count) { index in
-                                Text(Manager.managersAvailable[index]).tag(index)
+                        ForEach(0 ..< self.viewModel.managerChoices.count) { index in
+                                Text(self.viewModel.managerChoices[index]).tag(index)
                             }
                         }.id(managersInLeague)
                             .pickerStyle(WheelPickerStyle())
                             .padding(EdgeInsets(top: -20, leading: 0, bottom: -20, trailing: 0))
                         HStack(alignment: .center) {
                             Spacer()
-                            Text("Manager Count: \(Manager.managersAvailable[managersInLeague])")
+                            Text("Manager Count: \(self.viewModel.managerChoices[managersInLeague])")
                             Spacer()
                         }
                         HStack(alignment: .center) {
@@ -74,8 +74,9 @@ struct CreateNewLeagueView: View {
                             Spacer()
                         }
                     }
-                    NavigationLink(destination: CreateNewLeagueDetailManagerView(leagueName: self.name, managerCount: self.managersInLeague + 3, user: user!), tag: 1, selection: $buttonTapped) {
+                    NavigationLink(destination: CreateNewLeagueDetailManagerView(league: viewModel.newLeague, user: user!), tag: 1, selection: $buttonTapped) {
                         Button(action: {
+                            self.setLeague()
                             self.allowButtonTap()
                         }) {
                             Text("Enter Manager Names").bold()
@@ -96,6 +97,13 @@ struct CreateNewLeagueView: View {
         .navigationBarTitle("Create New League")
     }
 
+    func setLeague() {
+        viewModel.newLeague.name = self.name
+        viewModel.newLeague.managersInLeague = self.managersInLeague + 3
+        viewModel.newLeague.show = self.leagueType
+        viewModel.newLeague.creatorEmail = self.user?.email!
+    }
+    
     func getAllLeagueNames() {
         viewModel.getLeagueNames()
     }
@@ -107,14 +115,6 @@ struct CreateNewLeagueView: View {
         } else {
             self.buttonTapped = 1
         }
-    }
-    
-    var leagueTypeEntered: String {
-        return leagueType == Show.none.rawValue ? leagueType : Show.none.rawValue
-    }
-    
-    var leagueShow: Bool {
-        return leagueType == Show.none.rawValue ? true : false
     }
     
     var allowedToEnterTeams: Bool {

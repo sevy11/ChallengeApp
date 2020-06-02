@@ -26,8 +26,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         FirebaseApp.configure()
         
         Auth.auth().addStateDidChangeListener { auth, user in
-            if user != nil {
-                print("user logged in: \(user!.email!)")
+            if let user = user {
+                print("user logged in: \(user.email!)")
                 // Create the SwiftUI view that provides the window contents.
                 let contentView = ContentView(user: user)
                 
@@ -52,18 +52,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 
                     if let windowScene = scene as? UIWindowScene {
                         let window = UIWindow(windowScene: windowScene)
-                        window.rootViewController = authVC //UIHostingController(rootView: contentView)
+                        window.rootViewController = authVC
                         self.window = window
                         window.makeKeyAndVisible()
                     }
                 }
             }
         }
-        
-        
-            
-           
-        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

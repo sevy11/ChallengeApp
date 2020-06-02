@@ -11,12 +11,14 @@ import Combine
 import Firebase
 
 struct EnterChallengersView: View {
-    var leagueName: String
+    var league: League
     var managers: [String]
     var user: User?
+    var slotsToDisplay: Int {
+        league.show == .challenge ? (Challenger.challengers.count / managers.count) : (Challenger.survivors.count / managers.count)
+    }
     
     @State var managerCounter = 0
-    @State var challengers = [String]()
     @State var challengerCount = 0
     @State var buttonTapped: Int? = nil
     @State var challenger1 = ""
@@ -29,6 +31,7 @@ struct EnterChallengersView: View {
     @State var challenger8 = ""
     @State var challenger9 = ""
     @State var buttonTitle = "Next Manager"
+    
     @ObservedObject var viewModel = EnterChallengersViewModel()
     let pub = NotificationCenter.default.publisher(for: Notification.Name.LeagueCompletedSaving)
 
@@ -36,15 +39,15 @@ struct EnterChallengersView: View {
     var body: some View {
         VStack {
             List {
-                if (Challenger.challengerCount / managers.count) == 2 {
+                if slotsToDisplay == 2 {
                     if challenger1 == "" {
                         Text("Choose a Challenger for \(managers[managerCounter]):")
-                        .bold()
+                            .bold()
                     } else {
                         Text("1. \(challenger1)")
                         Text("2. \(challenger2)")
                     }
-                } else if (Challenger.challengerCount / managers.count) == 3 {
+                } else if slotsToDisplay == 3 {
                     if challenger1 == "" {
                         Text("Choose a Challenger for \(managers[managerCounter])")
                     } else {
@@ -52,7 +55,7 @@ struct EnterChallengersView: View {
                         Text("2. \(challenger2)")
                         Text("3. \(challenger3)")
                     }
-                } else if (Challenger.challengerCount / managers.count) == 4 {
+                } else if slotsToDisplay == 4 {
                     if challenger1 == "" {
                         Text("Choose a Challenger for \(managers[managerCounter])")
                     } else {
@@ -61,7 +64,7 @@ struct EnterChallengersView: View {
                         Text("3. \(challenger3)")
                         Text("4. \(challenger4)")
                     }
-                } else if (Challenger.challengerCount / managers.count) == 5 {
+                } else if slotsToDisplay == 5 {
                     if challenger1 == "" {
                         Text("Choose a Challenger for \(managers[managerCounter])")
                     } else {
@@ -71,7 +74,7 @@ struct EnterChallengersView: View {
                         Text("4. \(challenger4)")
                         Text("5. \(challenger5)")
                     }
-                } else if (Challenger.challengerCount / managers.count) == 6 {
+                } else if slotsToDisplay == 6 {
                     if challenger1 == "" {
                         Text("Choose a Challenger for \(managers[managerCounter])")
                     } else {
@@ -82,7 +85,7 @@ struct EnterChallengersView: View {
                         Text("5. \(challenger5)")
                         Text("6. \(challenger6)")
                     }
-                } else if (Challenger.challengerCount / managers.count) == 7 {
+                } else if slotsToDisplay == 7 {
                     if challenger1 == "" {
                         Text("Choose a Challenger for \(managers[managerCounter])")
                     } else {
@@ -94,7 +97,7 @@ struct EnterChallengersView: View {
                         Text("6. \(challenger6)")
                         Text("7. \(challenger7)")
                     }
-                } else if (Challenger.challengerCount / managers.count) == 8 {
+                } else if slotsToDisplay == 8 {
                     if challenger1 == "" {
                         Text("Choose a Challenger for \(managers[managerCounter])")
                     } else {
@@ -107,7 +110,7 @@ struct EnterChallengersView: View {
                         Text("7. \(challenger7)")
                         Text("8. \(challenger8)")
                     }
-                } else if (Challenger.challengerCount / managers.count) == 9 {
+                } else if slotsToDisplay == 9 {
                     if challenger1 == "" {
                         Text("Choose a Challenger for \(managers[managerCounter])")
                     } else {
@@ -123,7 +126,7 @@ struct EnterChallengersView: View {
                     }
                 }
                 Spacer()
-                ForEach(Challenger.challengers, id: \.self) { challenger in
+                ForEach(viewModel.challengers, id: \.self) { challenger in
                     Button(action: {
                         self.assign(challenger: challenger)
                     }) {
@@ -131,8 +134,8 @@ struct EnterChallengersView: View {
                     }
                 }
             }
-            NavigationLink(destination: ManagerTabView(user: user!), tag: 1, selection: $buttonTapped) { //ManagerTabView(user: user), tag: 1, selection: $buttonTapped) {
-            // Move on to next manger or finish up
+            NavigationLink(destination: ManagerTabView(user: user!), tag: 1, selection: $buttonTapped) {
+                // Move on to next manger or finish up
                 Button(action: {
                     self.save(manager: self.managers[self.managerCounter])
                 }) {
@@ -144,16 +147,15 @@ struct EnterChallengersView: View {
             .foregroundColor(.black)
             .cornerRadius(40)
             Spacer()
-        }
-        .navigationBarTitle(managers[managerCounter])
+        }.navigationBarTitle(managers[managerCounter])
     }
     
     func save(manager: String) {
-        viewModel.updateLeagueWith(contestantNames: challengers, managerEmail: manager, leagueName: leagueName)
+        viewModel.update(league: league, manager: manager)
         
         if managerCounter == managers.count - 1 {
-            print("end of entry")
-            DefaultsManager.saveDefaultLeague(name: leagueName)
+            print("League Entry Complete, Pop back to root view")
+            DefaultsManager.saveDefaultLeague(name: league.name)
             self.buttonTapped = 1
         } else if managerCounter == managers.count - 2 {
             self.buttonTitle = "Complete League"
@@ -166,7 +168,7 @@ struct EnterChallengersView: View {
     }
     
     func clearChallengersForNextManagerEntry() {
-        challengers.removeAll()
+        viewModel.challengersForManager.removeAll()
         challengerCount = 0
         managerCounter += 1
 
@@ -184,74 +186,51 @@ struct EnterChallengersView: View {
     func assign(challenger: String) {
         if challengerCount == 0 {
             challenger1 = challenger
-            challengerCount = 1
-            let arr = Challenger.challengers.filter { $0 != challenger }
-            Challenger.challengers = arr
-            challengers.append(challenger)
+            viewModel.challengers = viewModel.challengers.filter { $0 != challenger }
+            viewModel.challengersForManager.append(challenger)
         } else if challengerCount == 1 {
             challenger2 = challenger
-            challengerCount = 2
-            let arr = Challenger.challengers.filter { $0 != challenger }
-            Challenger.challengers = arr
-            challengers.append(challenger)
-
+            viewModel.challengers = viewModel.challengers.filter { $0 != challenger }
+            viewModel.challengersForManager.append(challenger)
         } else if challengerCount == 2 {
             challenger3 = challenger
-            challengerCount = 3
-            let arr = Challenger.challengers.filter { $0 != challenger }
-            Challenger.challengers = arr
-            challengers.append(challenger)
-
+            viewModel.challengers = viewModel.challengers.filter { $0 != challenger }
+            viewModel.challengersForManager.append(challenger)
         } else if challengerCount == 3 {
             challenger4 = challenger
-            challengerCount = 4
-            let arr = Challenger.challengers.filter { $0 != challenger }
-            Challenger.challengers = arr
-            challengers.append(challenger)
-
+            viewModel.challengers = viewModel.challengers.filter { $0 != challenger }
+            viewModel.challengersForManager.append(challenger)
         } else if challengerCount == 4 {
             challenger5 = challenger
-            challengerCount = 5
-            let arr = Challenger.challengers.filter { $0 != challenger }
-            Challenger.challengers = arr
-            challengers.append(challenger)
-
+            viewModel.challengers = viewModel.challengers.filter { $0 != challenger }
+            viewModel.challengersForManager.append(challenger)
         } else if challengerCount == 5 {
             challenger6 = challenger
-            challengerCount = 6
-            let arr = Challenger.challengers.filter { $0 != challenger }
-            Challenger.challengers = arr
-            challengers.append(challenger)
-
+            viewModel.challengers = viewModel.challengers.filter { $0 != challenger }
+            viewModel.challengersForManager.append(challenger)
         } else if challengerCount == 6 {
             challenger7 = challenger
-            challengerCount = 7
-            let arr = Challenger.challengers.filter { $0 != challenger }
-            Challenger.challengers = arr
-            challengers.append(challenger)
-
+            viewModel.challengers = viewModel.challengers.filter { $0 != challenger }
+            viewModel.challengersForManager.append(challenger)
         } else if challengerCount == 7 {
             challenger8 = challenger
-            challengerCount = 8
-            let arr = Challenger.challengers.filter { $0 != challenger }
-            Challenger.challengers = arr
-            challengers.append(challenger)
-
+            viewModel.challengers = viewModel.challengers.filter { $0 != challenger }
+            viewModel.challengersForManager.append(challenger)
         } else if challengerCount == 8 {
             challenger9 = challenger
-            challengerCount = 9
-            let arr = Challenger.challengers.filter { $0 != challenger }
-            Challenger.challengers = arr
-            challengers.append(challenger)
-
+            viewModel.challengers = viewModel.challengers.filter { $0 != challenger }
+            viewModel.challengersForManager.append(challenger)
         } else if challengerCount == 9 {
             challenger9 = challenger
         }
+        self.challengerCount += 1
+
     }
 }
 
 struct EnterChallengersView_Previews: PreviewProvider {
     static var previews: some View {
-        EnterChallengersView(leagueName: "Test League Name", managers: ["Sevy@gmial.com", "Shamir@gmail.ocm", "BJ@gmail.com"])
+        EnterChallengersView(league: League.init(name: "Test League"), managers: ["Sevy@gmial.com", "Shamir@gmail.ocm", "BJ@gmail.com"])
     }
 }
+

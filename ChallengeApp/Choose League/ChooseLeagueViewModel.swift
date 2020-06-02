@@ -12,6 +12,7 @@ import Firebase
 final class ChooseLeagueViewModel: ObservableObject, Identifiable {
     @Published var leagues = [League]()
     @Published var isLoading = true
+    @Published var noLeagues = false
     @Published var league: League?
     private let firebaseManager = FirebaseManager()
 
@@ -62,34 +63,38 @@ final class ChooseLeagueViewModel: ObservableObject, Identifiable {
     }
     
     private func setLeaguesFor(user: User, allLeagues: [League]) {
-          var userIsCreator = false
-
-          for league in allLeagues {
-              if let userEmail = user.email,
-                 let creatorEmail = league.creatorEmail {
-                  // Creator added to user leagues
-                  if userEmail.isEqualToCaseInsensitive(string: creatorEmail) {
-                      self.leagues.append(league)
-                      userIsCreator = true
-                  }
-                  // Managers who's not creator added to leagues
-                  if !userIsCreator {
-                      if let managers = league.managers {
-                          for manager in managers {
-                              if userEmail.isEqualToCaseInsensitive(string: manager.firebaseEmail) {
-                                  self.leagues.append(league)
-                              }
-                          }
-                      }
-                  }
-              }
-          }
-          // Set League
-          for league in self.leagues {
-              if league.name == DefaultsManager.getDefaultLeagueName() {
-                  self.league = league
-              }
-          }
-          self.isLoading = false
-      }
+        var userIsCreator = false
+        
+        for league in allLeagues {
+            if let userEmail = user.email,
+                let creatorEmail = league.creatorEmail {
+                // Creator added to user leagues
+                if userEmail.isEqualToCaseInsensitive(string: creatorEmail) {
+                    self.leagues.append(league)
+                    userIsCreator = true
+                }
+                // Managers who's not creator added to leagues
+                if !userIsCreator {
+                    if let managers = league.managers {
+                        for manager in managers {
+                            if userEmail.isEqualToCaseInsensitive(string: manager.firebaseEmail) {
+                                self.leagues.append(league)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // Set League
+        for league in self.leagues {
+            if league.name == DefaultsManager.getDefaultLeagueName() {
+                self.league = league
+            }
+        }
+        
+        if self.leagues.count == 0 {
+            self.noLeagues = true
+        }
+        self.isLoading = false
+    }
 }

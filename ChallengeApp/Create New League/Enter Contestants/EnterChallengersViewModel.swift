@@ -11,9 +11,22 @@ import Combine
 
 final class EnterChallengersViewModel: ObservableObject, Identifiable {
     let firebase = FirebaseManager()
-
-    func updateLeagueWith(contestantNames: [String], managerEmail: String, leagueName: String) {
-        firebase.updateLeagueWith(contestantNames: contestantNames, managerEmail: managerEmail, leagueName: leagueName, success: { (success) in
+    @Published var challengers:  [String] = Challenger.challengers
+    @Published var challengersForManager = [String]()
+    
+    // @TODO constant Challengers for now
+    func getContestantsFor(league: League) {
+        if league.show! == .challenge {
+            self.challengers = Challenger.challengers
+        } else if league.show! == .survivor {
+            self.challengers = Challenger.survivors
+        } else {
+            // @TODO more shows
+        }
+    }
+    
+    func update(league: League, manager: String) {
+        firebase.updateLeagueWith(contestantNames: self.challengersForManager, managerEmail: manager, leagueName: league.name, success: { (success) in
             print("Successfully updated the manager's contestant names.")
         }) { (error) in
             print("failed to update contestant names with error: \(error)")

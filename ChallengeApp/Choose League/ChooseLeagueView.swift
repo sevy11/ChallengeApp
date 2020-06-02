@@ -34,7 +34,7 @@ struct ChooseLeagueView: View {
                 Text("Sign out of user: \(user?.email == nil ? "" : (user?.email)!)").padding()
                 signOutButton
                 Spacer()
-            } else if !viewModel.isLoading && viewModel.leagues.count == 0 {
+            } else if viewModel.noLeagues {
                 NoLeagueView()
                 signOutButton
                 Spacer()

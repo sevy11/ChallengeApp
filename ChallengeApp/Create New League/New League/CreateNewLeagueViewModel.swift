@@ -12,6 +12,8 @@ import Firebase
 
 final class CreateNewLeagueViewModel: ObservableObject, Identifiable {
     @Published var leagueNames = [String]()
+    @Published var newLeague = League.init(name: "")
+    @Published var managerChoices = Manager.managerChoices
     private let firebase = FirebaseManager()
     
     func getLeagueNames() {

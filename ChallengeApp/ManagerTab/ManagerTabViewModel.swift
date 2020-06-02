@@ -52,7 +52,6 @@ class ManagerTabViewModel: ObservableObject, Identifiable {
         let sorted = weeksAvailable.sorted { $0 > $1 }
         if let currentWeek = sorted.first {
             self.currentAvailableWeek = currentWeek
-            
             self.compare(week: currentWeek)
         } else {
             self.currentAvailableWeek = "Loading..."
@@ -263,6 +262,26 @@ class ManagerTabViewModel: ObservableObject, Identifiable {
                 self.league = league
                 self.leagueName = league.name
             }
+        }
+        
+        if self.leagues.count == 1 {
+            if let singleLeague = self.leagues.first {
+                DefaultsManager.saveDefaultLeague(name: singleLeague.name)
+                self.league = singleLeague
+            }
+            // Default name not set for first time user
+        } else if DefaultsManager.getDefaultLeagueName() == nil && self.leagues.count > 0 {
+            if let firstLeague = self.leagues.first {
+                DefaultsManager.saveDefaultLeague(name: firstLeague.name)
+                if self.league == nil {
+                    self.league = firstLeague
+                }
+            }
+        }
+        // League was deleted from database purge
+        if self.league == nil && self.leagues.count > 0 {
+            self.league = self.leagues.first!
+            DefaultsManager.saveDefaultLeague(name: self.league!.name)
         }
         
         // Inflate Managers with full Challenger Object

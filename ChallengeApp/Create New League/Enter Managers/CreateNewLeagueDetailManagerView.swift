@@ -10,8 +10,7 @@ import SwiftUI
 import Firebase
 
 struct CreateNewLeagueDetailManagerView: View {
-    var leagueName: String
-    var managerCount: Int
+    var league: League
     var user: User?
 
     @State var manager1: String = ""
@@ -31,7 +30,7 @@ struct CreateNewLeagueDetailManagerView: View {
     
     var body: some View {
         VStack {
-         if managerCount == 3 {
+            if league.managersInLeague == 3 {
                 VStack {
                     HStack {
                         Text("1.")
@@ -46,7 +45,7 @@ struct CreateNewLeagueDetailManagerView: View {
                         TextField("Enter email for manager", text: $manager3).modifier(TextFieldModifer())
                     }
                 }.padding()
-            } else if managerCount == 4 {
+            } else if league.managersInLeague == 4 {
                 VStack {
                     HStack {
                         Text("1.")
@@ -65,7 +64,7 @@ struct CreateNewLeagueDetailManagerView: View {
                         TextField("Enter email for manager", text: $manager4).modifier(TextFieldModifer())
                     }
                 }.padding()
-            } else if managerCount == 5 {
+            } else if league.managersInLeague == 5 {
                 VStack {
                     HStack {
                         Text("1.")
@@ -88,7 +87,7 @@ struct CreateNewLeagueDetailManagerView: View {
                         TextField("Enter email for manager", text: $manager5).modifier(TextFieldModifer())
                     }
                 }.padding()
-            } else if managerCount == 6 {
+            } else if league.managersInLeague == 6 {
                 VStack {
                     HStack {
                         Text("1.")
@@ -115,7 +114,7 @@ struct CreateNewLeagueDetailManagerView: View {
                         TextField("Enter email for manager", text: $manager6).modifier(TextFieldModifer())
                     }
                 }.padding()
-            } else if managerCount == 7 {
+            } else if league.managersInLeague == 7 {
                 VStack {
                     HStack {
                         Text("1.")
@@ -149,7 +148,7 @@ struct CreateNewLeagueDetailManagerView: View {
                     TextField("Enter email for manager", text: $manager8).modifier(TextFieldModifer())
                 }.padding()
             }
-            NavigationLink(destination: EnterChallengersView(leagueName: leagueName, managers: self.managerNames, user: user!), tag: 1, selection: $buttonTapped) {
+            NavigationLink(destination: EnterChallengersView(league: league, managers: self.managerNames, user: user!), tag: 1, selection: $buttonTapped) {
                 Button(action: {
                     self.saveLeague()
                 }) {
@@ -188,7 +187,7 @@ struct CreateNewLeagueDetailManagerView: View {
     }
     
     var allowedToCreateLeague: Bool {
-        switch managerCount {
+        switch league.managersInLeague {
         case 3:
             return manager1.count > 0 && manager2.count > 0 && manager3.count > 0
         case 4:
@@ -207,7 +206,7 @@ struct CreateNewLeagueDetailManagerView: View {
     }
     
     func saveLeague() {
-        switch managerCount {
+        switch league.managersInLeague {
         case 3:
             managerNames = [self.manager1, self.manager2, self.manager3]
         case 4:
@@ -227,7 +226,7 @@ struct CreateNewLeagueDetailManagerView: View {
             self.buttonTapped = 1
             viewModel.savingLeagueInProgress = true
             self.showInvalidEmailAddressAlert = false
-            viewModel.createLeague(name: self.leagueName, emails: self.managerNames, user: user!)
+            viewModel.createLeague(name: self.league.name, emails: self.managerNames, user: user!, show: self.league.show!.rawValue)
         } else {
             self.buttonTapped = 0
             self.showInvalidEmailAddressAlert = true
@@ -239,6 +238,6 @@ struct CreateNewLeagueDetailManagerView: View {
 
 struct CreateNewLeagueDetailManagerView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateNewLeagueDetailManagerView(leagueName: "Chicago Old School League", managerCount: 4)
+        CreateNewLeagueDetailManagerView(league: League.init(name: "i"))
     }
 }

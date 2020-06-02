@@ -18,8 +18,8 @@ final class CreateNewLeagueEmailsViewModel: ObservableObject, Identifiable {
     
     
     // MARK: - POST/GET Functions
-    public func createLeague(name: String, emails: [String], user: User) {
-        firebase.createLeagueWith(name: name, managerEmails: emails, user: user, posted: { (success) in
+    public func createLeague(name: String, emails: [String], user: User, show: String) {
+        firebase.createLeagueWith(name: name, managerEmails: emails, user: user, show: show, posted: { (success) in
             self.savingLeagueInProgress = false
         }) { (failed) in
             self.savingLeagueInProgress = false

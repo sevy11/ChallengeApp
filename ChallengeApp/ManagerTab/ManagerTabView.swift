@@ -25,11 +25,11 @@ struct ManagerTabView: View {
                 NoLeagueView()
                 Spacer()
             } else {
-            Spacer()
+                Spacer()
                 Text("Totals thru week: \(viewModel.currentAvailableWeek)")
                     .foregroundColor(.orange)
                     .font(Font.system(size: 18))
-            List(viewModel.managers, id: \.firebaseEmail) { manager in
+                List(viewModel.managers, id: \.firebaseEmail) { manager in
                     ScrollView {
                         VStack {
                             Spacer()
@@ -40,10 +40,11 @@ struct ManagerTabView: View {
                             }
                         }
                     }.id(UUID().uuidString)
+                }
+                .navigationBarTitle(viewModel.leagueName)
             }
-            .navigationBarTitle(viewModel.leagueName)
-            }
-        }.onAppear(perform: getCurrentWeek)
+        }.navigationBarBackButtonHidden(true)
+            .onAppear(perform: getCurrentWeek)
             .onReceive(pub) { (output) in
                 self.loadUpdatedChallengers()
         }
@@ -52,7 +53,7 @@ struct ManagerTabView: View {
     func getCurrentWeek() {
         if let user = user {
             viewModel.getCurrentWeek(user: user)
-            // This ultimately gets firebaseObserved.managers
+            // This ultimately gets viewModel.managers
             viewModel.getLeaguesFor(user: user)
         }
     }

@@ -8,22 +8,27 @@
 
 import SwiftUI
 import Firebase
+import Combine
 
 struct ContentView: View {
     var user: User?
     var defaultsManager = DefaultsManager()
-
+    
     var body: some View {
         TabView {
             NavigationView {
-                ManagerTabView(user: user!)
-                    .navigationBarItems(leading:
-                        NavigationLink(destination: ChooseLeagueView(user: user)) {
-                            Text("Leagues").bold()
-                        },trailing:
-                        NavigationLink(destination: CreateNewLeagueView(user: user)) {
-                            Text("Create New League").bold()
-                    })
+                VStack {
+                    ManagerTabView(user: user!)
+                        .navigationBarItems(leading:
+                            NavigationLink(destination: ChooseLeagueView(user: user)) {
+                                Text("Leagues").bold()
+                            },trailing:
+                            NavigationLink(destination: CreateNewLeagueView(user: user)) {
+                                Text("Create New League").bold()
+                            }
+                            .isDetailLink(false)
+                    )
+                }
             }
             .tabItem({
                 Image(systemName: "house")
