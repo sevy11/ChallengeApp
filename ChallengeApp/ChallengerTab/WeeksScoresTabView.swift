@@ -20,13 +20,15 @@ struct WeeksScoresTabView: View {
                     ActivityIndicator(isAnimating: .constant(viewModel.isLoading), style: .large)
                 } else if !viewModel.isLoading && viewModel.challengers.count > 0 {
                     Section {
-                        Picker(selection: $weekSelection.onChange(fetchData), label: Text("Week").padding()) {
+                        Text("Week:").padding(EdgeInsets(top: 0, leading: -10, bottom: 0, trailing: 0))
+                        Picker(selection: $weekSelection.onChange(fetchData), label: Text("").padding()) {
                             ForEach(1 ..< League.weeks.count) {
                                 Text(League.weeks[$0])
                             }
                         }.id(weekSelection)
+                            .labelsHidden()
                             .pickerStyle(DefaultPickerStyle())
-                            .padding(EdgeInsets(top: -20, leading: 0, bottom: -20, trailing: 0))
+                            .padding(EdgeInsets(top: -40, leading: 0, bottom: -40, trailing: 0))
                             .navigationBarTitle(ChallengeSeasons.totalMadness.rawValue)
                     }
                     List(viewModel.challengers) { ch in

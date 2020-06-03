@@ -61,6 +61,7 @@ struct CreateNewLeagueView: View {
                                 Text(self.viewModel.managerChoices[index]).tag(index)
                             }
                         }.id(managersInLeague)
+                            .labelsHidden()
                             .pickerStyle(WheelPickerStyle())
                             .padding(EdgeInsets(top: -20, leading: 0, bottom: -20, trailing: 0))
                         HStack(alignment: .center) {

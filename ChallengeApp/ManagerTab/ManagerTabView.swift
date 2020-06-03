@@ -41,12 +41,13 @@ struct ManagerTabView: View {
                         }
                     }.id(UUID().uuidString)
                 }
-                .navigationBarTitle(viewModel.leagueName)
             }
-        }.navigationBarBackButtonHidden(true)
-            .onAppear(perform: getCurrentWeek)
-            .onReceive(pub) { (output) in
-                self.loadUpdatedChallengers()
+        }
+        .navigationBarTitle(viewModel.leagueName)
+        .navigationBarBackButtonHidden(true)
+        .onAppear(perform: getCurrentWeek)
+        .onReceive(pub) { (output) in
+            self.loadUpdatedChallengers()
         }
     }
     
