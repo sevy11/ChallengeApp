@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A3028AE246DDE330031C03E /* HelperViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3028AD246DDE330031C03E /* HelperViews.swift */; };
-		1A3028B0246DE80A0031C03E /* CreateNewLeagueEnterChallengersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3028AF246DE80A0031C03E /* CreateNewLeagueEnterChallengersView.swift */; };
+		1A3028B0246DE80A0031C03E /* EnterChallengersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3028AF246DE80A0031C03E /* EnterChallengersView.swift */; };
 		1A5DACBC2438DF7F00C2AD19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACBB2438DF7F00C2AD19 /* AppDelegate.swift */; };
 		1A5DACBE2438DF7F00C2AD19 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACBD2438DF7F00C2AD19 /* SceneDelegate.swift */; };
 		1A5DACC02438DF7F00C2AD19 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACBF2438DF7F00C2AD19 /* ContentView.swift */; };
@@ -29,6 +29,13 @@
 		1A67DB4A24786408004CB8E5 /* ChooseLeagueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A67DB4924786408004CB8E5 /* ChooseLeagueView.swift */; };
 		1A684659248031FB00B23AEB /* NotificationName+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A684658248031FB00B23AEB /* NotificationName+Extension.swift */; };
 		1A68465B24806CCC00B23AEB /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A68465A24806CCC00B23AEB /* String+Extension.swift */; };
+		1A68465E24817E2500B23AEB /* ManagerTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A68465D24817E2500B23AEB /* ManagerTabViewModel.swift */; };
+		1A68466024841B2F00B23AEB /* ChooseLeagueViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A68465F24841B2F00B23AEB /* ChooseLeagueViewModel.swift */; };
+		1A684662248424D200B23AEB /* WeeklyScoresViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A684661248424D200B23AEB /* WeeklyScoresViewModel.swift */; };
+		1A68466524842C7C00B23AEB /* NoLeagueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A68466424842C7C00B23AEB /* NoLeagueView.swift */; };
+		1A6846672485405900B23AEB /* CreateNewLeagueViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6846662485405900B23AEB /* CreateNewLeagueViewModel.swift */; };
+		1A68466924854A0300B23AEB /* CreateNewLeagueEmailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A68466824854A0300B23AEB /* CreateNewLeagueEmailsViewModel.swift */; };
+		1A68466B24856D3500B23AEB /* EnterChallengersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A68466A24856D3500B23AEB /* EnterChallengersViewModel.swift */; };
 		1A9E6FE72465B4EB0013874C /* CreateNewLeagueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FE62465B4EB0013874C /* CreateNewLeagueView.swift */; };
 		1A9E6FE92465E2470013874C /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FE82465E2470013874C /* League.swift */; };
 		1A9E6FEB2465FF670013874C /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FEA2465FF670013874C /* Show.swift */; };
@@ -39,7 +46,7 @@
 
 /* Begin PBXFileReference section */
 		1A3028AD246DDE330031C03E /* HelperViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperViews.swift; sourceTree = "<group>"; };
-		1A3028AF246DE80A0031C03E /* CreateNewLeagueEnterChallengersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewLeagueEnterChallengersView.swift; sourceTree = "<group>"; };
+		1A3028AF246DE80A0031C03E /* EnterChallengersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterChallengersView.swift; sourceTree = "<group>"; };
 		1A5DACB82438DF7F00C2AD19 /* ChallengeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChallengeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A5DACBB2438DF7F00C2AD19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A5DACBD2438DF7F00C2AD19 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +69,13 @@
 		1A67DB4924786408004CB8E5 /* ChooseLeagueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseLeagueView.swift; sourceTree = "<group>"; };
 		1A684658248031FB00B23AEB /* NotificationName+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extension.swift"; sourceTree = "<group>"; };
 		1A68465A24806CCC00B23AEB /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		1A68465D24817E2500B23AEB /* ManagerTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerTabViewModel.swift; sourceTree = "<group>"; };
+		1A68465F24841B2F00B23AEB /* ChooseLeagueViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseLeagueViewModel.swift; sourceTree = "<group>"; };
+		1A684661248424D200B23AEB /* WeeklyScoresViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyScoresViewModel.swift; sourceTree = "<group>"; };
+		1A68466424842C7C00B23AEB /* NoLeagueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoLeagueView.swift; sourceTree = "<group>"; };
+		1A6846662485405900B23AEB /* CreateNewLeagueViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewLeagueViewModel.swift; sourceTree = "<group>"; };
+		1A68466824854A0300B23AEB /* CreateNewLeagueEmailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewLeagueEmailsViewModel.swift; sourceTree = "<group>"; };
+		1A68466A24856D3500B23AEB /* EnterChallengersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterChallengersViewModel.swift; sourceTree = "<group>"; };
 		1A9E6FE62465B4EB0013874C /* CreateNewLeagueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewLeagueView.swift; sourceTree = "<group>"; };
 		1A9E6FE82465E2470013874C /* League.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = League.swift; sourceTree = "<group>"; };
 		1A9E6FEA2465FF670013874C /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
@@ -84,6 +98,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A2AFC1124858ED5005B3606 /* New League */ = {
+			isa = PBXGroup;
+			children = (
+				1A9E6FE62465B4EB0013874C /* CreateNewLeagueView.swift */,
+				1A6846662485405900B23AEB /* CreateNewLeagueViewModel.swift */,
+			);
+			path = "New League";
+			sourceTree = "<group>";
+		};
+		1A2AFC1224858EF9005B3606 /* Enter Managers */ = {
+			isa = PBXGroup;
+			children = (
+				1A9E6FF02468CE5C0013874C /* CreateNewLeagueDetailManagerView.swift */,
+				1A68466824854A0300B23AEB /* CreateNewLeagueEmailsViewModel.swift */,
+			);
+			path = "Enter Managers";
+			sourceTree = "<group>";
+		};
+		1A2AFC1324858F0F005B3606 /* Enter Contestants */ = {
+			isa = PBXGroup;
+			children = (
+				1A3028AF246DE80A0031C03E /* EnterChallengersView.swift */,
+				1A68466A24856D3500B23AEB /* EnterChallengersViewModel.swift */,
+			);
+			path = "Enter Contestants";
+			sourceTree = "<group>";
+		};
 		1A5DACAF2438DF7F00C2AD19 = {
 			isa = PBXGroup;
 			children = (
@@ -110,10 +151,12 @@
 				1A5DACBF2438DF7F00C2AD19 /* ContentView.swift */,
 				1A67DB482478618B004CB8E5 /* Helpers */,
 				1A5DACED2443AA6400C2AD19 /* Networking */,
+				1A68465C24817E0500B23AEB /* Choose League */,
 				1A6E583F2454953700087976 /* ManagerTab */,
 				1A6E58402454954B00087976 /* ChallengerTab */,
 				1A9E6FE52465B4D10013874C /* Create New League */,
 				1A5DACDD243E604C00C2AD19 /* Model */,
+				1A68466324842C6D00B23AEB /* Shared Views */,
 				1A5DACC12438DF8100C2AD19 /* Assets.xcassets */,
 				1A5DACC62438DF8100C2AD19 /* LaunchScreen.storyboard */,
 				1A5DACC92438DF8100C2AD19 /* Info.plist */,
@@ -164,11 +207,28 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		1A6E583F2454953700087976 /* ManagerTab */ = {
+		1A68465C24817E0500B23AEB /* Choose League */ = {
 			isa = PBXGroup;
 			children = (
 				1A67DB4924786408004CB8E5 /* ChooseLeagueView.swift */,
+				1A68465F24841B2F00B23AEB /* ChooseLeagueViewModel.swift */,
+			);
+			path = "Choose League";
+			sourceTree = "<group>";
+		};
+		1A68466324842C6D00B23AEB /* Shared Views */ = {
+			isa = PBXGroup;
+			children = (
+				1A68466424842C7C00B23AEB /* NoLeagueView.swift */,
+			);
+			path = "Shared Views";
+			sourceTree = "<group>";
+		};
+		1A6E583F2454953700087976 /* ManagerTab */ = {
+			isa = PBXGroup;
+			children = (
 				1A5DACD9243D2A7600C2AD19 /* ManagerTabView.swift */,
+				1A68465D24817E2500B23AEB /* ManagerTabViewModel.swift */,
 				1A5DACE82443A39800C2AD19 /* ManagerRow.swift */,
 			);
 			path = ManagerTab;
@@ -178,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				1A5DACDB243E5FDA00C2AD19 /* WeeksScoresTabView.swift */,
+				1A684661248424D200B23AEB /* WeeklyScoresViewModel.swift */,
 				1A5DACF02445098600C2AD19 /* ChallengerRow.swift */,
 			);
 			path = ChallengerTab;
@@ -186,9 +247,9 @@
 		1A9E6FE52465B4D10013874C /* Create New League */ = {
 			isa = PBXGroup;
 			children = (
-				1A9E6FE62465B4EB0013874C /* CreateNewLeagueView.swift */,
-				1A9E6FF02468CE5C0013874C /* CreateNewLeagueDetailManagerView.swift */,
-				1A3028AF246DE80A0031C03E /* CreateNewLeagueEnterChallengersView.swift */,
+				1A2AFC1124858ED5005B3606 /* New League */,
+				1A2AFC1224858EF9005B3606 /* Enter Managers */,
+				1A2AFC1324858F0F005B3606 /* Enter Contestants */,
 			);
 			path = "Create New League";
 			sourceTree = "<group>";
@@ -356,19 +417,26 @@
 				1A5DACBC2438DF7F00C2AD19 /* AppDelegate.swift in Sources */,
 				1A5DACF5244F56F600C2AD19 /* DefaultsManager.swift in Sources */,
 				1A684659248031FB00B23AEB /* NotificationName+Extension.swift in Sources */,
+				1A68466524842C7C00B23AEB /* NoLeagueView.swift in Sources */,
 				1A9E6FE72465B4EB0013874C /* CreateNewLeagueView.swift in Sources */,
 				1A5DACDF243E605C00C2AD19 /* Manager.swift in Sources */,
 				1A5DACEF2443AA9700C2AD19 /* FirebaseManager.swift in Sources */,
+				1A68466024841B2F00B23AEB /* ChooseLeagueViewModel.swift in Sources */,
 				1A5DACBE2438DF7F00C2AD19 /* SceneDelegate.swift in Sources */,
 				1A5DACC02438DF7F00C2AD19 /* ContentView.swift in Sources */,
+				1A6846672485405900B23AEB /* CreateNewLeagueViewModel.swift in Sources */,
 				1A68465B24806CCC00B23AEB /* String+Extension.swift in Sources */,
 				1A5DACF12445098600C2AD19 /* ChallengerRow.swift in Sources */,
 				1A9E6FE92465E2470013874C /* League.swift in Sources */,
 				1A5DACDA243D2A7600C2AD19 /* ManagerTabView.swift in Sources */,
 				1A5DACD32438E1DA00C2AD19 /* WebScrapManager.swift in Sources */,
-				1A3028B0246DE80A0031C03E /* CreateNewLeagueEnterChallengersView.swift in Sources */,
+				1A3028B0246DE80A0031C03E /* EnterChallengersView.swift in Sources */,
+				1A68465E24817E2500B23AEB /* ManagerTabViewModel.swift in Sources */,
+				1A68466924854A0300B23AEB /* CreateNewLeagueEmailsViewModel.swift in Sources */,
+				1A684662248424D200B23AEB /* WeeklyScoresViewModel.swift in Sources */,
 				1A5DACE92443A39800C2AD19 /* ManagerRow.swift in Sources */,
 				1A67DB4A24786408004CB8E5 /* ChooseLeagueView.swift in Sources */,
+				1A68466B24856D3500B23AEB /* EnterChallengersViewModel.swift in Sources */,
 				1A5DACE1243E608900C2AD19 /* Challenger.swift in Sources */,
 				1A3028AE246DDE330031C03E /* HelperViews.swift in Sources */,
 				1A9E6FF12468CE5C0013874C /* CreateNewLeagueDetailManagerView.swift in Sources */,
@@ -509,6 +577,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"ChallengeApp/Preview Content\"";
 				DEVELOPMENT_TEAM = TKVBVK4237;
 				ENABLE_PREVIEWS = YES;
@@ -530,6 +599,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"ChallengeApp/Preview Content\"";
 				DEVELOPMENT_TEAM = TKVBVK4237;
 				ENABLE_PREVIEWS = YES;

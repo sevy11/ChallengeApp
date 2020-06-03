@@ -11,30 +11,32 @@ import Firebase
 
 struct CreateNewLeagueView: View {
     var user: User?
-    
+
     @State private var name = ""
-    @State var leagueType = Show.none.rawValue
-    @State var managersInLeague = 0
-    @State var buttonTapped: Int? = nil
+    @State private var leagueType: Show = .none
+    @State private var managersInLeague = 0
+    @State private var buttonTapped: Int? = nil
     @State var selected = false
     @State var showNameAlert = false
+    
+    @ObservedObject var viewModel = CreateNewLeagueViewModel()
+    
     
     var body: some View {
             Section {
                 VStack {
                     List {
-                        Text(selected ? "\(leagueType.uppercased())" : leagueType)
+                        Text(selected ? "\(leagueType.rawValue.uppercased())" : leagueType.rawValue)
                             .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
                         if selected == false {
                             Button(action: {
-                                self.leagueType = Show.challenge.rawValue
+                                self.leagueType = .challenge
                                 self.selected = true
                             }) {
                                 Text(Show.challenge.rawValue)
                             }
                             Button(action: {
-                                self.leagueType = Show.challenge.rawValue
-//                                self.leagueType = "Survivor"
+                                self.leagueType = .challenge
                                 self.selected = true
                             }) {
                                 Text("Survivor(Coming soon!)")
@@ -45,33 +47,25 @@ struct CreateNewLeagueView: View {
                         Text("League Name:")
                             .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
                         TextField("Type your league name...", text: $name)
-                            // @TODO add check for name.isvalid
-//                        if !isValidEmail(email: name) {
-//                            self.showNameAlert = true
-//                        }
                             .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(lineWidth: 2)
                                     .foregroundColor(.black)
-                        )
-                            .shadow(color: Color.gray.opacity(0.4),
-                                    radius: 3, x: 1, y: 2)
-//                            .alert(isPresented: $showNameAlert) { () -> Alert in
-//                                Alert(title: Text("name not valid")).padding()
-//                        }
+                            )
+                            .shadow(color: Color.gray.opacity(0.4), radius: 3, x: 1, y: 2)
                         Text("Enter Managers in league (3-8):")
                             .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
                       Picker(selection: $managersInLeague, label: Text("")) {
-                            ForEach(0 ..< Manager.managersAvailable.count) { index in
-                                Text(Manager.managersAvailable[index]).tag(index)
+                        ForEach(0 ..< self.viewModel.managerChoices.count) { index in
+                                Text(self.viewModel.managerChoices[index]).tag(index)
                             }
                         }.id(managersInLeague)
                             .pickerStyle(WheelPickerStyle())
                             .padding(EdgeInsets(top: -20, leading: 0, bottom: -20, trailing: 0))
                         HStack(alignment: .center) {
                             Spacer()
-                            Text("Manager Count: \(Manager.managersAvailable[managersInLeague])")
+                            Text("Manager Count: \(self.viewModel.managerChoices[managersInLeague])")
                             Spacer()
                         }
                         HStack(alignment: .center) {
@@ -80,15 +74,16 @@ struct CreateNewLeagueView: View {
                             Spacer()
                         }
                     }
-                    NavigationLink(destination: CreateNewLeagueDetailManagerView(leagueName: self.name, managerCount: self.managersInLeague + 3, user: user!), tag: 1, selection: $buttonTapped) {
+                    NavigationLink(destination: CreateNewLeagueDetailManagerView(league: viewModel.newLeague, user: user!), tag: 1, selection: $buttonTapped) {
                         Button(action: {
-                            self.buttonTapped = 1
+                            self.setLeague()
+                            self.allowButtonTap()
                         }) {
-                            Text("Enter Manager Names")
-                                .bold()
+                            Text("Enter Manager Names").bold()
                         }
-                    }.alert(isPresented: $showNameAlert) {
-                        Alert(title: Text("Alert"), message: Text("Team name cannot have unique characters"))
+                    }
+                    .alert(isPresented: $showNameAlert) {
+                        Alert(title: Text("Alert"), message: Text("Team name already in use, please try another"))
                     }
                     .padding(20)
                     .background(buttonColor)
@@ -97,33 +92,31 @@ struct CreateNewLeagueView: View {
                     .disabled(!allowedToEnterTeams)
                     .disableAutocorrection(true)
                     Spacer()
-                }
+                }.onAppear(perform: getAllLeagueNames)
             }
         .navigationBarTitle("Create New League")
     }
-    
-     var dateClosedRange: ClosedRange<Int> {
-        let min = 3
-        let max = 8
-//        let min = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
-//        let max = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
-        return min...max
-    }
 
-    func isValidEmail(email: String) -> Bool {
-        return email.contains("[") || email.contains("]") || email.contains("$") || email.contains("#") || email.contains(".")
+    func setLeague() {
+        viewModel.newLeague.name = self.name
+        viewModel.newLeague.managersInLeague = self.managersInLeague + 3
+        viewModel.newLeague.show = self.leagueType
+        viewModel.newLeague.creatorEmail = self.user?.email!
     }
     
-    var leagueTypeEntered: String {
-        return leagueType == Show.none.rawValue ? leagueType : Show.none.rawValue
+    func getAllLeagueNames() {
+        viewModel.getLeagueNames()
     }
     
-    var leagueShow: Bool {
-        return leagueType == Show.none.rawValue ? true : false
+    func allowButtonTap() {
+        if viewModel.leagueNameExists(name: self.name) {
+            self.showNameAlert = true
+            self.buttonTapped = 0
+        } else {
+            self.buttonTapped = 1
+        }
     }
     
-    
-    // @TODO call firebase to see if that name has been used
     var allowedToEnterTeams: Bool {
         return !name.isEmpty && selected
     }

@@ -11,7 +11,8 @@ import Firebase
 
 struct Challenger {
     static var challengers = ["Aneesa Ferreira", "Asaf Goren", "Ashley Mitchell", "Bayleigh Dayton", "Cory Wharton", "CT Tamburello", "Dee Nguyen", "Fessy Shafaat", "Jay Starrett", "Jenna Compono", "Jennifer Lee", "Jenny West", "Johnny Bananas", "Jordan Wiseley", "Josh Martinez", "Kailah Casillas", "Kaycee Clark", "Kyle Christie", "Mattie Breaux", "Melissa Reeves", "Nany Gonzalez", "Nelson Thomas", "Rogan O\'Connor", "Stephen Bear", "Swaggy C Williams", "Tori Deal", "Tula Fazakerley", "Wes Bergmann"]
-    static let challengerCount = 28
+    
+    static var survivors = ["Aneesa Ferreira", "Asaf Goren", "Ashley Mitchell", "Bayleigh Dayton", "Cory Wharton", "CT Tamburello", "Dee Nguyen", "Fessy Shafaat", "Jay Starrett", "Jenna Compono", "Jennifer Lee", "Jenny West", "Johnny Bananas", "Jordan Wiseley", "Josh Martinez", "Kailah Casillas", "Kaycee Clark", "Kyle Christie", "Mattie Breaux", "Melissa Reeves", "Nany Gonzalez", "Nelson Thomas", "Rogan O\'Connor", "Stephen Bear", "Swaggy C Williams", "Tori Deal", "Tula Fazakerley", "Wes Bergmann"]
     public var id: Int
     public var name: String
     public var score: Int
@@ -48,6 +49,32 @@ struct Challenger {
                 Challenger(forTest: 4, name: "CT Tamburello", score: 30, active: false),
                 Challenger(forTest: 5, name: "Dee Nguyen", score: 20, active: true)]
     }
+    
+    static func parseWith(snapshot: DataSnapshot) -> [Challenger]? {
+          var challengers = [Challenger]()
+          
+          if let values = snapshot.value as? [NSString : Any],
+              let names   = values["names"] as? [String],
+              let scores  = values["scores"] as? [Int],
+              let week    = values["week"] as? Int,
+              let actives = values["actives"] as? [Bool] {
+              
+              var counter = 0
+              var ch = Challenger.init(id: 0, name: "", score: 0, active: true)
+              ch.week = week
+              
+              for n in names {
+                  ch.id = counter
+                  ch.name = n
+                  ch.score = scores[counter]
+                  ch.active = actives[counter]
+                  counter += 1
+                  
+                  challengers.append(ch)
+              }
+          }
+          return challengers
+      }
 }
 
 extension Challenger: Identifiable {

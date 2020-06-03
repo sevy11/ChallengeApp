@@ -9,10 +9,9 @@
 import Foundation
 import SwiftUI
 import Firebase
-//import FBSDKCoreKit, when we start the sign in SDk
 
 struct Manager {
-    static let managersAvailable = ["3", "4", "5", "6", "7", "8"]
+    static let managerChoices = ["3", "4", "5", "6", "7", "8"]
 
     public var firebaseEmail: String
     public var contestantNames: [String]?

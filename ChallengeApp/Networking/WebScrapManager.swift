@@ -7,40 +7,25 @@
 //
 
 import Foundation
-import Kanna
 import Alamofire
-import Firebase
+//import Combine
 
-class WebScrapManager: ObservableObject {
-    @Published var currentAvailableWeek: String = ""
-    var managersTeams = [[String]]()
-    var weeksAvailable = [String]()
-    let firebaseManager = FirebaseManager()
+let kTotalMadnessWeeklyEndpoint = "https://www.realtvfantasy.com/shows/scores/mtv-the-challenge-total-madness/"
 
-    func getCurrentWeek(user: User) {
+class WebScraper {
+    public func getCurrentWeek(success: @escaping (_ description: String) -> Void) {
         AF.request("https://www.realtvfantasy.com/shows/view/mtv-the-challenge-total-madness").responseString { response in
-            self.parseForCurrentWeek(html: response.description, user: user)
+            success(response.description)
         }
     }
-    
-    private func parseForCurrentWeek(html: String, user: User) {
-        if let doc = try? HTML(html: html, encoding: .utf8) {
-            for header in doc.css("a, h4") {
-                if let headerValue = header.text {
-                    if headerValue.contains("Episode ") && headerValue.contains("Scores") {
-                        // get the number out and convert to Int
-                        let result = headerValue.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789.").inverted)
-                        self.weeksAvailable.append(result)
-                    }
-                }
+
+    public func getScoresFor(week: Int, success: @escaping (_ response: String) -> Void, failure: @escaping(_ failure: Bool) -> Void) {
+        AF.request("\(kTotalMadnessWeeklyEndpoint)\(week)").responseString { response in
+            if let description = response.description as? String {
+                success(description)
+            } else {
+                failure(true)
             }
-        }
-        let sorted = self.weeksAvailable.sorted { $0 > $1 }
-        if let currentWeek = sorted.first {
-            self.currentAvailableWeek = currentWeek
-            self.firebaseManager.compareScraperAndFetchScoresIfNecesary(week: currentWeek)
-        } else {
-            self.currentAvailableWeek = "Loading..."
         }
     }
 }
