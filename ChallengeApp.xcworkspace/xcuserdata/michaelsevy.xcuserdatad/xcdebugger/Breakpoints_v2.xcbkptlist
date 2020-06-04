@@ -14,8 +14,8 @@
             filePath = "ChallengeApp/Create New League/Enter Contestants/EnterChallengersView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "160"
-            endingLineNumber = "160"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
             landmarkName = "save(manager:)"
             landmarkType = "7">
          </BreakpointContent>

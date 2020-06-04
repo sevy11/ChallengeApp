@@ -25,6 +25,7 @@ struct CreateNewLeagueDetailManagerView: View {
     @State var buttonTapped: Int? = nil
     @State var showInvalidEmailAddressAlert = false
 
+    @Binding var showModal: Bool
     @ObservedObject var viewModel = CreateNewLeagueEmailsViewModel()
     
     
@@ -148,7 +149,7 @@ struct CreateNewLeagueDetailManagerView: View {
                     TextField("Enter email for manager", text: $manager8).modifier(TextFieldModifer())
                 }.padding()
             }
-            NavigationLink(destination: EnterChallengersView(league: league, managers: self.managerNames, user: user!), tag: 1, selection: $buttonTapped) {
+            NavigationLink(destination: EnterChallengersView(league: league, managers: self.managerNames, user: user!, showModal: $showModal), tag: 1, selection: $buttonTapped) {
                 Button(action: {
                     self.saveLeague()
                 }) {
@@ -176,6 +177,9 @@ struct CreateNewLeagueDetailManagerView: View {
             Spacer()
         }
         .navigationBarTitle("Add Managers")
+        .navigationBarItems(trailing: Button("Done", action: {
+            self.showModal = false
+        }))
     }
     
     var buttonColor: LinearGradient {
@@ -224,7 +228,6 @@ struct CreateNewLeagueDetailManagerView: View {
         }
         if viewModel.areValidEmailAddresses(emails: self.managerNames) {
             self.buttonTapped = 1
-            viewModel.savingLeagueInProgress = true
             self.showInvalidEmailAddressAlert = false
             viewModel.createLeague(name: self.league.name, emails: self.managerNames, user: user!, show: self.league.show!.rawValue)
         } else {
@@ -238,6 +241,6 @@ struct CreateNewLeagueDetailManagerView: View {
 
 struct CreateNewLeagueDetailManagerView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateNewLeagueDetailManagerView(league: League.init(name: "i"))
+        CreateNewLeagueDetailManagerView(league: League.init(name: "i"), showModal: .constant(true))
     }
 }

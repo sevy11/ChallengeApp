@@ -32,6 +32,7 @@ struct EnterChallengersView: View {
     @State var challenger9 = ""
     @State var buttonTitle = "Next Manager"
     
+    @Binding var showModal: Bool
     @ObservedObject var viewModel = EnterChallengersViewModel()
     let pub = NotificationCenter.default.publisher(for: Notification.Name.LeagueCompletedSaving)
 
@@ -147,17 +148,23 @@ struct EnterChallengersView: View {
             .foregroundColor(.black)
             .cornerRadius(40)
             Spacer()
-        }.navigationBarTitle(managers[managerCounter])
+        }
+        .navigationBarTitle(managers[managerCounter])
+        .navigationBarItems(trailing: Button("Done", action: {
+            self.showModal = false
+        }))
     }
     
     func save(manager: String) {
         viewModel.update(league: league, manager: manager)
         
         if managerCounter == managers.count - 1 {
-            print("League Entry Complete, Pop back to root view")
+            print("League Entry Complete, Pop back to root view.")
             DefaultsManager.saveDefaultLeague(name: league.name)
             self.buttonTapped = 1
+            self.showModal = false
         } else if managerCounter == managers.count - 2 {
+            print("Last entry before league complete.")
             self.buttonTitle = "Complete League"
             self.buttonTapped = 0
             self.clearChallengersForNextManagerEntry()
@@ -230,7 +237,7 @@ struct EnterChallengersView: View {
 
 struct EnterChallengersView_Previews: PreviewProvider {
     static var previews: some View {
-        EnterChallengersView(league: League.init(name: "Test League"), managers: ["Sevy@gmial.com", "Shamir@gmail.ocm", "BJ@gmail.com"])
+        EnterChallengersView(league: League.init(name: "Test League"), managers: ["Sevy@gmial.com", "Shamir@gmail.ocm", "BJ@gmail.com"], showModal: .constant(true))
     }
 }
 

@@ -47,7 +47,7 @@
 /* Begin PBXFileReference section */
 		1A3028AD246DDE330031C03E /* HelperViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperViews.swift; sourceTree = "<group>"; };
 		1A3028AF246DE80A0031C03E /* EnterChallengersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterChallengersView.swift; sourceTree = "<group>"; };
-		1A5DACB82438DF7F00C2AD19 /* ChallengeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChallengeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A5DACB82438DF7F00C2AD19 /* Backpack Reality.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Backpack Reality.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A5DACBB2438DF7F00C2AD19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A5DACBD2438DF7F00C2AD19 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		1A5DACBF2438DF7F00C2AD19 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 		1A5DACB92438DF7F00C2AD19 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1A5DACB82438DF7F00C2AD19 /* ChallengeApp.app */,
+				1A5DACB82438DF7F00C2AD19 /* Backpack Reality.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -293,7 +293,7 @@
 			packageProductDependencies = (
 			);
 			productName = ChallengeApp;
-			productReference = 1A5DACB82438DF7F00C2AD19 /* ChallengeApp.app */;
+			productReference = 1A5DACB82438DF7F00C2AD19 /* Backpack Reality.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -587,7 +587,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.MichaelSevy.ChallengeApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Backpack Reality";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -609,7 +609,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.MichaelSevy.ChallengeApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Backpack Reality";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

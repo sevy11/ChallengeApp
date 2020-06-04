@@ -21,9 +21,9 @@ struct ManagerTabView: View {
             if viewModel.isLoading {
                 ActivityIndicator(isAnimating: .constant(viewModel.isLoading), style: .large)
             } else if viewModel.leagues.count == 0 {
-                Spacer()
-                NoLeagueView()
-                Spacer()
+                 Text("There are no leagues associated with this email address. Tap Leagues to sign out.")
+                .lineLimit(nil)
+                .multilineTextAlignment(.center)
             } else {
                 Spacer()
                 Text("Totals thru week: \(viewModel.currentAvailableWeek)")

@@ -287,6 +287,9 @@ class ManagerTabViewModel: ObservableObject, Identifiable {
         // Inflate Managers with full Challenger Object
         if let unwrappedLeague = self.league {
             self.getChallengersFor(league: unwrappedLeague)
+        } else {
+            // User has no leauegs associated with them, no need to populate users
+            self.isLoading = false
         }
     }
     

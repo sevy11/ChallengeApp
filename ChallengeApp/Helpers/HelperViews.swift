@@ -30,7 +30,6 @@ struct TextFieldModifer: ViewModifier {
             .keyboardType(.emailAddress)
             .padding()
             .overlay(RoundedRectangle(cornerRadius: 10)
-            .stroke(lineWidth: 2)
-            .foregroundColor(Color.black))
+            .stroke(lineWidth: 2))
     }
 }
