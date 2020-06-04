@@ -21,9 +21,10 @@ struct ManagerTabView: View {
             if viewModel.isLoading {
                 ActivityIndicator(isAnimating: .constant(viewModel.isLoading), style: .large)
             } else if viewModel.leagues.count == 0 {
-                 Text("There are no leagues associated with this email address. Tap Leagues to sign out.")
+                 Text("There are no leagues associated with this email address.")
                 .lineLimit(nil)
                 .multilineTextAlignment(.center)
+                signOutButton
             } else {
                 Spacer()
                 Text("Totals thru week: \(viewModel.currentAvailableWeek)")
@@ -64,6 +65,23 @@ struct ManagerTabView: View {
             viewModel.getLeaguesFor(user: user)
         }
     }
+    
+    func signOut() {
+        if let authUI = FUIAuth.defaultAuthUI() {
+            try? authUI.signOut()
+        }
+    }
+    
+    var signOutButton: some View {
+          return Button(action: {
+              self.signOut()
+          }) {
+              Text("Sign Out")
+          }.padding(15)
+              .background(LinearGradient(gradient: Gradient(colors: [.red, .gray]), startPoint: .leading, endPoint: .trailing))
+              .foregroundColor(.white)
+              .cornerRadius(40)
+      }
     
 //    func manuallyUpdateScoresForWeek() {
 //        // Comment out FirebaseManager.compareScraperAndFetchScoresIfNecesary when updating manaully

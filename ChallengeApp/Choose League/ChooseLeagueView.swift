@@ -72,7 +72,7 @@ struct ChooseLeagueView: View {
         }) {
             Text("Sign Out")
         }.padding(15)
-            .background(LinearGradient(gradient: Gradient(colors: [.red, .black]), startPoint: .leading, endPoint: .trailing))
+            .background(LinearGradient(gradient: Gradient(colors: [.red, .gray]), startPoint: .leading, endPoint: .trailing))
             .foregroundColor(.white)
             .cornerRadius(40)
     }

@@ -36,11 +36,13 @@ struct WeeksScoresTabView: View {
                     }
                 } else {
                     Section {
-                        Picker(selection: $weekSelection.onChange(fetchData), label: Text("Week").padding()) {
+                        Text("Week:").padding(EdgeInsets(top: 0, leading: -10, bottom: 0, trailing: 0))
+                        Picker(selection: $weekSelection.onChange(fetchData), label: Text("").padding()) {
                             ForEach(1 ..< League.weeks.count) {
                                 Text(League.weeks[$0])
                             }
                         }.id(weekSelection)
+                            .labelsHidden()
                             .pickerStyle(DefaultPickerStyle())
                             .navigationBarTitle(ChallengeSeasons.totalMadness.rawValue)
                     }
