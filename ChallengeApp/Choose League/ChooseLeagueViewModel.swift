@@ -59,6 +59,7 @@ final class ChooseLeagueViewModel: ObservableObject, Identifiable {
             self.setLeaguesFor(user: user, allLeagues: leagues)
         } else {
             print("could not interprept snapshot value")
+            self.isLoading = false
         }
     }
     

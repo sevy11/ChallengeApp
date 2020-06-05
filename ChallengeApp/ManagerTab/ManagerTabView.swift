@@ -22,7 +22,11 @@ struct ManagerTabView: View {
                 ActivityIndicator(isAnimating: .constant(viewModel.isLoading), style: .large)
             } else if viewModel.leagues.count == 0 {
                 Spacer()
-                NoLeagueView()
+                Text("There are no leagues associated with this email address.")
+                    .lineLimit(nil)
+                    .multilineTextAlignment(.center)
+                Spacer()
+                signOutButton
                 Spacer()
             } else {
                 Spacer()
@@ -41,12 +45,13 @@ struct ManagerTabView: View {
                         }
                     }.id(UUID().uuidString)
                 }
-                .navigationBarTitle(viewModel.leagueName)
             }
-        }.navigationBarBackButtonHidden(true)
-            .onAppear(perform: getCurrentWeek)
-            .onReceive(pub) { (output) in
-                self.loadUpdatedChallengers()
+        }
+        .navigationBarTitle(viewModel.leagueName)
+        .navigationBarBackButtonHidden(true)
+        .onAppear(perform: getCurrentWeek)
+        .onReceive(pub) { (output) in
+            self.loadUpdatedChallengers()
         }
     }
     
@@ -63,6 +68,23 @@ struct ManagerTabView: View {
             viewModel.getLeaguesFor(user: user)
         }
     }
+    
+    func signOut() {
+        if let authUI = FUIAuth.defaultAuthUI() {
+            try? authUI.signOut()
+        }
+    }
+    
+    var signOutButton: some View {
+          return Button(action: {
+              self.signOut()
+          }) {
+              Text("Sign Out")
+          }.padding(15)
+              .background(LinearGradient(gradient: Gradient(colors: [.red, .gray]), startPoint: .leading, endPoint: .trailing))
+              .foregroundColor(.white)
+              .cornerRadius(40)
+      }
     
 //    func manuallyUpdateScoresForWeek() {
 //        // Comment out FirebaseManager.compareScraperAndFetchScoresIfNecesary when updating manaully

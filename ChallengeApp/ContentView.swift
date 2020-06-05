@@ -13,6 +13,7 @@ import Combine
 struct ContentView: View {
     var user: User?
     var defaultsManager = DefaultsManager()
+    @State var isPresented: Bool = false
     
     var body: some View {
         TabView {
@@ -23,10 +24,16 @@ struct ContentView: View {
                             NavigationLink(destination: ChooseLeagueView(user: user)) {
                                 Text("Leagues").bold()
                             },trailing:
-                            NavigationLink(destination: CreateNewLeagueView(user: user)) {
+                            Button(action: {
+                                self.isPresented.toggle()
+                            }, label: {
                                 Text("Create New League").bold()
+                            }).sheet(isPresented: $isPresented, onDismiss: {
+                                print("Model dismissed. State now: \(self.isPresented)")
+                                NotificationCenter.default.post(name: Notification.Name.UpdatedChallengerScores, object: nil)
+                            }) {
+                                CreateNewLeagueView(user: self.user!, showModal: self.$isPresented)
                             }
-                            .isDetailLink(false)
                     )
                 }
             }
