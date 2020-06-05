@@ -177,9 +177,11 @@ struct CreateNewLeagueDetailManagerView: View {
             Spacer()
         }
         .navigationBarTitle("Add Managers")
-        .navigationBarItems(trailing: Button("Done", action: {
+        .navigationBarItems(trailing: Button(action: {
             self.showModal = false
-        }))
+        }) {
+            Image(systemName: "xmark")
+        })
     }
     
     var buttonColor: LinearGradient {

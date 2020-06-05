@@ -38,7 +38,6 @@
 		1A68466B24856D3500B23AEB /* EnterChallengersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A68466A24856D3500B23AEB /* EnterChallengersViewModel.swift */; };
 		1A9E6FE72465B4EB0013874C /* CreateNewLeagueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FE62465B4EB0013874C /* CreateNewLeagueView.swift */; };
 		1A9E6FE92465E2470013874C /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FE82465E2470013874C /* League.swift */; };
-		1A9E6FEB2465FF670013874C /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FEA2465FF670013874C /* Show.swift */; };
 		1A9E6FEF246853D50013874C /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FEE246853D50013874C /* Color+Extension.swift */; };
 		1A9E6FF12468CE5C0013874C /* CreateNewLeagueDetailManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FF02468CE5C0013874C /* CreateNewLeagueDetailManagerView.swift */; };
 		4B9C553A6048716871BE177A /* Pods_ChallengeApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEDF69EFA27BBD255E2D4774 /* Pods_ChallengeApp.framework */; };
@@ -78,7 +77,6 @@
 		1A68466A24856D3500B23AEB /* EnterChallengersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterChallengersViewModel.swift; sourceTree = "<group>"; };
 		1A9E6FE62465B4EB0013874C /* CreateNewLeagueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewLeagueView.swift; sourceTree = "<group>"; };
 		1A9E6FE82465E2470013874C /* League.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = League.swift; sourceTree = "<group>"; };
-		1A9E6FEA2465FF670013874C /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		1A9E6FEE246853D50013874C /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		1A9E6FF02468CE5C0013874C /* CreateNewLeagueDetailManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewLeagueDetailManagerView.swift; sourceTree = "<group>"; };
 		58AC706AAA98C34199C93B7E /* Pods-ChallengeApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChallengeApp.debug.xcconfig"; path = "Target Support Files/Pods-ChallengeApp/Pods-ChallengeApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -180,7 +178,6 @@
 				1A5DACDE243E605C00C2AD19 /* Manager.swift */,
 				1A5DACE0243E608900C2AD19 /* Challenger.swift */,
 				1A9E6FE82465E2470013874C /* League.swift */,
-				1A9E6FEA2465FF670013874C /* Show.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -412,7 +409,6 @@
 			files = (
 				1A5DACD8243953E600C2AD19 /* Constants.swift in Sources */,
 				1A9E6FEF246853D50013874C /* Color+Extension.swift in Sources */,
-				1A9E6FEB2465FF670013874C /* Show.swift in Sources */,
 				1A5DACDC243E5FDA00C2AD19 /* WeeksScoresTabView.swift in Sources */,
 				1A5DACBC2438DF7F00C2AD19 /* AppDelegate.swift in Sources */,
 				1A5DACF5244F56F600C2AD19 /* DefaultsManager.swift in Sources */,

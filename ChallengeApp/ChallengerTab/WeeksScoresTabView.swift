@@ -31,8 +31,8 @@ struct WeeksScoresTabView: View {
                             .padding(EdgeInsets(top: -40, leading: 0, bottom: -40, trailing: 0))
                             .navigationBarTitle(ChallengeSeasons.totalMadness.rawValue)
                     }
-                    List(viewModel.challengers) { ch in
-                        ChallengerRow(challenger: ch, isPresented: true)
+                    List(viewModel.challengers) { challenger in
+                        ChallengerRow(challenger: challenger, isPresented: true)
                     }
                 } else {
                     Section {

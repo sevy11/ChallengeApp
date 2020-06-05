@@ -48,9 +48,11 @@ class ManagerTabViewModel: ObservableObject, Identifiable {
                 }
             }
         }
-        
-        let sorted = weeksAvailable.sorted { $0 > $1 }
-        if let currentWeek = sorted.first {
+        // sort string ints least to greatest
+        let ans = weeksAvailable.sorted {
+            (s1, s2) -> Bool in return s1.localizedStandardCompare(s2) == .orderedAscending
+        }
+        if let currentWeek = ans.last {
             self.currentAvailableWeek = currentWeek
             self.compare(week: currentWeek)
         } else {
@@ -68,7 +70,10 @@ class ManagerTabViewModel: ObservableObject, Identifiable {
                 
                 // compare
                 if intWeek > firebaseWeek {
+                    print("we have a new week, get new week scores from web scraper, send out a APNS to all users")
                     self.getScoresFor(week: intWeek, post: true)
+                } else {
+                    print("no new week scores yet, :(")
                 }
             }
         }) { (failure) in
@@ -268,6 +273,7 @@ class ManagerTabViewModel: ObservableObject, Identifiable {
             if let singleLeague = self.leagues.first {
                 DefaultsManager.saveDefaultLeague(name: singleLeague.name)
                 self.league = singleLeague
+                self.leagueName = singleLeague.name
             }
             // Default name not set for first time user
         } else if DefaultsManager.getDefaultLeagueName() == nil && self.leagues.count > 0 {
@@ -275,6 +281,7 @@ class ManagerTabViewModel: ObservableObject, Identifiable {
                 DefaultsManager.saveDefaultLeague(name: firstLeague.name)
                 if self.league == nil {
                     self.league = firstLeague
+                    self.leagueName = firstLeague.name
                 }
             }
         }

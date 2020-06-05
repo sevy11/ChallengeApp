@@ -76,9 +76,11 @@ struct CreateNewLeagueView: View {
                     }
                 }
                 .navigationBarTitle("Create New League")
-                .navigationBarItems(trailing: Button("Done", action: {
+                .navigationBarItems(trailing: Button(action: {
                     self.showModal = false
-                }))
+                }) {
+                    Image(systemName: "xmark")
+                })
                 NavigationLink(destination: CreateNewLeagueDetailManagerView(league: viewModel.newLeague, user: user!, showModal: $showModal), tag: 1, selection: $buttonTapped) {
                     Button(action: {
                         self.setLeague()

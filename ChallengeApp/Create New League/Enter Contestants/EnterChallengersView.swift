@@ -150,9 +150,11 @@ struct EnterChallengersView: View {
             Spacer()
         }
         .navigationBarTitle(managers[managerCounter])
-        .navigationBarItems(trailing: Button("Done", action: {
+        .navigationBarItems(trailing: Button(action: {
             self.showModal = false
-        }))
+        }) {
+            Image(systemName: "xmark")
+        })
     }
     
     func save(manager: String) {
