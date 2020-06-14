@@ -32,7 +32,7 @@ struct WeeksScoresTabView: View {
                             .navigationBarTitle(ChallengeSeasons.totalMadness.rawValue)
                     }
                     List(viewModel.challengers) { challenger in
-                        ChallengerRow(challenger: challenger, isPresented: true)
+                        ChallengerRow(challenger: challenger)
                     }
                 } else {
                     Section {

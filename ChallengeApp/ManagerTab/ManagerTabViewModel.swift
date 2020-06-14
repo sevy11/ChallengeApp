@@ -145,9 +145,7 @@ class ManagerTabViewModel: ObservableObject, Identifiable {
                     }
                 }
             }
-        }) { (failed) in
-            print("failed to fetch from web scraper")
-        }
+        })
     }
     
     func sumScoresAndPostUpdatedChallengers(snapshot: DataSnapshot, names: [NSString], week: Int) {

@@ -13,7 +13,7 @@ import Combine
 struct ContentView: View {
     var user: User?
     var defaultsManager = DefaultsManager()
-    @State var isPresented: Bool = false
+    @State private var isPresented: Bool = false
     
     var body: some View {
         TabView {

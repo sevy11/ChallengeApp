@@ -13,17 +13,17 @@ struct CreateNewLeagueDetailManagerView: View {
     var league: League
     var user: User?
 
-    @State var manager1: String = ""
-    @State var manager2: String = ""
-    @State var manager3: String = ""
-    @State var manager4: String = ""
-    @State var manager5: String = ""
-    @State var manager6: String = ""
-    @State var manager7: String = ""
-    @State var manager8: String = ""
-    @State var managerNames = [String]()
-    @State var buttonTapped: Int? = nil
-    @State var showInvalidEmailAddressAlert = false
+    @State private var manager1: String = ""
+    @State private var manager2: String = ""
+    @State private var manager3: String = ""
+    @State private var manager4: String = ""
+    @State private var manager5: String = ""
+    @State private var manager6: String = ""
+    @State private var manager7: String = ""
+    @State private var manager8: String = ""
+    @State private var managerNames = [String]()
+    @State private var buttonTapped: Int? = nil
+    @State private var showInvalidEmailAddressAlert = false
 
     @Binding var showModal: Bool
     @ObservedObject var viewModel = CreateNewLeagueEmailsViewModel()
@@ -231,7 +231,7 @@ struct CreateNewLeagueDetailManagerView: View {
         if viewModel.areValidEmailAddresses(emails: self.managerNames) {
             self.buttonTapped = 1
             self.showInvalidEmailAddressAlert = false
-            viewModel.createLeague(name: self.league.name, emails: self.managerNames, user: user!, show: self.league.show!.rawValue)
+            viewModel.create(league: self.league, emails: self.managerNames, user: user!)
         } else {
             self.buttonTapped = 0
             self.showInvalidEmailAddressAlert = true

@@ -16,22 +16,13 @@ let kLeagueNames            = "leagueNames"
 let kContestantNames        = "contestantNames"
 let kContestantScores       = "contestantScores"
 
-class DefaultsManager: ObservableObject {
+class DefaultsManager {
     // MARK: - Leagues
-    static var defaultLeagueExists: Bool {
-        return UserDefaults.standard.bool(forKey: kDefaultLeagueExists)
-    }
-        
     static func saveDefaultLeague(name: String) {
         UserDefaults.standard.set(name, forKey: kDefaultLeagueName)
         // After setting the default league name, also turn on the Bool that it exists
         UserDefaults.standard.set(true, forKey: kDefaultLeagueExists)
-        
         print("default league changed to: \(name)")
-    }
-    
-    public func setDefaultLeaguesExists(flag : Bool) {
-        UserDefaults.standard.set(flag, forKey: kDefaultLeagueExists)
     }
     
     static func getDefaultLeagueName() -> String? {
@@ -42,9 +33,28 @@ class DefaultsManager: ObservableObject {
     }
        
     // MARK: - Challengers
-    static func saveChallengersFor(week: Int, names: [NSString], scores: [NSNumber]) {
-        UserDefaults.standard.set(names, forKey: kContestantNames)
-        UserDefaults.standard.set(scores, forKey: kContestantScores)
-    }
+//    static func saveChallengersFor(week: Int, names: [NSString], scores: [NSNumber]) {
+//        UserDefaults.standard.set(names, forKey: kContestantNames)
+//        UserDefaults.standard.set(scores, forKey: kContestantScores)
+//    }
 
+}
+
+@propertyWrapper
+public struct DefaultSynced<Value> {
+    public let key: String
+    public let defaultValue: Value
+    public var wrappedValue: Value {
+        get {
+            UserDefaults.standard.object(forKey: key) as? Value ?? defaultValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: key)
+        }
+    }
+}
+
+public struct Defaults {
+    @DefaultSynced(key: kDefaultLeagueName, defaultValue: "")
+    public var leagueName: String
 }

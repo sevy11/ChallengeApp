@@ -16,9 +16,9 @@ final class EnterChallengersViewModel: ObservableObject, Identifiable {
     
     // @TODO constant Challengers for now
     func getContestantsFor(league: League) {
-        if league.show! == .challenge {
+        if league.program.title == .challenge {
             self.challengers = Challenger.challengers
-        } else if league.show! == .survivor {
+        } else if league.program.title == .survivor {
             self.challengers = Challenger.survivors
         } else {
             // @TODO more shows

@@ -9,14 +9,6 @@
 import Foundation
 import Firebase
 
-enum Show: String, CaseIterable{
-    case none = "Choose League:"
-    case challenge = "The Challenge"
-    case survivor = "Survivor"
-    case bachelor = "The Bachelor"
-    case bachelorette = "The Bachelorette"
-}
-
 struct Challenger {
     static var challengers = ["Aneesa Ferreira", "Asaf Goren", "Ashley Mitchell", "Bayleigh Dayton", "Cory Wharton", "CT Tamburello", "Dee Nguyen", "Fessy Shafaat", "Jay Starrett", "Jenna Compono", "Jennifer Lee", "Jenny West", "Johnny Bananas", "Jordan Wiseley", "Josh Martinez", "Kailah Casillas", "Kaycee Clark", "Kyle Christie", "Mattie Breaux", "Melissa Reeves", "Nany Gonzalez", "Nelson Thomas", "Rogan O\'Connor", "Stephen Bear", "Swaggy C Williams", "Tori Deal", "Tula Fazakerley", "Wes Bergmann"]
     
