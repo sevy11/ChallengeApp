@@ -12,9 +12,10 @@ import Firebase
 import FirebaseUI
 
 struct ManagerTabView: View {
+    // MARK: - Instance Variables
     var user: User?
-    @ObservedObject var viewModel = ManagerTabViewModel()
-    let pub = NotificationCenter.default.publisher(for: NSNotification.Name.UpdatedChallengerScores)
+    @ObservedObject private var viewModel = ManagerTabViewModel()
+    private let pub = NotificationCenter.default.publisher(for: NSNotification.Name.UpdatedChallengerScores)
     
     var body: some View {
         VStack {
@@ -30,7 +31,7 @@ struct ManagerTabView: View {
                 Spacer()
             } else {
                 Spacer()
-                Text("Totals thru week: \(viewModel.currentAvailableWeek)")
+                Text("Totals thru week \(viewModel.currentAvailableWeek)")
                     .foregroundColor(.orange)
                     .font(Font.system(size: 18))
                 List(viewModel.managers, id: \.firebaseEmail) { manager in

@@ -10,7 +10,8 @@ import SwiftUI
 import Combine
 
 struct WeeksScoresTabView: View {
-    @State var weekSelection = 0
+    // MARK: - Instance Variables
+    @State private var weekSelection = 0
     @ObservedObject var viewModel = WeeklyScoresViewModel()
     
     var body: some View {
@@ -50,7 +51,7 @@ struct WeeksScoresTabView: View {
                 }
             }
             .onAppear(perform: initialFetch)
-        }
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
@@ -77,6 +78,6 @@ extension WeeksScoresTabView {
 
 struct WeeksScoresTabView_Previews: PreviewProvider {
     static var previews: some View {
-        WeeksScoresTabView(weekSelection: 1)
+        WeeksScoresTabView()
     }
 }

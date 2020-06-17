@@ -23,7 +23,7 @@ struct League {
     }
     public var managers: [Manager]?
     public var managersInLeague: Int?
-    public var show: Show?
+    public var show: TelevisionProgram = TelevisionProgram(title: .none)
    
     init(name: String) {
         self.name = name

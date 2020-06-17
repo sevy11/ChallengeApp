@@ -10,17 +10,22 @@ import Foundation
 import Combine
 import Firebase
 
+protocol CreateNewLeagueEmailsProtocol {
+    func createLeague(name: String, emails: [String], user: User, showName: String)
+    func areValid(emailAddresses: [String]) -> Bool
+}
 
-final class CreateNewLeagueEmailsViewModel: ObservableObject, Identifiable {
+final class CreateNewLeagueEmailsViewModel: CreateNewLeagueEmailsProtocol, ObservableObject, Identifiable {
+    // MARK: - Instance Variables
     @Published var errorSavingLeague: Error?
     @Published var savingLeagueInProgress = false
-    let firebase = FirebaseManager()
+    private let firebase = FirebaseManager()
     
     
     // MARK: - POST/GET Functions
-    public func createLeague(name: String, emails: [String], user: User, show: String) {
+    public func createLeague(name: String, emails: [String], user: User, showName: String) {
         self.savingLeagueInProgress = true
-        firebase.createLeagueWith(name: name, managerEmails: emails, user: user, show: show, posted: { (success) in
+        firebase.createLeagueWith(name: name, managerEmails: emails, user: user, show: showName, posted: { (success) in
             self.savingLeagueInProgress = false
         }) { (failed) in
             self.savingLeagueInProgress = false
@@ -28,8 +33,8 @@ final class CreateNewLeagueEmailsViewModel: ObservableObject, Identifiable {
         }
     }
     
-    public func areValidEmailAddresses(emails: [String]) -> Bool {
-        for email in emails {
+    public func areValid(emailAddresses: [String]) -> Bool {
+        for email in emailAddresses {
             if !email.contains("@") {
                 return false
             }

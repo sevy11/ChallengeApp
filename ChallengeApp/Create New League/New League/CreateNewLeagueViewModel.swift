@@ -10,13 +10,19 @@ import Foundation
 import Combine
 import Firebase
 
-final class CreateNewLeagueViewModel: ObservableObject, Identifiable {
+protocol CreateNewLeagueProtocol {
+    func getLeagueNames()
+}
+
+final class CreateNewLeagueViewModel: CreateNewLeagueProtocol, ObservableObject, Identifiable {
+    // MARK: - Instance Variables
     @Published var leagueNames = [String]()
     @Published var newLeague = League.init(name: "")
     @Published var managerChoices = Manager.managerChoices
     private let firebase = FirebaseManager()
     
-    func getLeagueNames() {
+    // MARK: - Functions
+    public func getLeagueNames() {
         firebase.getLeagues(success: { [weak self] (snap) in
             self?.parseForLeagueNames(dataSnapshot: snap)
         }) { (failed) in
@@ -47,5 +53,4 @@ final class CreateNewLeagueViewModel: ObservableObject, Identifiable {
             print("could not interprept snapshot value")
         }
     }
-
 }

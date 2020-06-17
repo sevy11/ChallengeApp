@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1A3028AE246DDE330031C03E /* HelperViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3028AD246DDE330031C03E /* HelperViews.swift */; };
 		1A3028B0246DE80A0031C03E /* EnterChallengersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3028AF246DE80A0031C03E /* EnterChallengersView.swift */; };
+		1A323811249A64C900C2BC83 /* TelevisionProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A323810249A64C900C2BC83 /* TelevisionProgram.swift */; };
 		1A5DACBC2438DF7F00C2AD19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACBB2438DF7F00C2AD19 /* AppDelegate.swift */; };
 		1A5DACBE2438DF7F00C2AD19 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACBD2438DF7F00C2AD19 /* SceneDelegate.swift */; };
 		1A5DACC02438DF7F00C2AD19 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACBF2438DF7F00C2AD19 /* ContentView.swift */; };
@@ -46,6 +47,7 @@
 /* Begin PBXFileReference section */
 		1A3028AD246DDE330031C03E /* HelperViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperViews.swift; sourceTree = "<group>"; };
 		1A3028AF246DE80A0031C03E /* EnterChallengersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterChallengersView.swift; sourceTree = "<group>"; };
+		1A323810249A64C900C2BC83 /* TelevisionProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelevisionProgram.swift; sourceTree = "<group>"; };
 		1A5DACB82438DF7F00C2AD19 /* Backpack Reality.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Backpack Reality.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A5DACBB2438DF7F00C2AD19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A5DACBD2438DF7F00C2AD19 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				1A5DACDE243E605C00C2AD19 /* Manager.swift */,
 				1A5DACE0243E608900C2AD19 /* Challenger.swift */,
 				1A9E6FE82465E2470013874C /* League.swift */,
+				1A323810249A64C900C2BC83 /* TelevisionProgram.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				1A684659248031FB00B23AEB /* NotificationName+Extension.swift in Sources */,
 				1A68466524842C7C00B23AEB /* NoLeagueView.swift in Sources */,
 				1A9E6FE72465B4EB0013874C /* CreateNewLeagueView.swift in Sources */,
+				1A323811249A64C900C2BC83 /* TelevisionProgram.swift in Sources */,
 				1A5DACDF243E605C00C2AD19 /* Manager.swift in Sources */,
 				1A5DACEF2443AA9700C2AD19 /* FirebaseManager.swift in Sources */,
 				1A68466024841B2F00B23AEB /* ChooseLeagueViewModel.swift in Sources */,
@@ -573,7 +577,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"ChallengeApp/Preview Content\"";
 				DEVELOPMENT_TEAM = TKVBVK4237;
 				ENABLE_PREVIEWS = YES;
@@ -582,6 +586,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.MichaelSevy.ChallengeApp;
 				PRODUCT_NAME = "Backpack Reality";
 				SWIFT_VERSION = 5.0;
@@ -595,7 +600,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"ChallengeApp/Preview Content\"";
 				DEVELOPMENT_TEAM = TKVBVK4237;
 				ENABLE_PREVIEWS = YES;
@@ -604,6 +609,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.MichaelSevy.ChallengeApp;
 				PRODUCT_NAME = "Backpack Reality";
 				SWIFT_VERSION = 5.0;

@@ -10,11 +10,18 @@ import Foundation
 import Combine
 import Kanna
 
-final class WeeklyScoresViewModel: ObservableObject, Identifiable {
-    private let webScraper = WebScraper()
+protocol WeeklyScoresProtocol {
+    func getScoresFor(week: Int)
+}
+
+final class WeeklyScoresViewModel: WeeklyScoresProtocol, ObservableObject, Identifiable {
+    // MARK: - Instance Variables
     @Published var challengers = [Challenger]()
     @Published var isLoading = true
 
+    private let webScraper = WebScraper()
+
+    // MARK: - Functions
     public func getScoresFor(week: Int) {
         self.webScraper.getScoresFor(week: week, success: { [weak self] (responseDescription) in
             guard let self = self else { return }
@@ -61,8 +68,6 @@ final class WeeklyScoresViewModel: ObservableObject, Identifiable {
                 }
                 self.isLoading = false
             }
-        }) { (failed) in
-            print("failed to fetch from web scraper")
-        }
+        })
     }
 }

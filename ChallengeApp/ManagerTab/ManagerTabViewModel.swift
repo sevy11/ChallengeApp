@@ -12,7 +12,13 @@ import Firebase
 import Kanna
 import SwiftUI
 
-class ManagerTabViewModel: ObservableObject, Identifiable {
+protocol ManagerProtocol {
+    func getCurrentWeek(user: User)
+    func getScoresFor(week: Int, post: Bool)
+    func getLeaguesFor(user: User)
+}
+
+class ManagerTabViewModel: ManagerProtocol, ObservableObject, Identifiable {
     private let webScraper = WebScraper()
     private let firebaseManager = FirebaseManager()
 
@@ -60,7 +66,7 @@ class ManagerTabViewModel: ObservableObject, Identifiable {
         }
     }
     
-    func compare(week: String) {
+    private func compare(week: String) {
         guard let intWeek = Int(week) else { return }
         
         firebaseManager.getChallengersWith(week: intWeek, success: { snap in
@@ -145,12 +151,10 @@ class ManagerTabViewModel: ObservableObject, Identifiable {
                     }
                 }
             }
-        }) { (failed) in
-            print("failed to fetch from web scraper")
-        }
+        })
     }
     
-    func sumScoresAndPostUpdatedChallengers(snapshot: DataSnapshot, names: [NSString], week: Int) {
+    private func sumScoresAndPostUpdatedChallengers(snapshot: DataSnapshot, names: [NSString], week: Int) {
         if let fireChallengers = Challenger.parseWith(snapshot: snapshot) {
             
             var summedScores = [Int]()
@@ -336,7 +340,4 @@ class ManagerTabViewModel: ObservableObject, Identifiable {
         newManager.challengers = newChallengers
         return newManager
     }
-        
-    
-    
 }

@@ -11,9 +11,9 @@ import Firebase
 import Combine
 
 struct ContentView: View {
+    // MARK: - Instance Variables
     var user: User?
-    var defaultsManager = DefaultsManager()
-    @State var isPresented: Bool = false
+    @State private var isPresented: Bool = false
     
     var body: some View {
         TabView {
@@ -36,7 +36,8 @@ struct ContentView: View {
                             }
                     )
                 }
-            }
+            }.navigationViewStyle(StackNavigationViewStyle()) // added so iPad does not show empty initial screen, this
+                // takes away the master/detail sidebar and show full screen
             .tabItem({
                 Image(systemName: "house")
                 Text("Scores")

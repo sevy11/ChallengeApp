@@ -19,13 +19,9 @@ class WebScraper {
         }
     }
 
-    public func getScoresFor(week: Int, success: @escaping (_ response: String) -> Void, failure: @escaping(_ failure: Bool) -> Void) {
+    public func getScoresFor(week: Int, success: @escaping (_ response: String) -> Void) {
         AF.request("\(kTotalMadnessWeeklyEndpoint)\(week)").responseString { response in
-            if let description = response.description as? String {
-                success(description)
-            } else {
-                failure(true)
-            }
+            success(response.description)
         }
     }
 }
