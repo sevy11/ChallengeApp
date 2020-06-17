@@ -13,8 +13,8 @@ import Combine
 
 struct ChooseLeagueView: View {
     var user: User?
-    @ObservedObject var viewModel = ChooseLeagueViewModel()
-    @State var selectedLeague = ""
+    @ObservedObject private var viewModel = ChooseLeagueViewModel()
+    @State private var selectedLeague = ""
 
     var body: some View {
         VStack {

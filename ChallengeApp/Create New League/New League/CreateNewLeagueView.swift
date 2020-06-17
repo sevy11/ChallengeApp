@@ -10,14 +10,14 @@ import SwiftUI
 import Firebase
 
 struct CreateNewLeagueView: View {
+    // MARK: - Instance Variables
     var user: User?
-
     @State private var name = ""
-    @State private var leagueType: Show = .none
+    @State private var televisionProgram: TelevisionProgram = TelevisionProgram(title: .none)
     @State private var managersInLeague = 0
     @State private var buttonTapped: Int? = nil
-    @State var selected = false
-    @State var showNameAlert = false
+    @State private var selected = false
+    @State private var showNameAlert = false
     
     @Binding var showModal: Bool
     @ObservedObject var viewModel = CreateNewLeagueViewModel()
@@ -27,17 +27,17 @@ struct CreateNewLeagueView: View {
         NavigationView {
             VStack {
                 List {
-                    Text(selected ? "\(leagueType.rawValue.uppercased())" : leagueType.rawValue)
+                    Text(selected ? "\(televisionProgram.title.rawValue.uppercased())" : televisionProgram.title.rawValue)
                         .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
                     if selected == false {
                         Button(action: {
-                            self.leagueType = .challenge
+                            self.televisionProgram.title = .challenge
                             self.selected = true
                         }) {
-                            Text(Show.challenge.rawValue)
+                            Text(televisionProgram.title.rawValue)
                         }
                         Button(action: {
-                            self.leagueType = .challenge
+                            self.televisionProgram.title = .challenge
                             self.selected = true
                         }) {
                             Text("Survivor(Coming soon!)")
@@ -106,7 +106,7 @@ struct CreateNewLeagueView: View {
     func setLeague() {
         viewModel.newLeague.name = self.name
         viewModel.newLeague.managersInLeague = self.managersInLeague + 3
-        viewModel.newLeague.show = self.leagueType
+        viewModel.newLeague.show = self.televisionProgram
         viewModel.newLeague.creatorEmail = self.user?.email!
     }
     

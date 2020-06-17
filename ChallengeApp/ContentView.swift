@@ -11,9 +11,9 @@ import Firebase
 import Combine
 
 struct ContentView: View {
+    // MARK: - Instance Variables
     var user: User?
-    var defaultsManager = DefaultsManager()
-    @State var isPresented: Bool = false
+    @State private var isPresented: Bool = false
     
     var body: some View {
         TabView {

@@ -9,14 +9,18 @@
 import Foundation
 import Firebase
 
-final class ChooseLeagueViewModel: ObservableObject, Identifiable {
+protocol ChooseLeagueProtocol {
+    func getLeaguesFor(user: User)
+}
+
+final class ChooseLeagueViewModel: ChooseLeagueProtocol, ObservableObject, Identifiable {
     @Published var leagues = [League]()
     @Published var isLoading = true
     @Published var noLeagues = false
     @Published var league: League?
     private let firebaseManager = FirebaseManager()
 
-    public func getLeaguesFor(user: User) {
+    func getLeaguesFor(user: User) {
         self.firebaseManager.getLeagues(success: { (snapshot) in
             self.parseAndAssignLeague(dataSnapshot: snapshot, user: user)
         }) { (failed) in

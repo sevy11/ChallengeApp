@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 import Firebase
 
-struct Manager {
+struct Manager: Identifiable {
     static let managerChoices = ["3", "4", "5", "6", "7", "8"]
 
     public var firebaseEmail: String
@@ -38,6 +38,8 @@ struct Manager {
         self.contestantNames = contestantNames
     }
     
+    
+    // MARK: - Test Functions
     func challengersFor(manager: String) -> [Challenger] {
         if manager == "sevy" {
             return [createChallenger(named: "Jordan Wiseley"),
@@ -71,12 +73,6 @@ struct Manager {
                      createChallenger(named: "Nany Gonzalez")]
         }
         return [createChallenger(named: "empty")]
-    }
-    
-    // @TODO replace this with
-    static func managersForLeague(id: Int) -> [Manager] {
-    
-        return [Manager]()
     }
     
     static func chicagoManagers() -> [Manager] {
@@ -117,9 +113,4 @@ struct Manager {
     static func generateRandomManager() -> Manager {
         return Manager.chicagoManagers().randomElement()!
     }
-}
-
-
-extension Manager: Identifiable {
-    
 }

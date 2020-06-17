@@ -11,32 +11,32 @@ import Combine
 import Firebase
 
 struct EnterChallengersView: View {
+    // MARK: - Instance Variables
     var league: League
     var managers: [String]
     var user: User?
     var slotsToDisplay: Int {
-        league.show == .challenge ? (Challenger.challengers.count / managers.count) : (Challenger.survivors.count / managers.count)
+        league.show.title == .challenge ? (Challenger.challengers.count / managers.count) : (Challenger.survivors.count / managers.count)
     }
     
-    @State var managerCounter = 0
-    @State var challengerCount = 0
-    @State var buttonTapped: Int? = nil
-    @State var challenger1 = ""
-    @State var challenger2 = ""
-    @State var challenger3 = ""
-    @State var challenger4 = ""
-    @State var challenger5 = ""
-    @State var challenger6 = ""
-    @State var challenger7 = ""
-    @State var challenger8 = ""
-    @State var challenger9 = ""
-    @State var buttonTitle = "Next Manager"
+    @State private var managerCounter = 0
+    @State private var challengerCount = 0
+    @State private var buttonTapped: Int? = nil
+    @State private var challenger1 = ""
+    @State private var challenger2 = ""
+    @State private var challenger3 = ""
+    @State private var challenger4 = ""
+    @State private var challenger5 = ""
+    @State private var challenger6 = ""
+    @State private var challenger7 = ""
+    @State private var challenger8 = ""
+    @State private var challenger9 = ""
+    @State private var buttonTitle = "Next Manager"
     
     @Binding var showModal: Bool
     @ObservedObject var viewModel = EnterChallengersViewModel()
-    let pub = NotificationCenter.default.publisher(for: Notification.Name.LeagueCompletedSaving)
+    private let pub = NotificationCenter.default.publisher(for: Notification.Name.LeagueCompletedSaving)
 
-    
     var body: some View {
         VStack {
             List {
@@ -158,7 +158,7 @@ struct EnterChallengersView: View {
     }
     
     func save(manager: String) {
-        viewModel.update(league: league, manager: manager)
+        viewModel.update(league: league, managerEmail: manager)
         
         if managerCounter == managers.count - 1 {
             print("League Entry Complete, Pop back to root view.")

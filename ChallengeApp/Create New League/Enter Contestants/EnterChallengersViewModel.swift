@@ -9,24 +9,35 @@
 import Foundation
 import Combine
 
-final class EnterChallengersViewModel: ObservableObject, Identifiable {
-    let firebase = FirebaseManager()
+protocol EnterChallengersProtocol {
+    func getContestantsFor(league: League)
+    func update(league: League, managerEmail: String)
+}
+
+final class EnterChallengersViewModel: EnterChallengersProtocol, ObservableObject, Identifiable {
+    // MARK: - Instance Variables
     @Published var challengers:  [String] = Challenger.challengers
     @Published var challengersForManager = [String]()
-    
-    // @TODO constant Challengers for now
-    func getContestantsFor(league: League) {
-        if league.show! == .challenge {
+    private let firebase = FirebaseManager()
+
+    // MARK: - Functions
+    public func getContestantsFor(league: League) {
+        switch league.show.title {
+        case .challenge:
             self.challengers = Challenger.challengers
-        } else if league.show! == .survivor {
+        case .survivor:
             self.challengers = Challenger.survivors
-        } else {
-            // @TODO more shows
+        case .bachelor:
+            print("todo add bachlor contestants")
+        case .bachelorette:
+            print("todo add bachlorette contestants")
+        case .none:
+            print("no action here")
         }
     }
     
-    func update(league: League, manager: String) {
-        firebase.updateLeagueWith(contestantNames: self.challengersForManager, managerEmail: manager, leagueName: league.name, success: { (success) in
+    public func update(league: League, managerEmail: String) {
+        firebase.updateLeagueWith(contestantNames: self.challengersForManager, managerEmail: managerEmail, leagueName: league.name, success: { (success) in
             print("Successfully updated the manager's contestant names.")
         }) { (error) in
             print("failed to update contestant names with error: \(error)")
