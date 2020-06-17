@@ -51,7 +51,7 @@ struct WeeksScoresTabView: View {
                 }
             }
             .onAppear(perform: initialFetch)
-        }
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

@@ -36,7 +36,8 @@ struct ContentView: View {
                             }
                     )
                 }
-            }
+            }.navigationViewStyle(StackNavigationViewStyle()) // added so iPad does not show empty initial screen, this
+                // takes away the master/detail sidebar and show full screen
             .tabItem({
                 Image(systemName: "house")
                 Text("Scores")
