@@ -68,11 +68,11 @@ extension Binding {
 
 extension WeeksScoresTabView {
     func fetchData(_ tag: Int) {
-        viewModel.getScoresFor(week: weekSelection + 1)
+        viewModel.getScoresFor(week: tag + 1)
     }
     
     func initialFetch() {
-        viewModel.getScoresFor(week: weekSelection + 1)
+        viewModel.getScoresFor(week: 1)
     }
 }
 

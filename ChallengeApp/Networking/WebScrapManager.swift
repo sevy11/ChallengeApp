@@ -8,13 +8,15 @@
 
 import Foundation
 import Alamofire
-//import Combine
+import Combine
 
 let kTotalMadnessWeeklyEndpoint = "https://www.realtvfantasy.com/shows/scores/mtv-the-challenge-total-madness/"
+let kWeekEndpoint               = "https://www.realtvfantasy.com/shows/view/mtv-the-challenge-total-madness"
 
-class WebScraper {
+final class WebScraper {
+    
     public func getCurrentWeek(success: @escaping (_ description: String) -> Void) {
-        AF.request("https://www.realtvfantasy.com/shows/view/mtv-the-challenge-total-madness").responseString { response in
+        AF.request(kWeekEndpoint).responseString { response in
             success(response.description)
         }
     }

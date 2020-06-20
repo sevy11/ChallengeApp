@@ -38,7 +38,7 @@ final class WeeklyScoresViewModel: WeeklyScoresProtocol, ObservableObject, Ident
             var scorePopulated = false
             
             if let doc = try? HTML(html: responseDescription, encoding: .utf8) {
-                for header in doc.css("a, h4") {
+                for header in doc.css("a, h4, span") {
                     if let headerValue = header.text {
                         // Add the player
                         if Challenger.challengers.contains(headerValue) { // this is a challenger's name
