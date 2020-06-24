@@ -50,7 +50,11 @@ struct WeeksScoresTabView: View {
                     Text("No scores available for this week yet 🙄")
                 }
             }
+            .alert(item: self.$viewModel.weekError, content: { error in
+                Alert(title: Text("Network Error"), message: Text(error.localizedDescription), dismissButton: .cancel())
+            })
             .onAppear(perform: initialFetch)
+            .onDisappear(perform: resetWeek)
         }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
@@ -67,12 +71,16 @@ extension Binding {
 }
 
 extension WeeksScoresTabView {
+    func resetWeek() {
+        self.weekSelection = 0
+    }
+    
     func fetchData(_ tag: Int) {
-        viewModel.getScoresFor(week: weekSelection + 1)
+        viewModel.getScoresFor(week: tag + 1)
     }
     
     func initialFetch() {
-        viewModel.getScoresFor(week: weekSelection + 1)
+        viewModel.getScoresFor(week: 1)
     }
 }
 

@@ -231,7 +231,7 @@ struct CreateNewLeagueDetailManagerView: View {
         if viewModel.areValid(emailAddresses: self.managerNames) {
             self.buttonTapped = 1
             self.showInvalidEmailAddressAlert = false
-            viewModel.createLeague(name: self.league.name, emails: self.managerNames, user: user!, showName: self.league.show.title.rawValue)
+            viewModel.create(league: self.league, emails: self.managerNames, user: user!)
         } else {
             self.buttonTapped = 0
             self.showInvalidEmailAddressAlert = true

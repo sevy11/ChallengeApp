@@ -12,43 +12,31 @@ import Firebase
 import Kanna
 import Alamofire
 
-let kChallengersNamesEndpoint   = "challengers/names/"
-let kChallengersScoresEndpoint  = "challengers/scores/"
-let kChallengersEndpoint        = "challengers/"
-let kLeagueEndpoint             = "leagues/"
-let kChallengersWeeksEndpoint   = "challengers/weeks/"
-
 /*
-    Firebase Manager handles all call to the firebase realtime database
+ Firebase Manager handles all call to the firebase realtime database
  */
-class FirebaseManager: ObservableObject {
-    @Published var challengers = [Challenger]()
-    @Published var leaguePostedSuccessfully = false
-    @Published var leagues = [League]()
-    @Published var league: League?
-    @Published var leagueName = ""
-    @Published var managers = [Manager]()
-
-    // MARK: - POST League
-    func createLeagueWith(name: String, managerEmails: [String], user: User, show: String, posted: @escaping (_ posted: Bool) -> Void, failure: @escaping (_ failed: Error) -> Void) {
-         let db = Database.database()
-         let reference = db.reference().child("\(kLeagueEndpoint)\(name)").childByAutoId()
-         
-         guard let email = user.email else { return }
-         
-        let payload: [NSString : Any] = ["emails" : managerEmails, "creator_email" : email, "show" : show]
-         reference.setValue(payload) { error, ref in
-             if let error = error {
-                failure(error)
-             } else {
-                posted(true)
-             }
-         }
-     }
+class FirebaseManager: API {
     
-    public func updateLeagueWith(contestantNames: [String], managerEmail: String, leagueName: String, success: @escaping (_ posted: Bool) -> Void, failure: @escaping (_ failed: Error) -> Void) {
+    // MARK: - POST League
+    func create(league: League, managerEmails: [String], user: User, posted: @escaping (_ posted: Bool) -> Void, failure: @escaping (_ failed: Error) -> Void) {
         let db = Database.database()
-        let reference = db.reference().child("\(kLeagueEndpoint)\(leagueName)/").childByAutoId()
+        let reference = db.reference().child("\(API.Endpoint.leagues.rawValue)\(league.name)").childByAutoId()
+        
+        guard let email = user.email else { return }
+        
+        let payload: [NSString : Any] = ["emails" : managerEmails, "creator_email" : email, "show" : league.show.title.rawValue]
+        reference.setValue(payload) { error, ref in
+            if let error = error {
+                failure(error)
+            } else {
+                posted(true)
+            }
+        }
+    }
+    
+    func updateLeagueWith(contestantNames: [String], managerEmail: String, leagueName: String, success: @escaping (_ posted: Bool) -> Void, failure: @escaping (_ failed: Error) -> Void) {
+        let db = Database.database()
+        let reference = db.reference().child("\(API.Endpoint.leagues.rawValue)\(leagueName)/").childByAutoId()
         
         let contestantMeta: [String : Any] = ["contestants" : contestantNames, "email" : managerEmail]
         reference.setValue(contestantMeta) { (error, reference) in
@@ -59,63 +47,20 @@ class FirebaseManager: ObservableObject {
             }
         }
     }
-
-    public func getLeagues(success: @escaping (_ snapshot: DataSnapshot) -> Void, failure: @escaping (_ failure: Bool) -> Void) {
-        let db = Database.database()
-        let reference = db.reference().child("\(kLeagueEndpoint)")
-        
-        reference.observeSingleEvent(of: .value) { (snapshot) in
-            if snapshot.children.allObjects.count == 0 {
-                print("no league objects yet :(, handle condition")
-                failure(true)
-            } else {
-                success(snapshot)
-            }
-        }
-    }
     
-    public func getChallengersWith(week: Int, success: @escaping (_ snapshot: DataSnapshot) -> Void, failure: @escaping (_ failure: Bool) -> Void) {
+    func postForWeek2(names: [NSString], scores: [NSNumber], actives: [Bool], completion: @escaping ((_ posted: Bool) -> Void)) {
         let db = Database.database()
-        let reference = db.reference().child(kChallengersEndpoint)
-        
-        reference.observeSingleEvent(of: .value) { (snapshot) in
-            if snapshot.children.allObjects.count == 0 {
-                print("no challengers from firebase")
-                failure(true)
-            } else {
-                success(snapshot)
-            }
-        }
-    }
-    
-    public func getChallengersFor(league: League, success: @escaping (_ snapshot: DataSnapshot) -> Void, failure: @escaping (_ failed: Bool) -> Void) {
-        let db = Database.database()
-        let reference = db.reference().child(kChallengersEndpoint)
-        
-        reference.observeSingleEvent(of: .value) { (snapshot) in
-            if snapshot.children.allObjects.count == 0 {
-                print("no challengers from firebase")
-                failure(true)
-            } else {
-                success(snapshot)
-            }
-        }
-    }
-
-    func postForWeek2(names: [NSString], scores: [NSNumber], actives: [Bool], completion: ((_ posted: Bool) -> Void)?) {
-        let db = Database.database()
-        let reference = db.reference().child(kChallengersEndpoint)
+        let reference = db.reference().child(API.Endpoint.challengers.rawValue)
         
         let payload: [String : Any] = ["names" : names, "scores" : scores, "actives" : actives, "week" : 2]
         
         reference.setValue(payload) { error, ref in
-            
             if let error = error {
                 print("error for scores post: \(error)")
-                completion!(false)
+                completion(false)
             } else {
                 print("post challengers for week 2 successful")
-                completion!(true)
+                completion(true)
                 // @TODO
                 //self.defaults.saveChallengersFor(week: week, names: names, scores: scores)
                 //DefaultsManager.saveScoresFor(week: week, scores: scores)
@@ -124,10 +69,9 @@ class FirebaseManager: ObservableObject {
         }
     }
     
-    // MARK: - All other weeks will add the new scores on
-    public func postPostWeek2(challengers: [Challenger], names: [NSString], week: Int, completion: ((_ snapshot: DataSnapshot?) -> Void)?) {
+    func postPostWeek2(challengers: [Challenger], names: [NSString], week: Int, completion: ((_ snapshot: DataSnapshot?) -> Void)?) {
         let db = Database.database()
-        let reference = db.reference().child(kChallengersEndpoint)
+        let reference = db.reference().child(API.Endpoint.challengers.rawValue)
         
         reference.observeSingleEvent(of: .value) { (snapshot) in
             
@@ -138,10 +82,10 @@ class FirebaseManager: ObservableObject {
             }
         }
     }
-      
-    public func postSummed(scores: [Int], names: [String], actives: [Bool], week: Int, posted: @escaping (_ posted: Bool) -> Void) {
+    
+    func postSummed(scores: [Int], names: [String], actives: [Bool], week: Int, posted: @escaping (_ posted: Bool) -> Void) {
         let db = Database.database()
-        let reference = db.reference().child(kChallengersEndpoint)
+        let reference = db.reference().child(API.Endpoint.challengers.rawValue)
         
         let payload: [String : Any] = ["names" : names, "scores" : scores, "actives" : actives, "week" : week]
         
@@ -153,13 +97,53 @@ class FirebaseManager: ObservableObject {
             } else {
                 print("post updated challengers scores for week \(week) successfully")
                 posted(true)
-                // And now return the managers to the UI, with:
-//                NotificationCenter.default.post(name: Notification.Name.UpdatedChallengerScores, object: nil)
                 // @TODO
                 //self.defaults.saveChallengersFor(week: week, names: names, scores: scores)
                 //DefaultsManager.saveScoresFor(week: week, scores: scores)
             }
         }
     }
+    
+    // MARK: - GET
+    func getLeagues(success: @escaping (_ snapshot: DataSnapshot) -> Void, failure: @escaping (_ failure: Bool) -> Void) {
+        let db = Database.database()
+        let reference = db.reference().child("\(API.Endpoint.leagues.rawValue)")
         
+        reference.observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.children.allObjects.count == 0 {
+                print("no league objects yet :(, handle condition")
+                failure(true)
+            } else {
+                success(snapshot)
+            }
+        }
+    }
+    
+    func getChallengersWith(week: Int, success: @escaping (_ snapshot: DataSnapshot) -> Void, failure: @escaping (_ failure: Bool) -> Void) {
+        let db = Database.database()
+        let reference = db.reference().child(API.Endpoint.challengers.rawValue)
+        
+        reference.observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.children.allObjects.count == 0 {
+                print("no challengers from firebase")
+                failure(true)
+            } else {
+                success(snapshot)
+            }
+        }
+    }
+    
+    func getChallengersFor(league: League, success: @escaping (_ snapshot: DataSnapshot) -> Void, failure: @escaping (_ failed: Bool) -> Void) {
+        let db = Database.database()
+        let reference = db.reference().child(API.Endpoint.challengers.rawValue)
+        
+        reference.observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.children.allObjects.count == 0 {
+                print("no challengers from firebase")
+                failure(true)
+            } else {
+                success(snapshot)
+            }
+        }
+    }
 }

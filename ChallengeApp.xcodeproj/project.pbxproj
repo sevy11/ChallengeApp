@@ -16,7 +16,7 @@
 		1A5DACC22438DF8100C2AD19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A5DACC12438DF8100C2AD19 /* Assets.xcassets */; };
 		1A5DACC52438DF8100C2AD19 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A5DACC42438DF8100C2AD19 /* Preview Assets.xcassets */; };
 		1A5DACC82438DF8100C2AD19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A5DACC62438DF8100C2AD19 /* LaunchScreen.storyboard */; };
-		1A5DACD32438E1DA00C2AD19 /* WebScrapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACD22438E1DA00C2AD19 /* WebScrapManager.swift */; };
+		1A5DACD32438E1DA00C2AD19 /* WebScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACD22438E1DA00C2AD19 /* WebScraper.swift */; };
 		1A5DACD8243953E600C2AD19 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACD7243953E600C2AD19 /* Constants.swift */; };
 		1A5DACDA243D2A7600C2AD19 /* ManagerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACD9243D2A7600C2AD19 /* ManagerTabView.swift */; };
 		1A5DACDC243E5FDA00C2AD19 /* WeeksScoresTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5DACDB243E5FDA00C2AD19 /* WeeksScoresTabView.swift */; };
@@ -41,6 +41,7 @@
 		1A9E6FE92465E2470013874C /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FE82465E2470013874C /* League.swift */; };
 		1A9E6FEF246853D50013874C /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FEE246853D50013874C /* Color+Extension.swift */; };
 		1A9E6FF12468CE5C0013874C /* CreateNewLeagueDetailManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E6FF02468CE5C0013874C /* CreateNewLeagueDetailManagerView.swift */; };
+		1AC43340249EF4AC00EA9C65 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC4333F249EF4AC00EA9C65 /* API.swift */; };
 		4B9C553A6048716871BE177A /* Pods_ChallengeApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEDF69EFA27BBD255E2D4774 /* Pods_ChallengeApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,7 +57,7 @@
 		1A5DACC42438DF8100C2AD19 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1A5DACC72438DF8100C2AD19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A5DACC92438DF8100C2AD19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1A5DACD22438E1DA00C2AD19 /* WebScrapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebScrapManager.swift; sourceTree = "<group>"; };
+		1A5DACD22438E1DA00C2AD19 /* WebScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebScraper.swift; sourceTree = "<group>"; };
 		1A5DACD7243953E600C2AD19 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1A5DACD9243D2A7600C2AD19 /* ManagerTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerTabView.swift; sourceTree = "<group>"; };
 		1A5DACDB243E5FDA00C2AD19 /* WeeksScoresTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeksScoresTabView.swift; sourceTree = "<group>"; };
@@ -81,6 +82,7 @@
 		1A9E6FE82465E2470013874C /* League.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = League.swift; sourceTree = "<group>"; };
 		1A9E6FEE246853D50013874C /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		1A9E6FF02468CE5C0013874C /* CreateNewLeagueDetailManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewLeagueDetailManagerView.swift; sourceTree = "<group>"; };
+		1AC4333F249EF4AC00EA9C65 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		58AC706AAA98C34199C93B7E /* Pods-ChallengeApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChallengeApp.debug.xcconfig"; path = "Target Support Files/Pods-ChallengeApp/Pods-ChallengeApp.debug.xcconfig"; sourceTree = "<group>"; };
 		792E22E492687476029BA130 /* Pods-ChallengeApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChallengeApp.release.xcconfig"; path = "Target Support Files/Pods-ChallengeApp/Pods-ChallengeApp.release.xcconfig"; sourceTree = "<group>"; };
 		BEDF69EFA27BBD255E2D4774 /* Pods_ChallengeApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChallengeApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -188,7 +190,8 @@
 		1A5DACED2443AA6400C2AD19 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				1A5DACD22438E1DA00C2AD19 /* WebScrapManager.swift */,
+				1A5DACD22438E1DA00C2AD19 /* WebScraper.swift */,
+				1AC4333F249EF4AC00EA9C65 /* API.swift */,
 				1A5DACEE2443AA9700C2AD19 /* FirebaseManager.swift */,
 				1A5DACF4244F56F600C2AD19 /* DefaultsManager.swift */,
 			);
@@ -429,10 +432,11 @@
 				1A5DACF12445098600C2AD19 /* ChallengerRow.swift in Sources */,
 				1A9E6FE92465E2470013874C /* League.swift in Sources */,
 				1A5DACDA243D2A7600C2AD19 /* ManagerTabView.swift in Sources */,
-				1A5DACD32438E1DA00C2AD19 /* WebScrapManager.swift in Sources */,
+				1A5DACD32438E1DA00C2AD19 /* WebScraper.swift in Sources */,
 				1A3028B0246DE80A0031C03E /* EnterChallengersView.swift in Sources */,
 				1A68465E24817E2500B23AEB /* ManagerTabViewModel.swift in Sources */,
 				1A68466924854A0300B23AEB /* CreateNewLeagueEmailsViewModel.swift in Sources */,
+				1AC43340249EF4AC00EA9C65 /* API.swift in Sources */,
 				1A684662248424D200B23AEB /* WeeklyScoresViewModel.swift in Sources */,
 				1A5DACE92443A39800C2AD19 /* ManagerRow.swift in Sources */,
 				1A67DB4A24786408004CB8E5 /* ChooseLeagueView.swift in Sources */,
@@ -586,7 +590,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.MichaelSevy.ChallengeApp;
 				PRODUCT_NAME = "Backpack Reality";
 				SWIFT_VERSION = 5.0;
@@ -609,7 +613,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.MichaelSevy.ChallengeApp;
 				PRODUCT_NAME = "Backpack Reality";
 				SWIFT_VERSION = 5.0;

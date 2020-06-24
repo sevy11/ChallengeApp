@@ -29,13 +29,13 @@ struct ManagerRow: View {
                         .foregroundColor(self.challengerNameColor(challenger: challenger))
                         .frame(width: 100, alignment: .topTrailing)
                 }
-            }.frame(height: 180)
+            }.frame(height: 190)
                 .disabled(true)
             Text("Total: \(manager.score)")
                 .font(.system(size: 20))
                 .bold()
+                .foregroundColor(.blue)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
         }
     }
     

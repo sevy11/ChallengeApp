@@ -14,8 +14,10 @@ import Combine
 struct ChooseLeagueView: View {
     var user: User?
     @ObservedObject private var viewModel = ChooseLeagueViewModel()
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
     @State private var selectedLeague = ""
-
+    let appVersion: Any? = Bundle.main.infoDictionary!["CFBundleShortVersionString"]
+    
     var body: some View {
         VStack {
             if viewModel.isLoading {
@@ -33,10 +35,12 @@ struct ChooseLeagueView: View {
                 Spacer()
                 Text("Sign out of user: \(user?.email == nil ? "" : (user?.email)!)").padding()
                 signOutButton
+                Text("App Version: \((appVersion as? String)!)").padding()
                 Spacer()
             } else if viewModel.noLeagues {
                 NoLeagueView()
                 signOutButton
+                Text("App Version: \((appVersion as? String)!)").padding()
                 Spacer()
             }
         }.onAppear(perform: getLeagues)
@@ -72,7 +76,7 @@ struct ChooseLeagueView: View {
         }) {
             Text("Sign Out")
         }.padding(15)
-            .background(LinearGradient(gradient: Gradient(colors: [.red, .gray]), startPoint: .leading, endPoint: .trailing))
+            .background(LinearGradient(gradient: Gradient(colors: self.colorScheme == .light ? [.red, .black] : [.red, .gray]), startPoint: .leading, endPoint: .trailing))
             .foregroundColor(.white)
             .cornerRadius(40)
     }
