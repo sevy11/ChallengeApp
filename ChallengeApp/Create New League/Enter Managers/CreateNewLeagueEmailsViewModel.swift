@@ -11,7 +11,7 @@ import Combine
 import Firebase
 
 protocol CreateNewLeagueEmailsProtocol {
-    func createLeague(name: String, emails: [String], user: User, showName: String)
+    func create(league: League, emails: [String], user: User)
     func areValid(emailAddresses: [String]) -> Bool
 }
 
@@ -23,9 +23,9 @@ final class CreateNewLeagueEmailsViewModel: CreateNewLeagueEmailsProtocol, Obser
     
     
     // MARK: - POST/GET Functions
-    public func createLeague(name: String, emails: [String], user: User, showName: String) {
+    public func create(league: League, emails: [String], user: User) {
         self.savingLeagueInProgress = true
-        firebase.createLeagueWith(name: name, managerEmails: emails, user: user, show: showName, posted: { (success) in
+        firebase.create(league: league, managerEmails: emails, user: user, posted: { (success) in
             self.savingLeagueInProgress = false
         }) { (failed) in
             self.savingLeagueInProgress = false

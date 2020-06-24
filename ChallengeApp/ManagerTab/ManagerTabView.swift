@@ -12,9 +12,11 @@ import Firebase
 import FirebaseUI
 
 struct ManagerTabView: View {
-    // MARK: - Instance Variables
     var user: User?
-    @ObservedObject private var viewModel = ManagerTabViewModel()
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @ObservedObject var viewModel = ManagerTabViewModel()
+
+    
     private let pub = NotificationCenter.default.publisher(for: NSNotification.Name.UpdatedChallengerScores)
     
     var body: some View {
@@ -26,6 +28,7 @@ struct ManagerTabView: View {
                 Text("There are no leagues associated with this email address.")
                     .lineLimit(nil)
                     .multilineTextAlignment(.center)
+                
                 Spacer()
                 signOutButton
                 Spacer()
@@ -34,6 +37,7 @@ struct ManagerTabView: View {
                 Text("Totals thru week \(viewModel.currentAvailableWeek)")
                     .foregroundColor(.orange)
                     .font(Font.system(size: 18))
+                
                 List(viewModel.managers, id: \.firebaseEmail) { manager in
                     ScrollView {
                         VStack {
@@ -48,6 +52,9 @@ struct ManagerTabView: View {
                 }
             }
         }
+        .alert(item: self.$viewModel.weekError, content: { error in
+            Alert(title: Text("Network Error"), message: Text(error.localizedDescription), dismissButton: .cancel())
+        })
         .navigationBarTitle(viewModel.leagueName)
         .navigationBarBackButtonHidden(true)
         .onAppear(perform: getCurrentWeek)
@@ -57,9 +64,9 @@ struct ManagerTabView: View {
     }
     
     func getCurrentWeek() {
-        if let user = user {
-            viewModel.getCurrentWeek(user: user)
+            viewModel.getCurrentWeek()
             // This ultimately gets viewModel.managers
+        if let user = user {
             viewModel.getLeaguesFor(user: user)
         }
     }
@@ -82,7 +89,7 @@ struct ManagerTabView: View {
           }) {
               Text("Sign Out")
           }.padding(15)
-              .background(LinearGradient(gradient: Gradient(colors: [.red, .gray]), startPoint: .leading, endPoint: .trailing))
+            .background(LinearGradient(gradient: Gradient(colors: self.colorScheme == .light ? [.red, .black] : [.red, .gray]), startPoint: .leading, endPoint: .trailing))
               .foregroundColor(.white)
               .cornerRadius(40)
       }
@@ -95,6 +102,6 @@ struct ManagerTabView: View {
 
 struct ManagerTabView_Previews: PreviewProvider {
     static var previews: some View {
-        ManagerTabView()
+        ManagerTabView(viewModel: ManagerTabViewModel())
     }
 }

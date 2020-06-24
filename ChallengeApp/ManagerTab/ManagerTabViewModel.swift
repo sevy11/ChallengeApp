@@ -11,9 +11,10 @@ import Combine
 import Firebase
 import Kanna
 import SwiftUI
+import Alamofire
 
 protocol ManagerProtocol {
-    func getCurrentWeek(user: User)
+    func getCurrentWeek()
     func getScoresFor(week: Int, post: Bool)
     func getLeaguesFor(user: User)
 }
@@ -21,9 +22,11 @@ protocol ManagerProtocol {
 class ManagerTabViewModel: ManagerProtocol, ObservableObject, Identifiable {
     private let webScraper = WebScraper()
     private let firebaseManager = FirebaseManager()
-
-    @Published var currentAvailableWeek: String = ""
-    @Published var challengers = [Challenger]()
+    private var subscriptions = Set<AnyCancellable>()
+        
+    @Published var weekError: AFError? = nil
+    @Published var currentAvailableWeek = ""
+    @Published var challengerScoreError: AFError? = nil
     @Published var leagues = [League]()
     @Published var league: League?
     @Published var managers = [Manager]()
@@ -31,19 +34,30 @@ class ManagerTabViewModel: ManagerProtocol, ObservableObject, Identifiable {
     @Published var isLoading = true
     @Published var week2ScoresPosted = false
     @Published var weekPost2ScoresPosted = false
-    // unused
-    private var disposables = Set<AnyCancellable>()
 
-    func getCurrentWeek(user: User) {
-        webScraper.getCurrentWeek { (responseDescription) in
-            self.parseForCurrentWeek(html: responseDescription)
-        }
+    // MARK: - Get Week
+    func getCurrentWeek() {
+        webScraper
+            .getCurrentWeek()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+            }, receiveValue: { [weak self] weekResponse in
+                guard let self = self else { return }
+    
+                if let htmlRaw = weekResponse.value {
+                    self.parseForCurrentWeek(htmlRaw: htmlRaw)
+                    self.weekError = nil
+                } else if let error = weekResponse.error {
+                    self.weekError = error
+                }
+            })
+        .store(in: &subscriptions)
     }
     
-    private func parseForCurrentWeek(html: String) {
+    private func parseForCurrentWeek(htmlRaw: String) {
         var weeksAvailable = [String]()
-
-        if let doc = try? HTML(html: html, encoding: .utf8) {
+        
+        if let doc = try? HTML(html: htmlRaw, encoding: .utf8) {
             for header in doc.css("a, h4") {
                 if let headerValue = header.text {
                     if headerValue.contains("Episode ") && headerValue.contains("Scores") {
@@ -87,74 +101,93 @@ class ManagerTabViewModel: ManagerProtocol, ObservableObject, Identifiable {
         }
     }
     
-    public func getScoresFor(week: Int, post: Bool) {
-        self.webScraper.getScoresFor(week: week, success: { [weak self] (responseDescription) in
-            guard let self = self else { return }
-
-            self.challengers = [Challenger]()
-            var challenger = Challenger(forTest: 0, name: "", score: 0, active: true)
-            var names = [NSString]()
-            var scores = [NSNumber]()
-            var actives = [Bool]()
-            var currentName = ""
-            var counter = 1
-            var previousName = ""
-            var namePopulated = false
-            var scorePopulated = false
-            
-            if let doc = try? HTML(html: responseDescription, encoding: .utf8) {
-                for header in doc.css("a, h4") {
-                    if let headerValue = header.text {
-                        // Add the player
-                        if Challenger.challengers.contains(headerValue) { // this is a challenger's name
-                            challenger.id = counter
-                            challenger.name = headerValue
-                            actives.append(true)
-                            names.append(headerValue as NSString)
-                            counter += 1
-                            namePopulated = true
-                            scorePopulated = false
-                            currentName = headerValue
-                        } else { // the next one after will be their score
-                            if headerValue.contains("Total:") {
-                                // Get the number out and convert to Int
-                                if let scoreInt = Int(headerValue.replacingOccurrences(of: "Total: ", with: "")) {
-                                    challenger.score = scoreInt
-                                    scores.append(scoreInt as NSNumber)
-                                    scorePopulated = true
-                                }
-                            }
-                        }
-                    }
-                    if scorePopulated && namePopulated && currentName != previousName {
-                        self.challengers.append(challenger)
-                        previousName = currentName
-                    }
+    // MARK: - Get Manager's Scores
+    func getScoresFor(week: Int, post: Bool) {
+        webScraper
+            .getScoresFor(week: week)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                
+            }, receiveValue: { [weak self] response in
+                guard let self = self else { return }
+                
+                if let html = response.value {
+                    self.parseRawChallenger(html: html, week: week, post: post)
+                } else if let error = response.error {
+                    self.challengerScoreError = error
                 }
-            }
-            // Post to Firebase
-            if post {
-                if self.challengers.count > 0 {
-                    if week == 2 {
-                        self.firebaseManager.postForWeek2(names: names, scores: scores, actives: actives) { (success) in
-                            if success {
-                                self.week2ScoresPosted = true
-                            }
-                        }
-                    } else {
-                        // After week 2 we only need the next week's score
-                        self.firebaseManager.postPostWeek2(challengers: self.challengers, names: names, week: week) { (snap) in
-                            if let snapshot = snap {
-                                self.sumScoresAndPostUpdatedChallengers(snapshot: snapshot, names: names, week: week)
-                            }
-                        }
-                    }
-                }
-            }
-        })
+            }).store(in: &subscriptions)
     }
     
-    private func sumScoresAndPostUpdatedChallengers(snapshot: DataSnapshot, names: [NSString], week: Int) {
+    private func parseRawChallenger(html: String, week: Int, post: Bool) {
+        var challenger = Challenger(forTest: 0, name: "", score: 0, active: true)
+        var challengers = [Challenger]()
+        var names = [NSString]()
+        var scores = [NSNumber]()
+        var actives = [Bool]()
+        var currentName = ""
+        var counter = 1
+        var previousName = ""
+        var namePopulated = false
+        var scorePopulated = false
+           
+        if let doc = try? HTML(html: html, encoding: .utf8) {
+            for header in doc.css("a, h4") {
+                if let headerValue = header.text {
+                    // Add the player
+                    if Challenger.challengers.contains(headerValue) {
+                        challenger.id = counter
+                        challenger.name = headerValue
+                        actives.append(true)
+                        names.append(headerValue as NSString)
+                        counter += 1
+                        namePopulated = true
+                        scorePopulated = false
+                        currentName = headerValue
+                    } else {
+                        // the next one after will be their score
+                        if headerValue.contains("Total:") {
+                            // Get the number out and convert to Int
+                            if let scoreInt = Int(headerValue.replacingOccurrences(of: "Total: ", with: "")) {
+                                challenger.score = scoreInt
+                                scores.append(scoreInt as NSNumber)
+                                scorePopulated = true
+                            }
+                        }
+                    }
+                }
+                if scorePopulated && namePopulated && currentName != previousName {
+                    challengers.append(challenger)
+                    previousName = currentName
+                }
+            }
+        }
+        // Optionally post to Firebase
+        if post {
+            self.postToFirebase(challengers: challengers, week: week, names: names, scores: scores, actives: actives)
+        }
+    }
+    
+    private func postToFirebase(challengers: [Challenger], week: Int, names: [NSString], scores: [NSNumber], actives: [Bool]) {
+        if challengers.count > 0 {
+            if week == 2 {
+                self.firebaseManager.postForWeek2(names: names, scores: scores, actives: actives) { (success) in
+                    if success {
+                        self.week2ScoresPosted = true
+                    }
+                }
+            } else {
+                // After week 2 we only need the next week's score
+                self.firebaseManager.postPostWeek2(challengers: challengers, names: names, week: week) { (snap) in
+                    if let snapshot = snap {
+                        self.sumScoresAndPostUpdated(challengers: challengers, snapshot: snapshot, names: names, week: week)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func sumScoresAndPostUpdated(challengers: [Challenger], snapshot: DataSnapshot, names: [NSString], week: Int) {
         if let fireChallengers = Challenger.parseWith(snapshot: snapshot) {
             
             var summedScores = [Int]()
@@ -305,6 +338,7 @@ class ManagerTabViewModel: ManagerProtocol, ObservableObject, Identifiable {
     }
     
     private func getChallengersFor(league: League) {
+        
         self.firebaseManager.getChallengersFor(league: league, success: { (snapshot) in
             if let fireChallengers = Challenger.parseWith(snapshot: snapshot) {
                 var managersPreSort = [Manager]()
