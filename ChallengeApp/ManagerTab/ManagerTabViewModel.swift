@@ -132,7 +132,7 @@ class ManagerTabViewModel: ManagerProtocol, ObservableObject, Identifiable {
         var scorePopulated = false
            
         if let doc = try? HTML(html: html, encoding: .utf8) {
-            for header in doc.css("a, h4") {
+            for header in doc.css("a, h4, span") {
                 if let headerValue = header.text {
                     // Add the player
                     if Challenger.challengers.contains(headerValue) {
